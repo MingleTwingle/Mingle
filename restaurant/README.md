@@ -1,1 +1,3 @@
 Restaurant Page
+
+Practicing Git
