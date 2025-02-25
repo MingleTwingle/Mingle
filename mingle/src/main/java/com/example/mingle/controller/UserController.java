@@ -19,12 +19,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/users/new")
     public String createForm() {
         return "users/createUserForm";
     }
 
-    @PostMapping
+    @PostMapping("/users/new")
     public String create(UserForm form) {
         User user = new User();
         user.setName(form.getName());
@@ -32,7 +32,8 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping
+    @GetMapping("/users")
+
     public String list(Model model) {
         List<User> users = userService.findUser();
         model.addAttribute("users", users);
