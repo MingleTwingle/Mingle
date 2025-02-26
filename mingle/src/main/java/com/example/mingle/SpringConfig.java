@@ -1,33 +1,28 @@
 package com.example.mingle;
 
-import com.example.mingle.repository.JdbcUserRepository;
-import com.example.mingle.repository.UserRepository;
-import com.example.mingle.service.UserService;
+import com.example.mingle.domain.Guest;
+import com.example.mingle.repository.GuestRepository;
+import com.example.mingle.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
-import javax.sql.DataSource;
-
 @Configuration
 public class SpringConfig {
 
-    private DataSource dataSource;
+    private final GuestRepository guestRepository;
 
     @Autowired
-    public SpringConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public SpringConfig(GuestRepository guestRepository) {
+        this.guestRepository = guestRepository;
     }
 
     @Bean
-    public UserService userService() {
-        return new UserService(userRepository());
+    public GuestService guestService() {
+        return new GuestService(guestRepository);
     }
 
-    @Bean
-    public UserRepository userRepository() {
-        return new JdbcUserRepository(dataSource);
-    }
 }
+
 

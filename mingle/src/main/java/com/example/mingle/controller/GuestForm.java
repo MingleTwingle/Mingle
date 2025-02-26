@@ -1,6 +1,6 @@
 package com.example.mingle.controller;
 
-public class UserForm {
+public class GuestForm {
     private String name;
 
     public String getName() {
