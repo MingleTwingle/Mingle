@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu List</title>
+  <style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+<h1>Menu List</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Menu ID</th>
+    <th>Restaurant ID</th>
+    <th>MenuName</th>
+    <th>Category</th>
+    <th>Price</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="menu : ${menus}">
+    <td th:text="${menu.id}"></td>
+    <td th:text="${menu.restaurant.id}"></td>
+    <td th:text="${menu.menuname}"></td>
+    <td th:text="${menu.category}"></td>
+    <td th:text="${menu.cost}"></td>
+  </tr>
+  </tbody>
+</table>
+</div>
+</body>
+</html>

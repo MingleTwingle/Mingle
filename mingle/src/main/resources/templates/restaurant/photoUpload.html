@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Menu Photo</title>
+</head>
+<body>
+<h2>Upload a Menu Photo</h2>
+<form action="/photos/upload" method="post" enctype="multipart/form-data">
+  <label for="menuId">Menu ID:</label>
+  <input type="number" id="menuId" name="menuId" required>
+  <br>
+  <label for="photo">Upload Photo:</label>
+  <input type="file" id="photo" name="photo" required>
+  <br>
+  <button type="submit">Upload</button>
+</form>
+</body>
+</html>

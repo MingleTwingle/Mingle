@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Restaurant List</title>
+  <style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+<h1>Restaurants List</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Restaurant ID</th>
+    <th>Name</th>
+    <th>Location</th>
+    <th>Parking</th>
+    <th>ReservationTime</th>
+    <th>OpenTime</th>
+    <th>endTime</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="restaurant : ${restaurants}">
+    <td th:text="${restaurant.restaurantID}"></td>
+    <td th:text="${restaurant.name}"></td>
+    <td th:text="${restaurant.location}"></td>
+    <td th:text="${restaurant.parking}"></td>
+    <td th:text="${restaurant.reservationtime}"></td>
+    <td th:text="${restaurant.opentime}"></td>
+    <td th:text="${restaurant.endtime}"></td>
+  </tr>
+  </tbody>
+</table>
+</div>
+</body>
+</html>

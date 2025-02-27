@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu Photos</title>
+  <style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+<h1>Menu Photos</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Menu ID</th>
+    <th>Photo</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="photo : ${photos}">
+    <td th:text="${photo.menu.id}"></td>
+    <td><img th:src="@{/photos/{id}(id=${photo.id})}" width="100"></td>
+  </tr>
+  </tbody>
+</table>
+</div>
+</body>
+</html>
