@@ -24,20 +24,18 @@
     <th>Name</th>
     <th>Location</th>
     <th>Parking</th>
-    <th>ReservationTime</th>
     <th>OpenTime</th>
-    <th>endTime</th>
+    <th>EndTime</th>
   </tr>
   </thead>
   <tbody>
   <tr th:each="restaurant : ${restaurants}">
-    <td th:text="${restaurant.restaurantID}"></td>
-    <td th:text="${restaurant.name}"></td>
-    <td th:text="${restaurant.location}"></td>
-    <td th:text="${restaurant.parking}"></td>
-    <td th:text="${restaurant.reservationtime}"></td>
-    <td th:text="${restaurant.opentime}"></td>
-    <td th:text="${restaurant.endtime}"></td>
+    <td th:text="${restaurant.restaurant_id}"></td>
+    <td th:text="${restaurant.restaurantName}"></td>
+    <td th:text="${restaurant.restaurantLocation}"></td>
+    <td th:text="${restaurant.restaurantParking}"></td>
+    <td th:text="${restaurant.restaurantOpenTime}"></td>
+    <td th:text="${restaurant.restaurantEndTime}"></td>
   </tr>
   </tbody>
 </table>
