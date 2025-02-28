@@ -38,6 +38,7 @@
             <th>Parking</th>
             <th>Morning</th>
             <th>Check-In</th>
+            <th>Check-OUT</th>
           </tr>
           </thead>
           <tbody>
@@ -54,6 +55,7 @@
               <span th:unless="${accommodation.morningAvailable}" class="badge bg-danger">No</span>
             </td>
             <td th:text="${accommodation.checkInTime}"></td>
+            <td th:text="${accommodation.checkOutTime}"></td>
           </tr>
           </tbody>
         </table>

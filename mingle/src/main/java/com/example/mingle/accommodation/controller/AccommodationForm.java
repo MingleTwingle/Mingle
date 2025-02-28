@@ -17,4 +17,6 @@ public class AccommodationForm {
     private boolean morningAvailable;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime checkInTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime checkOutTime;
 }

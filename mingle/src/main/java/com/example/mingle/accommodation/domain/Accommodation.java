@@ -31,5 +31,7 @@ public class Accommodation {
     @Column(name = "accommodation_checkin_time")
     private LocalDateTime checkInTime;
 
+    @Column(name = "accommodation_checkoout_time")
+    private LocalDateTime checkOutTime;
 
 }
