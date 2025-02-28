@@ -2,17 +2,111 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Guest Register Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guest Login Page</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .login-container {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-container h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #343a40;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #6c757d;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      margin-top: 5px;
+    }
+
+    .form-group input:focus {
+      border-color: #80bdff;
+      outline: none;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background-color: #ff758c;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #ff4e70;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
+
+<div class="login-container">
+  <h2>로그인</h2>
   <form action="/guests/login" method="post">
     <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" placeholder="Name">
+      <label for="name">아이디</label>
+      <input type="text" id="name" name="name" placeholder="아이디를 입력하세요." required>
     </div>
-    <button type="submit">Register</button>
+
+    <div class="form-group">
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요." required>
+    </div>
+
+    <button type="submit">로그인하기</button>
   </form>
+
+  <!-- 로그인 실패 시 에러 메시지 출력 -->
+  <p th:if="${error}" class="error-message">아이디 혹은 비밀번호를 잘못 입력하였습니다.</p>
 </div>
+
 </body>
 </html>

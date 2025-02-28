@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Role | Mingle</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <!-- 커스텀 스타일 -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .welcome-container {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .clickable-card {
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            min-height: 180px; /* 카드 높이 동일하게 설정 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .clickable-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+<!-- 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <form action="/guests/userOrHost" method="post">
+    <div class="container">
+        <a class="navbar-brand text-primary" href="/">Mingle</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/guests/login">로그인</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- 메인 컨테이너 -->
+<div class="container welcome-container">
+    <form action="/guests/userOrHost" method="post">
+        <div class="text-center mb-4">
+            <h1 class="text-primary">Choose Your Role</h1>
+            <p class="lead">유저 / 호스트 중 선택하세요.</p>
+        </div>
+
+        <div class="row">
+            <!-- User 섹션 -->
+            <div class="col-md-6">
+                <div class="card shadow-sm clickable-card h-100" onclick="location.href='/guests/register'">
+                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                        <li class="nav-item"><a class="nav-link" href="guests/register"></a></li>
+                        <h3 class="card-title text-success">User</h3>
+                        <p class="card-text">유저로 이용하기</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Host 섹션 -->
+            <div class="col-md-6">
+                <div class="card shadow-sm clickable-card h-100" onclick="location.href='/guests/register'">
+                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                        <li class="nav-item"><a class="nav-link" href="guests/register"></a></li>
+
+                        <h3 class="card-title text-info">Host</h3>
+                        <p class="card-text">호스트로 운영하기</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+</html>

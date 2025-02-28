@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Mingle.iml" filepath="$PROJECT_DIR$/.idea/Mingle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mingle.iml" filepath="$PROJECT_DIR$/.idea/modules/mingle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mingle.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mingle.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mingle.test.iml" filepath="$PROJECT_DIR$/.idea/modules/mingle.test.iml" />
     </modules>
   </component>
 </project>

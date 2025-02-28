@@ -2,17 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Guest Login Page</title>
+  <title>회원가입</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+  <!-- 커스텀 스타일 -->
+  <style>
+    body {
+      background-color: #ffe6ea; /* 연한 핑크 배경 */
+      font-family: 'Arial', sans-serif;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 80px auto;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      color: #d6336c;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    input:focus {
+      border-color: #d6336c;
+      outline: none;
+      box-shadow: 0 0 5px rgba(214, 51, 108, 0.3);
+    }
+
+    button {
+      width: 100%;
+      background-color: #d6336c;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #c2185b;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
-  <form action="/guests/new" method="post">
-    <div class="form-group">
-      <label for="name">이름</label>
-      <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
-    </div>
-    <button type="submit">등록</button>
-  </form>
+  <div class="card">
+
+    <h2 style="text-align: center; color: #d6336c;">회원가입</h2>
+    <form action="/guests/register" method="post">
+      <input type="hidden" name="role" value="${param.role}"> <!-- role 파라미터 추가 -->
+
+      <div class="form-group">
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+      </div>
+
+      <div class="form-group">
+        <label for="nickname">닉네임</label>
+        <input type="text" id="nickname" name="nickname" placeholder="5글자 이내 닉네임을 입력하세요">
+      </div>
+
+      <div class="form-group">
+        <label for="idid">아이디</label>
+        <input type="text" id="idid" name="idid" placeholder="13글자 이내 아이디를 입력하세요">
+      </div>
+
+      <div class="form-group">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" name="password" placeholder="12글자 이내 비밀번호를 입력하세요">
+      </div>
+
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" name="email" placeholder="이메일을 입력하세요">
+      </div>
+
+      <button type="submit">등록</button>
+    </form>
+  </div>
 </div>
 </body>
 </html>
