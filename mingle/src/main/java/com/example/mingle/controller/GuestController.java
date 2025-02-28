@@ -19,19 +19,24 @@ public class GuestController {
         this.guestService = guestService;
     }
 
-    @GetMapping("/guests/login")
+    @GetMapping("/login")
     public String showLoginForm() {
-        return "guest/login";
+        return "/login";
     }
 
     @GetMapping("/guests/register")
-    public String showRegisterForm() {
+    public String showguestsRegisterForm() {
         return "guest/register";
     }
 
-    @GetMapping("/guests/userOrHost")
-    public String showuserOrHost() {
-        return "guest/userOrHost";
+    @GetMapping("/host/register")
+    public String showhostRegisterForm() {
+        return "host/register";
+    }
+
+    @GetMapping("/guestOrHost")
+    public String showguestOrHost() {
+        return "guestOrHost";
     }
 
 

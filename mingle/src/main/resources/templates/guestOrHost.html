@@ -39,15 +39,15 @@
 
 <!-- 네비게이션 바 -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <form action="/guests/userOrHost" method="post">
+    <form action="/guestOrHost" method="post">
     <div class="container">
-        <a class="navbar-brand text-primary" href="/">Mingle</a>
+        <a class="navbar-brand text-primary" href="/static">Mingle</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="/guests/login">로그인</a></li>
+                <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
             </ul>
         </div>
     </div>
@@ -55,27 +55,27 @@
 
 <!-- 메인 컨테이너 -->
 <div class="container welcome-container">
-    <form action="/guests/userOrHost" method="post">
+    <form action="/guestOrHost" method="post">
         <div class="text-center mb-4">
             <h1 class="text-primary">Choose Your Role</h1>
-            <p class="lead">유저 / 호스트 중 선택하세요.</p>
+            <p class="lead"> 게스트 / 호스트 중 선택하세요.</p>
         </div>
 
         <div class="row">
-            <!-- User 섹션 -->
+            <!-- Guest 섹션 -->
             <div class="col-md-6">
                 <div class="card shadow-sm clickable-card h-100" onclick="location.href='/guests/register'">
                     <div class="card-body text-center d-flex flex-column justify-content-center">
                         <li class="nav-item"><a class="nav-link" href="guests/register"></a></li>
-                        <h3 class="card-title text-success">User</h3>
-                        <p class="card-text">유저로 이용하기</p>
+                        <h3 class="card-title text-success">Guest</h3>
+                        <p class="card-text">게스트로 이용하기</p>
                     </div>
                 </div>
             </div>
 
             <!-- Host 섹션 -->
             <div class="col-md-6">
-                <div class="card shadow-sm clickable-card h-100" onclick="location.href='/guests/register'">
+                <div class="card shadow-sm clickable-card h-100" onclick="location.href='/host/register'">
                     <div class="card-body text-center d-flex flex-column justify-content-center">
                         <li class="nav-item"><a class="nav-link" href="guests/register"></a></li>
 
