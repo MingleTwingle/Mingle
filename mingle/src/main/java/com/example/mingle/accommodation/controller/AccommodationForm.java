@@ -2,6 +2,10 @@ package com.example.mingle.accommodation.controller;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -11,5 +15,6 @@ public class AccommodationForm {
     private String location;
     private boolean parkingAvailable;
     private boolean morningAvailable;
-    private int checkinTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime checkInTime;
 }

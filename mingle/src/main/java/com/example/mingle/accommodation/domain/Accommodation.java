@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "tbl_accommodation_info")  // 테이블 이름을 소문자로 변경
 @Getter
@@ -26,8 +28,8 @@ public class Accommodation {
     @Column(name = "accommodation_morning")
     private boolean morningAvailable;
 
-    @Column(name = "accommodation_checkinTime")
-    private Integer checkInTime;
+    @Column(name = "accommodation_checkin_time")
+    private LocalDateTime checkInTime;
 
 
 }

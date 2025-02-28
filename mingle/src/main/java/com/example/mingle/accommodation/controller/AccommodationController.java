@@ -42,7 +42,7 @@ public class AccommodationController {
         accommodation.setLocation(form.getLocation());
         accommodation.setParkingAvailable(form.isParkingAvailable());
         accommodation.setMorningAvailable(form.isMorningAvailable());
-        accommodation.setCheckInTime(form.getCheckinTime());
+        accommodation.setCheckInTime(form.getCheckInTime());
         accommodationService.join(accommodation);
         return "redirect:/";
     }
