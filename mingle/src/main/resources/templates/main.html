@@ -2,25 +2,89 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome Page</title>
+    <title>Select Category | Mingle</title>
+
+    <!-- Bootstrap CSS 추가 -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <!-- 커스텀 스타일 -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .welcome-container {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .clickable-card {
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            min-height: 180px; /* 카드 높이 동일하게 설정 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .clickable-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div>
-        <h1>Welcome</h1>
-        <p>회원 기능</p>
-        <p>
-            <h3>Guest</h3>
-            <a href="/guests/new">Register</a>
-            <a href="/guests/list">List</a><br>
-            <h3>Restaurant</h3>
-            <a href="/restaurants/new">Register</a>
-            <a href="/restaurants/list">List</a>
-        <h3>Accommodation</h3>
-        <a href="/accommodation/new">Register</a>
-        <a href="/accommodation/list">List</a>
-        </p>
+
+<!-- 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand text-primary" href="/">Mingle</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="guests/login">로그인</a></li>
+                <li class="nav-item"><a class="nav-link" href="guests/new">회원가입</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- 메인 컨테이너 -->
+<div class="container welcome-container">
+    <div class="text-center mb-4">
+        <h1 class="text-primary">Choose a Category</h1>
+        <p class="lead">식당 / 숙소 어느걸 원하시나요?</p>
+    </div>
+
+    <div class="row">
+        <!-- Restaurant 섹션 -->
+        <div class="col-md-6">
+            <div class="card shadow-sm clickable-card h-100" onclick="location.href='/restaurants/list'">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                    <h3 class="card-title text-danger">Restaurant</h3>
+                    <p class="card-text">Go restaurant tab</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accommodation 섹션 -->
+        <div class="col-md-6">
+            <div class="card shadow-sm clickable-card h-100" onclick="location.href='/accommodation/list'">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                    <h3 class="card-title text-warning">Accommodation</h3>
+                    <p class="card-text">Go accommodation tab</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Bootstrap JS 추가 -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
 </body>
 </html>

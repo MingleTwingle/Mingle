@@ -1,30 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Register Restaurant</title>
+
+  <!-- Bootstrap CSS 추가 -->
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+  <!-- 커스텀 스타일 -->
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .form-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-<h2>Register a New Restaurant</h2>
+
+<!-- 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand text-primary" href="/">Mingle</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/">홈</a></li>
+        <li class="nav-item"><a class="nav-link" href="/reservations">예약</a></li>
+        <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- 메인 컨테이너 -->
 <div class="container">
-<form action="/restaurants/new" method="post">
-  <label for="name">Name:</label>
-  <input type="text" id="name" name="name" required>
-  <br>
-  <label for="location">Location:</label>
-  <input type="text" id="location" name="location" required>
-  <br>
-  <label for="parking">Parking Available:</label>
-  <input type="checkbox" id="parking" name="parking">
-  <br>
-  <label for="openTime">Open Time:</label>
-  <input type="time" id="openTime" name="openTime">
-  <br>
-  <label for="endTime">End Time:</label>
-  <input type="time" id="endTime" name="endTime">
-  <br>
-  <button type="submit">Register</button>
-</form>
+  <div class="card shadow-sm form-container">
+    <div class="card-body">
+      <h2 class="text-center text-primary">Register a New Restaurant</h2>
+
+      <form action="/restaurants/new" method="post">
+        <!-- 레스토랑 이름 -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Name:</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="Enter restaurant name" required>
+        </div>
+
+        <!-- 위치 -->
+        <div class="mb-3">
+          <label for="location" class="form-label">Location:</label>
+          <input type="text" id="location" name="location" class="form-control" placeholder="Enter location" required>
+        </div>
+
+        <!-- 주차 가능 여부 -->
+        <div class="mb-3 form-check">
+          <input type="checkbox" id="parking" name="parking" class="form-check-input">
+          <label for="parking" class="form-check-label">Parking Available</label>
+        </div>
+
+        <!-- 영업 시간 -->
+        <div class="row">
+          <div class="col-md-6">
+            <label for="openTime" class="form-label">Open Time:</label>
+            <input type="time" id="openTime" name="openTime" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="endTime" class="form-label">End Time:</label>
+            <input type="time" id="endTime" name="endTime" class="form-control">
+          </div>
+        </div>
+
+        <!-- 등록 버튼 -->
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-success w-100">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
+
+<!-- Bootstrap JS 추가 -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
 </body>
 </html>
