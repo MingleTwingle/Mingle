@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <title>Select Category | Mingle</title>
 
-    <!-- Bootstrap CSS 추가 -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 
-    <!-- 커스텀 스타일 -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
         body {
             background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
         }
         .welcome-container {
             max-width: 600px;
@@ -23,15 +24,25 @@
         .clickable-card {
             cursor: pointer;
             transition: transform 0.2s ease-in-out;
-            min-height: 180px; /* 카드 높이 동일하게 설정 */
+            min-height: 180px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            border: none;
         }
         .clickable-card:hover {
             transform: scale(1.05);
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .restaurant {
+            color: #ff758c !important;
+            background-color: rgba(255, 117, 140, 0.1);
+        }
+        .accommodation {
+            color: #6fa8dc !important;
+            background-color: rgba(111, 168, 220, 0.1);
         }
     </style>
 </head>
@@ -46,8 +57,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="guests/login">로그인</a></li>
-                <li class="nav-item"><a class="nav-link" href="guests/new">회원가입</a></li>
+                <li class="nav-item"><a class="nav-link" href="guests/login">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="guests/new">Register</a></li>
             </ul>
         </div>
     </div>
@@ -56,16 +67,16 @@
 <!-- 메인 컨테이너 -->
 <div class="container welcome-container">
     <div class="text-center mb-4">
-        <h1 class="text-primary">Choose a Category</h1>
-        <p class="lead">식당 / 숙소 어느걸 원하시나요?</p>
+        <h1 class="text-primary">Welcome to Mingle</h1>
+        <p class="lead">Choose a Category</p>
     </div>
 
     <div class="row">
         <!-- Restaurant 섹션 -->
         <div class="col-md-6">
-            <div class="card shadow-sm clickable-card h-100" onclick="location.href='/restaurants/list'">
+            <div class="card shadow-sm clickable-card restaurant h-100" onclick="location.href='/restaurants/filter'">
                 <div class="card-body text-center d-flex flex-column justify-content-center">
-                    <h3 class="card-title text-danger">Restaurant</h3>
+                    <h3 class="card-title">Restaurant</h3>
                     <p class="card-text">Go restaurant tab</p>
                 </div>
             </div>
@@ -73,9 +84,9 @@
 
         <!-- Accommodation 섹션 -->
         <div class="col-md-6">
-            <div class="card shadow-sm clickable-card h-100" onclick="location.href='/accommodation/list'">
+            <div class="card shadow-sm clickable-card accommodation h-100" onclick="location.href='/accommodation/filter'">
                 <div class="card-body text-center d-flex flex-column justify-content-center">
-                    <h3 class="card-title text-warning">Accommodation</h3>
+                    <h3 class="card-title">Accommodation</h3>
                     <p class="card-text">Go accommodation tab</p>
                 </div>
             </div>

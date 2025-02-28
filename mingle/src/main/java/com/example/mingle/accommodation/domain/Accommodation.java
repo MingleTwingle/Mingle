@@ -12,7 +12,7 @@ public class Accommodation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "accommodation_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "accommodation_name", length = 20)
     private String name;
@@ -27,7 +27,7 @@ public class Accommodation {
     private boolean morningAvailable;
 
     @Column(name = "accommodation_checkinTime")
-    private int checkInTime;
+    private Integer checkInTime;
 
 
 }

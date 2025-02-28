@@ -48,9 +48,17 @@ public class AccommodationController {
     }
 
     @GetMapping("/accommodation/list")
-    public String list(Model model) {
-        List<Accommodation> accommodation = accommodationService.findAccommodation();
-        model.addAttribute("accommodation", accommodation);
+    public String listAll(Model model) {
+        List<Accommodation> accommodations = accommodationService.findAccommodation();
+        model.addAttribute("accommodation", accommodations);
         return "accommodation/accommodationList";
     }
+
+    @GetMapping("/accommodation/filter")
+    public String filterList(Model model) {
+        List<Accommodation> accommodations = accommodationService.findAccommodation();
+        model.addAttribute("accommodation", accommodations);
+        return "accommodation/accommodationFilter";
+    }
+
 }

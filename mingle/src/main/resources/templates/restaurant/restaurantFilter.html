@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spoqa+Han+Sans+Neo:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Spoqa Han Sans Neo', 'Noto Sans KR', sans-serif;
+        }
+        .search-box {
+            background-color: rgba(255, 117, 140, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 80px auto;
+        }
+        .search-btn {
+            background-color: #ff758c;
+            color: white;
+            font-weight: bold;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+        }
+        .search-btn:hover {
+            background-color: #e85d78;
+        }
+        .form-label {
+            font-weight: bold;
+            color: #ff758c !important;
+        }
+        .form-control {
+            height: 50px;
+            border: 2px solid #ff758c;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<!-- 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand text-primary" href="/">Mingle</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="guests/login">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="guests/new">Register</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="search-box">
+        <div class="mb-3">
+            <label class="form-label"><i class="fas fa-map-marker-alt text-danger"></i> 어디로 가시나요?</label>
+            <input type="text" class="form-control" placeholder="목적지를 입력하세요">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label"><i class="fas fa-calendar-alt text-danger"></i> 예약 날짜</label>
+            <input type="date" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label"><i class="fas fa-clock text-danger"></i> 예약 시간</label>
+            <input type="time" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label"><i class="bi bi-person-fill"></i> 성인</label>
+            <div class="input-group">
+                <input type="text" class="form-control text-center" id="adultCount" value="2명" readonly>
+            </div>
+        </div>
+
+        <button class="search-btn">검색</button>
+    </div>
+</div>
+
+</body>
+</html>

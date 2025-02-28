@@ -48,4 +48,11 @@ public class RestaurantController {
         return "restaurant/restaurantList";
     }
 
+    @GetMapping("/restaurants/filter")
+    public String filterList(Model model) { // 메서드 이름 변경!
+        List<Restaurant> restaurants = restaurantService.findRestaurant();
+        model.addAttribute("restaurants", restaurants);
+        return "restaurant/restaurantFilter";
+    }
+
 }
