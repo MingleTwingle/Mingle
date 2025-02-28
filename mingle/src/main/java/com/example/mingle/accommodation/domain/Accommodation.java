@@ -31,7 +31,16 @@ public class Accommodation {
     @Column(name = "accommodation_checkin_time")
     private LocalDateTime checkInTime;
 
-    @Column(name = "accommodation_checkoout_time")
+    @Column(name = "accommodation_checkout_time")
     private LocalDateTime checkOutTime;
+
+    @Override
+    public String toString() {
+        return "Accommodation{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
 
 }
