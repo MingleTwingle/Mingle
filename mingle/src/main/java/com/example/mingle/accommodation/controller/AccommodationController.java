@@ -28,7 +28,7 @@ public class AccommodationController {
     //  (register.html)
     @GetMapping("/accommodation/new")
     public String createForm() {
-            return "accommodation/register";
+        return "accommodation/register";
 
     }
 
@@ -62,4 +62,21 @@ public class AccommodationController {
         return "accommodation/accommodationFilter";
     }
 
+    @PostMapping("/accommodation/filter")
+    public String customFilter(@Validated AccommodationFilterForm form, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "accommodation/accommodationFilter";
+        }
+        System.out.println("location: " + form.getLocation());
+        System.out.println("checkInTime: " + form.getCheckInTime());
+        System.out.println("checkOutTime: " + form.getCheckOutTime());
+        List<Accommodation> filteredAccommodations = accommodationService.searchAccommodation(form.getLocation(), form.getCheckInTime(), form.getCheckOutTime());
+        model.addAttribute("accommodations", filteredAccommodations);
+        return "accommodation/accommodationFilterList";
+    }
+
+    @GetMapping("accommodation/filterList")
+    public String showFilterList(Model model) {
+        return "accommodation/accommodationFilterList";
+    }
 }

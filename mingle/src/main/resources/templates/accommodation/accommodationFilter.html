@@ -57,32 +57,34 @@
     </div>
 </nav>
 <div class="container">
-    <div class="search-box">
-        <div class="mb-3">
-            <label class="form-label"><i class="fas fa-map-marker-alt text-primary"></i> 어디로 가시나요?</label>
-            <input type="text" class="form-control" placeholder="목적지를 입력하세요">
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label"><i class="fas fa-calendar-alt text-primary"></i> 체크인</label>
-                <input type="date" class="form-control">
+    <form action="/accommodation/filter" method="post">
+        <div class="search-box">
+            <div class="mb-3">
+                <label class="form-label"><i class="fas fa-map-marker-alt text-primary"></i> 어디로 가시나요?</label>
+                <input type="text" id="location" name="location" class="form-control" placeholder="목적지를 입력하세요">
             </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label"><i class="fas fa-calendar-alt text-primary"></i> 체크아웃</label>
-                <input type="date" class="form-control">
-            </div>
-        </div>
 
-        <div class="mb-3">
-            <label class="form-label"><i class="bi bi-person-fill"></i> 성인</label>
-            <div class="input-group">
-                <input type="text" class="form-control text-center" id="adultCount" value="2명" readonly>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label"><i class="fas fa-calendar-alt text-primary"></i> 체크인</label>
+                    <input type="datetime-local" id="checkInTime" name="checkInTime" class="form-control">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label"><i class="fas fa-calendar-alt text-primary"></i> 체크아웃</label>
+                    <input type="datetime-local" name="checkOutTime" class="form-control">
+                </div>
             </div>
-        </div>
 
-        <button class="search-btn">검색</button>
-    </div>
+            <div class="mb-3">
+                <label class="form-label"><i class="bi bi-person-fill"></i> 성인</label>
+                <div class="input-group">
+                    <input type="text" class="form-control text-center" id="adultCount" name="adultCount" value="2명" readonly>
+                </div>
+            </div>
+
+            <button type="submit" class="search-btn">검색</button>
+        </div>
+    </form>
 </div>
 
 </body>
