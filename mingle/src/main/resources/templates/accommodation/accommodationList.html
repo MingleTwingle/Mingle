@@ -1,0 +1,46 @@
+<!--JUST TEST-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>accommodation List</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>accommodation List</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>accommodation ID</th>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Parking</th>
+      <th>Morning</th>
+      <th>CheckIn</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="accommodation : ${accommodation}">
+      <td th:text="${accommodation.id}"></td>
+      <td th:text="${accommodation.name}"></td>
+      <td th:text="${accommodation.location}"></td>
+      <td th:text="${accommodation.parkingAvailable}"></td>
+      <td th:text="${accommodation.morningAvailable}"></td>
+      <td th:text="${accommodation.checkInTime}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

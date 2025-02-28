@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accommodation Registration</title>
+</head>
+<body>
+<h2>Register a New Accommodation</h2>
+<div class="container">
+    <form action="/accommodation/new" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+        <br>
+        <label for="parking">Parking Available:</label>
+        <input type="checkbox" id="parking" name="parkingAvailable" value="true">
+        <br>
+        <label for="morning">Morning Available:</label>
+        <input type="checkbox" id="morning" name="morningAvailable" value="true">
+        <br>
+        <label for="checkInTime">Check-In Time:</label>
+        <input type="datetime-local" id="checkInTime" name="checkInTime">
+        <br>
+        <button type="submit">Register</button>
+    </form>
+</div>
+</body>
+</html>
