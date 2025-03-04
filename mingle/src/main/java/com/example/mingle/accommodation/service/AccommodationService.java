@@ -36,20 +36,13 @@ public class AccommodationService {
                     throw new IllegalStateException("이미 존재하는 숙소입니다.");
                 });
     }
+
     //지역으로 숙소 찾기
-//    public List<Accommodation> searchAccommodation(String location, LocalDateTime checkInTime, LocalDateTime checkOutTime) {
-//        List<Accommodation> accommodation = accommodationRepository.findAll().stream().filter(a -> a.getLocation().equals(location)).collect(Collectors.toList());
-//        accommodation.forEach(System.out::println);
-//
-//        return accommodationRepository.findAll().stream()
-//                .filter(a -> a.getLocation().equals(location) && a.getCheckInTime().isEqual(checkInTime) && a.getCheckOutTime().isEqual(checkOutTime))
-//                .collect(Collectors.toList());
-//    }
     public List<Accommodation> searchAccommodation(String location, LocalDateTime checkInTime, LocalDateTime checkOutTime) {
         List<Accommodation> filteredAccommodations = accommodationRepository.findAll().stream()
                 .filter(a -> a.getLocation().equals(location))
-                .filter(a -> a.getCheckInTime() != null && !a.getCheckInTime().isBefore(checkInTime))
-                .filter(a -> (a.getCheckOutTime() == null || !a.getCheckOutTime().isAfter(checkOutTime)))
+                .filter(a -> checkInTime == null || a.getCheckInTime() == null || !a.getCheckInTime().isBefore(checkInTime))
+                .filter(a -> checkOutTime == null || a.getCheckOutTime() == null || !a.getCheckOutTime().isAfter(checkOutTime))
                 .collect(Collectors.toList());
 
         // 필터링된 숙소 목록을 콘솔에 출력
@@ -57,8 +50,6 @@ public class AccommodationService {
 
         return filteredAccommodations;
     }
-
-
 
 
     public List<Accommodation> findAccommodation() {
