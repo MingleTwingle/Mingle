@@ -6,6 +6,7 @@
 
   <!-- Bootstrap CSS 추가 -->
   <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="/css/styles.css">
 
   <!-- 커스텀 스타일 -->
   <style>
@@ -20,60 +21,67 @@
 </head>
 <body>
 
-<!-- 네비게이션 바 -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
   <div class="container">
-    <a class="navbar-brand text-primary" href="/">Mingle</a>
+    <a class="navbar-brand" href="/">Mingle</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav mx-auto">
         <li class="nav-item"><a class="nav-link" href="/">홈</a></li>
-        <li class="nav-item"><a class="nav-link" href="/reservations">예약</a></li>
-        <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about">소개</a></li>
+        <li class="nav-item"><a class="nav-link" href="/restaurants">레스토랑</a></li>
+        <li class="nav-item"><a class="nav-link" href="/accommodations">숙소</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
       </ul>
+      <div class="d-flex">
+        <a href="/login" class="btn btn-outline-primary me-2">Login</a>
+        <a href="/guestOrHost" class="btn btn-primary">Register</a>
+      </div>
     </div>
   </div>
 </nav>
 
-<!-- 메인 컨테이너 -->
-<div class="container table-container">
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h1 class="text-center text-primary">Restaurants List</h1>
+      <!-- 메인 컨테이너 -->
+      <div class="container-lg table-container">
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
+            <h1 class="text-center text-primary display-4 mb-4">Restaurants List</h1>
 
-      <!-- 반응형 테이블 -->
-      <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered">
-          <thead class="table-dark">
-          <tr>
-            <th>Restaurant ID</th>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Parking</th>
-            <th>Open Time</th>
-            <th>End Time</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="restaurant : ${restaurants}">
-            <td th:text="${restaurant.restaurant_id}"></td>
-            <td th:text="${restaurant.restaurantName}"></td>
-            <td th:text="${restaurant.restaurantLocation}"></td>
-            <td>
-              <span class="badge bg-success" th:if="${restaurant.restaurantParking}">Yes</span>
-              <span class="badge bg-danger" th:unless="${restaurant.restaurantParking}">No</span>
-            </td>
-            <td th:text="${restaurant.restaurantOpenTime}"></td>
-            <td th:text="${restaurant.restaurantEndTime}"></td>
-          </tr>
-          </tbody>
-        </table>
+            <!-- 반응형 테이블 -->
+            <div class="table-responsive">
+              <table class="table table-striped table-hover table-bordered w-100">
+                <thead class="table-dark">
+                <tr>
+                  <th>Restaurant ID</th>
+                  <th>Name</th>
+                  <th>Location</th>
+                  <th>Parking</th>
+                  <th>Open Time</th>
+                  <th>End Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="restaurant : ${restaurants}">
+                  <td th:text="${restaurant.restaurant_id}"></td>
+                  <td th:text="${restaurant.restaurantName}"></td>
+                  <td th:text="${restaurant.restaurantLocation}"></td>
+                  <td>
+                    <span class="badge bg-success" th:if="${restaurant.restaurantParking}">Yes</span>
+                    <span class="badge bg-danger" th:unless="${restaurant.restaurantParking}">No</span>
+                  </td>
+                  <td th:text="${restaurant.restaurantOpenTime}"></td>
+                  <td th:text="${restaurant.restaurantEndTime}"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
+
 
 <!-- Bootstrap JS 추가 -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>

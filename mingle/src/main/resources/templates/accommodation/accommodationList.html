@@ -6,30 +6,55 @@
 
   <!-- Bootstrap CSS 추가 -->
   <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="/css/styles.css">
 
+  <!-- 커스텀 스타일 -->
   <style>
     body {
       background-color: #f8f9fa;
     }
-    .container {
-      margin-top: 50px;
+    .table-container {
+      max-width: 900px;
+      margin: 50px auto;
     }
   </style>
 </head>
 <body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mingle</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link" href="/">홈</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about">소개</a></li>
+        <li class="nav-item"><a class="nav-link" href="/restaurants">레스토랑</a></li>
+        <li class="nav-item"><a class="nav-link" href="/accommodations">숙소</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
+      </ul>
+      <div class="d-flex">
+        <a href="/login" class="btn btn-outline-primary me-2">Login</a>
+        <a href="/guestOrHost" class="btn btn-primary">Register</a>
+      </div>
+    </div>
+  </div>
+</nav>
 
 <!-- 메인 컨테이너 -->
-<div class="container">
+<div class="container-lg mt-5 pt-4">
   <div class="text-center mb-4">
-    <h1 class="text-primary">Accommodation List</h1>
-    <p class="lead">숙소 목록을 확인하세요.</p>
+    <h1 class="text-primary display-4 fw-bold">Accommodation List</h1>
+    <p class="lead text-muted">숙소 목록을 확인하세요.</p>
   </div>
 
   <!-- 반응형 테이블 -->
   <div class="card shadow">
-    <div class="card-body">
+    <div class="card-body p-4">
       <div class="table-responsive">
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover table-bordered">
           <thead class="table-dark">
           <tr>
             <th>Accommodation ID</th>
@@ -63,6 +88,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- Bootstrap JS 추가 -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
