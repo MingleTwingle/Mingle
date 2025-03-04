@@ -1,6 +1,6 @@
 
 INSERT INTO tbl_accommodation_Info (accommodation_name, accommodation_location, accommodation_parking, accommodation_morning, accommodation_checkin_time) VALUES
-('호텔 선샤인', '서tbl_restaurantmenu_infotbl_restaurant_infotbl_restaurant_info울, 강남', 1, 1, '2025-03-01'),
+('호텔 선샤인', '서울, 강남', 1, 1, '2025-03-01'),
 ('오션뷰 리조트', '부산, 해운대', 1, 0, '2025-03-02'),
 ('마운틴 리트리트', '제주, 한라산', 0, 1, '2025-03-03'),
 ('시티 타워 호텔', '서울, 명동', 1, 1, '2025-03-04'),
