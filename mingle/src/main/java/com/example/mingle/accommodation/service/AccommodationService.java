@@ -6,6 +6,7 @@ import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,16 +37,29 @@ public class AccommodationService {
                 });
     }
     //지역으로 숙소 찾기
+//    public List<Accommodation> searchAccommodation(String location, LocalDateTime checkInTime, LocalDateTime checkOutTime) {
+//        List<Accommodation> accommodation = accommodationRepository.findAll().stream().filter(a -> a.getLocation().equals(location)).collect(Collectors.toList());
+//        accommodation.forEach(System.out::println);
+//
+//        return accommodationRepository.findAll().stream()
+//                .filter(a -> a.getLocation().equals(location) && a.getCheckInTime().isEqual(checkInTime) && a.getCheckOutTime().isEqual(checkOutTime))
+//                .collect(Collectors.toList());
+//    }
     public List<Accommodation> searchAccommodation(String location, LocalDateTime checkInTime, LocalDateTime checkOutTime) {
-        List<Accommodation> accommodation = accommodationRepository.findAll().stream().filter(a -> a.getLocation().equals(location)).collect(Collectors.toList());
-        accommodation.forEach(System.out::println);
-
-//        System.out.println("FINDALL: " + accommodationRepository.findAll().stream());
-//        System.out.println(accommodationRepository.findAll().stream().filter(a -> a.getLocation().equalsIgnoreCase(location)).collect(Collectors.toList()));
-        return accommodationRepository.findAll().stream()
-                .filter(a -> a.getLocation().equals(location) && a.getCheckInTime().isEqual(checkInTime) && a.getCheckOutTime().isEqual(checkOutTime))
+        List<Accommodation> filteredAccommodations = accommodationRepository.findAll().stream()
+                .filter(a -> a.getLocation().equals(location))
+                .filter(a -> a.getCheckInTime() != null && !a.getCheckInTime().isBefore(checkInTime))
+                .filter(a -> (a.getCheckOutTime() == null || !a.getCheckOutTime().isAfter(checkOutTime)))
                 .collect(Collectors.toList());
+
+        // 필터링된 숙소 목록을 콘솔에 출력
+        filteredAccommodations.forEach(System.out::println);
+
+        return filteredAccommodations;
     }
+
+
+
 
     public List<Accommodation> findAccommodation() {
         return accommodationRepository.findAll();

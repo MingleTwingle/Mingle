@@ -67,9 +67,6 @@ public class AccommodationController {
         if (result.hasErrors()) {
             return "accommodation/accommodationFilter";
         }
-        System.out.println("location: " + form.getLocation());
-        System.out.println("checkInTime: " + form.getCheckInTime());
-        System.out.println("checkOutTime: " + form.getCheckOutTime());
         List<Accommodation> filteredAccommodations = accommodationService.searchAccommodation(form.getLocation(), form.getCheckInTime(), form.getCheckOutTime());
         model.addAttribute("accommodations", filteredAccommodations);
         return "accommodation/accommodationFilterList";
@@ -77,6 +74,7 @@ public class AccommodationController {
 
     @GetMapping("accommodation/filterList")
     public String showFilterList(Model model) {
+        List<Accommodation> accommodations = accommodationService.findAccommodation();
         return "accommodation/accommodationFilterList";
     }
 }

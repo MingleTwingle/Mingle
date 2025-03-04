@@ -30,15 +30,17 @@
             <th>Parking Available</th>
             <th>Morning Available</th>
             <th>Check-In Time</th>
+            <th>Check-Out Time</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="accommodation : ${accommodations}">
-            <td th:text="${accommodation.name}">Accommodation Name</td>
-            <td th:text="${accommodation.location}">Location</td>
-            <td th:text="${accommodation.parkingAvailable ? 'Yes' : 'No'}">Parking</td>
-            <td th:text="${accommodation.morningAvailable ? 'Yes' : 'No'}">Morning</td>
-            <td th:text="${#dates.format(accommodation.checkInTime, 'yyyy-MM-dd HH:mm')}">Check-In Time</td>
+            <td th:text="${accommodation.name}"></td>
+            <td th:text="${accommodation.location}"></td>
+            <td th:text="${accommodation.parkingAvailable ? 'Yes' : 'No'}"></td>
+            <td th:text="${accommodation.morningAvailable ? 'Yes' : 'No'}"></td>
+            <td th:text="${accommodation.checkInTime != null ? accommodation.checkInTime.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm')) : 'Not available'}"></td>
+            <td th:text="${accommodation.checkOutTime != null ? accommodation.checkOutTime.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm')) : 'Not available'}"></td>
         </tr>
         </tbody>
     </table>
