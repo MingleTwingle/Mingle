@@ -4,6 +4,7 @@ import com.example.mingle.domain.Guest;
 import com.example.mingle.repository.GuestRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GuestService {
 
@@ -24,6 +25,15 @@ public class GuestService {
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
+    }
+
+    public boolean validateLogin(String idid, String password) {
+        Optional<Guest> optionalGuest = guestRepository.findByIdid(idid);
+        if (optionalGuest.isPresent() && optionalGuest.get().getPassword().equals(password)) {
+            System.out.println("LOGIN SUCCESS");
+            return true;
+        }
+        return false;
     }
 
     public List<Guest> findUser() {
