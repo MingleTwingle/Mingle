@@ -3,6 +3,7 @@ package com.example.mingle.restaurant.service;
 import com.example.mingle.restaurant.domain.Restaurant;
 import com.example.mingle.restaurant.repository.RestaurantRepository;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public class RestaurantService {
@@ -33,5 +34,15 @@ public class RestaurantService {
 
     public List<Restaurant> findRestaurant() {
         return restaurantRepository.findAll();
+    }
+
+    public List<Restaurant> filterRestaurants(String restaurantName, String restaurantLocation, Boolean restaurantParking, LocalTime restaurantOpenTime, LocalTime restaurantEndTime) {
+        return restaurantRepository.findByFilters(
+                restaurantName,
+                restaurantLocation,
+                restaurantParking,
+                restaurantOpenTime,
+                restaurantEndTime
+        );
     }
 }

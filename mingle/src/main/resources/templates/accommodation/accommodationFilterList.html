@@ -1,49 +1,728 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Accommodation List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숙소 목록 | Mingle</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #4285F4;          /* Google Blue */
+            --primary-dark: #3367d6;     /* Darker blue for hover states */
+            --text-dark: #222222;        /* Dark text for good contrast */
+            --text-light: #717171;       /* Neutral gray for secondary text */
+            --bg-light: #F8F9FA;         /* Light background color */
+            --border-color: #E8E9EC;     /* Slightly blueish border color */
+        }
+
         body {
-            padding-top: 20px;
-            background-color: #f4f4f4;
+            font-family: -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--text-dark);
+            background-color: white;
+            margin: 0;
+            padding: 0;
         }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
+
+        /* 네비게이션 스타일 */
+        .navbar {
+            padding: 1rem 2rem;
+            background-color: white !important;
+            border-bottom: 1px solid var(--border-color);
         }
-        th, td {
-            text-align: center;
+
+        .navbar-brand {
+            color: var(--primary) !important;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary) !important;
+        }
+
+        .btn-login {
+            color: var(--primary);
+            background-color: white;
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-login:hover {
+            background-color: var(--bg-light);
+        }
+
+        .btn-register {
+            color: white;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-register:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* 페이지 헤더 스타일 */
+        .page-header {
+            padding: 2rem 0 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .page-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* 필터 바 */
+        .filter-bar {
+            display: flex;
+            overflow-x: auto;
+            padding: 1.5rem 0;
+            gap: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            cursor: pointer;
+        }
+
+        .filter-item:hover {
+            opacity: 1;
+        }
+
+        .filter-item.active {
+            opacity: 1;
+        }
+
+        .filter-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .filter-label {
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        /* 숙소 카드 */
+        .accommodation-grid {
+            padding: 2rem 0;
+        }
+
+        .accommodation-card {
+            margin-bottom: 2rem;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .accommodation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img-container {
+            position: relative;
+            padding-top: 66.67%; /* 3:2 Aspect Ratio */
+            overflow: hidden;
+        }
+
+        .card-img-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 10;
+            filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.5));
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .accommodation-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .accommodation-location {
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .location-icon {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+
+        .accommodation-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-icon {
+            margin-right: 0.25rem;
+            color: var(--primary);
+        }
+
+        .accommodation-times {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .time-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .time-icon {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .rating-stars {
+            color: #FFD700;
+            margin-right: 0.5rem;
+        }
+
+        .rating-value {
+            font-weight: 600;
+            margin-right: 0.25rem;
+        }
+
+        .rating-count {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .price {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .price-unit {
+            font-weight: normal;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .filter-bar {
+                padding: 1rem 0;
+            }
+
+            .page-header {
+                padding: 1.5rem 0 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
+<!-- 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">Mingle</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link" href="/">홈</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about">소개</a></li>
+                <li class="nav-item"><a class="nav-link" href="/restaurants">레스토랑</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/accommodations">숙소</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-2">
+                <a href="/login" class="btn-login">Login</a>
+                <a href="/register" class="btn-register">Register</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- 페이지 헤더 -->
 <div class="container">
-    <h2>Available Accommodations</h2>
-    <table class="table">
-        <thead class="table-light">
-        <tr>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Parking Available</th>
-            <th>Morning Available</th>
-            <th>Check-In Time</th>
-            <th>Check-Out Time</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="accommodation : ${accommodations}">
-            <td th:text="${accommodation.name}"></td>
-            <td th:text="${accommodation.location}"></td>
-            <td th:text="${accommodation.parkingAvailable ? 'Yes' : 'No'}"></td>
-            <td th:text="${accommodation.morningAvailable ? 'Yes' : 'No'}"></td>
-            <td th:text="${accommodation.checkInTime != null ? accommodation.checkInTime.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm')) : 'Not available'}"></td>
-            <td th:text="${accommodation.checkOutTime != null ? accommodation.checkOutTime.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm')) : 'Not available'}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="page-header">
+        <h1 class="page-title">Accommodation List</h1>
+        <p class="page-subtitle">다양한 숙소를 찾아보세요.</p>
+    </div>
+
+    <!-- 필터 바 -->
+    <div class="filter-bar">
+        <div class="filter-item active">
+            <i class="filter-icon fas fa-hotel"></i>
+            <span class="filter-label">전체</span>
+        </div>
+        <div class="filter-item">
+            <i class="filter-icon fas fa-parking"></i>
+            <span class="filter-label">주차가능</span>
+        </div>
+        <div class="filter-item">
+            <i class="filter-icon fas fa-coffee"></i>
+            <span class="filter-label">조식제공</span>
+        </div>
+    </div>
+
+    <!-- 숙소 그리드 -->
+    <div class="accommodation-grid">
+        <div class="row">
+            <!-- 숙소 카드 반복 -->
+            <div class="col-md-6 col-lg-4" th:each="accommodation : ${accommodations}">
+                <div class="accommodation-card">
+                    <div class="card-img-container">
+                        <!-- 실제 구현 시 th:src로 동적 이미지 경로 설정 -->
+                        <img class="card-img-top" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop" alt="Accommodation Image">
+                        <button class="wishlist-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="accommodation-name" th:text="${accommodation.name}">호텔 선샤인</h5>
+
+                        <div class="rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                            <span class="rating-count">(123)</span>
+                        </div>
+
+                        <div class="accommodation-location">
+                            <i class="location-icon fas fa-map-marker-alt"></i>
+                            <span th:text="${accommodation.location}">서울, 강남</span>
+                        </div>
+
+                        <div class="accommodation-features">
+                                <span class="feature-badge" th:if="${accommodation.parkingAvailable}">
+                                    <i class="feature-icon fas fa-parking"></i> 주차
+                                </span>
+                            <span class="feature-badge" th:if="${accommodation.morningAvailable}">
+                                    <i class="feature-icon fas fa-coffee"></i> 조식
+                                </span>
+                            <span class="feature-badge">
+                                    <i class="feature-icon fas fa-wifi"></i> 와이파이
+                                </span>
+                        </div>
+
+                        <div class="price">
+                            ₩120,000 <span class="price-unit">/ 박</span>
+                        </div>
+
+                        <div class="accommodation-times">
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-in-alt"></i>
+                                <span>체크인: <span th:text="${accommodation.checkInTime != null ? accommodation.checkInTime.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm')) : '15:00'}">15:00</span></span>
+                            </div>
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-out-alt"></i>
+                                <span>체크아웃: <span th:text="${accommodation.checkOutTime != null ? accommodation.checkOutTime.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm')) : '11:00'}">11:00</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 샘플 데이터 (실제 구현 시 제거) -->
+            <div class="col-md-6 col-lg-4">
+                <div class="accommodation-card">
+                    <div class="card-img-container">
+                        <img class="card-img-top" src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop" alt="Accommodation Image">
+                        <button class="wishlist-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="accommodation-name">오션뷰 리조트</h5>
+
+                        <div class="rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                            <span class="rating-count">(87)</span>
+                        </div>
+
+                        <div class="accommodation-location">
+                            <i class="location-icon fas fa-map-marker-alt"></i>
+                            <span>부산, 해운대</span>
+                        </div>
+
+                        <div class="accommodation-features">
+                                <span class="feature-badge">
+                                    <i class="feature-icon fas fa-parking"></i> 주차
+                                </span>
+                            <span class="feature-badge">
+                                    <i class="feature-icon fas fa-swimming-pool"></i> 수영장
+                                </span>
+                        </div>
+
+                        <div class="price">
+                            ₩180,000 <span class="price-unit">/ 박</span>
+                        </div>
+
+                        <div class="accommodation-times">
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-in-alt"></i>
+                                <span>체크인: 14:00</span>
+                            </div>
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-out-alt"></i>
+                                <span>체크아웃: 11:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="accommodation-card">
+                    <div class="card-img-container">
+                        <img class="card-img-top" src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=2070&auto=format&fit=crop" alt="Accommodation Image">
+                        <button class="wishlist-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="accommodation-name">마운틴 리트리트</h5>
+
+                        <div class="rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.9</span>
+                            <span class="rating-count">(215)</span>
+                        </div>
+
+                        <div class="accommodation-location">
+                            <i class="location-icon fas fa-map-marker-alt"></i>
+                            <span>제주, 한라산</span>
+                        </div>
+
+                        <div class="accommodation-features">
+                                <span class="feature-badge">
+                                    <i class="feature-icon fas fa-coffee"></i> 조식
+                                </span>
+                            <span class="feature-badge">
+                                    <i class="feature-icon fas fa-hot-tub"></i> 온천
+                                </span>
+                        </div>
+
+                        <div class="price">
+                            ₩220,000 <span class="price-unit">/ 박</span>
+                        </div>
+
+                        <div class="accommodation-times">
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-in-alt"></i>
+                                <span>체크인: 15:00</span>
+                            </div>
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-out-alt"></i>
+                                <span>체크아웃: 10:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="accommodation-card">
+                    <div class="card-img-container">
+                        <img class="card-img-top" src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2074&auto=format&fit=crop" alt="Accommodation Image">
+                        <button class="wishlist-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="accommodation-name">시티 타워 호텔</h5>
+
+                        <div class="rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.2</span>
+                            <span class="rating-count">(98)</span>
+                        </div>
+
+                        <div class="accommodation-location">
+                            <i class="location-icon fas fa-map-marker-alt"></i>
+                            <span>서울, 명동</span>
+                        </div>
+
+                        <div class="accommodation-features">
+                                <span class="feature-badge">
+                                    <i class="feature-icon fas fa-parking"></i> 주차
+                                </span>
+                            <span class="feature-badge">
+                                    <i class="feature-icon fas fa-coffee"></i> 조식
+                                </span>
+                            <span class="feature-badge">
+                                    <i class="feature-icon fas fa-dumbbell"></i> 피트니스
+                                </span>
+                        </div>
+
+                        <div class="price">
+                            ₩150,000 <span class="price-unit">/ 박</span>
+                        </div>
+
+                        <div class="accommodation-times">
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-in-alt"></i>
+                                <span>체크인: 14:00</span>
+                            </div>
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-out-alt"></i>
+                                <span>체크아웃: 12:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="accommodation-card">
+                    <div class="card-img-container">
+                        <img class="card-img-top" src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=2070&auto=format&fit=crop" alt="Accommodation Image">
+                        <button class="wishlist-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="accommodation-name">리버사이드 인</h5>
+
+                        <div class="rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">3.7</span>
+                            <span class="rating-count">(56)</span>
+                        </div>
+
+                        <div class="accommodation-location">
+                            <i class="location-icon fas fa-map-marker-alt"></i>
+                            <span>인천, 송도</span>
+                        </div>
+
+                        <div class="accommodation-features">
+                                <span class="feature-badge">
+                                    <i class="feature-icon fas fa-parking"></i> 주차
+                                </span>
+                            <span class="feature-badge">
+                                    <i class="feature-icon fas fa-wifi"></i> 와이파이
+                                </span>
+                        </div>
+
+                        <div class="price">
+                            ₩110,000 <span class="price-unit">/ 박</span>
+                        </div>
+
+                        <div class="accommodation-times">
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-in-alt"></i>
+                                <span>체크인: 15:00</span>
+                            </div>
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-out-alt"></i>
+                                <span>체크아웃: 11:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="accommodation-card">
+                    <div class="card-img-container">
+                        <img class="card-img-top" src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2070&auto=format&fit=crop" alt="Accommodation Image">
+                        <button class="wishlist-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="accommodation-name">럭셔리 스위트</h5>
+
+                        <div class="rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.6</span>
+                            <span class="rating-count">(142)</span>
+                        </div>
+
+                        <div class="accommodation-location">
+                            <i class="location-icon fas fa-map-marker-alt"></i>
+                            <span>서울, 강남</span>
+                        </div>
+
+                        <div class="accommodation-features">
+                                <span class="feature-badge">
+                                    <i class="feature-icon fas fa-parking"></i> 주차
+                                </span>
+                            <span class="feature-badge">
+                                    <i class="feature-icon fas fa-coffee"></i> 조식
+                                </span>
+                            <span class="feature-badge">
+                                    <i class="feature-icon fas fa-concierge-bell"></i> 룸서비스
+                                </span>
+                        </div>
+
+                        <div class="price">
+                            ₩280,000 <span class="price-unit">/ 박</span>
+                        </div>
+
+                        <div class="accommodation-times">
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-in-alt"></i>
+                                <span>체크인: 15:00</span>
+                            </div>
+                            <div class="time-item">
+                                <i class="time-icon fas fa-sign-out-alt"></i>
+                                <span>체크아웃: 12:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // 필터 아이템 클릭 이벤트
+    document.querySelectorAll('.filter-item').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.filter-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            // 여기에 필터링 로직 추가
+        });
+    });
+
+    // 위시리스트 버튼 클릭 이벤트
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                icon.style.color = '#4285F4';
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                icon.style.color = 'white';
+            }
+        });
+    });
+</script>
 </body>
 </html>

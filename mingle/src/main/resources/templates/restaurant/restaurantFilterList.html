@@ -1,47 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Restaurant Filter</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            padding-top: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        th, td {
-            text-align: center;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레스토랑 목록 | Mingle</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Mingle</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link" href="/">홈</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about">소개</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/restaurants">레스토랑</a></li>
+                <li class="nav-item"><a class="nav-link" href="/accommodations">숙소</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
+            </ul>
+            <div class="d-flex">
+                <a href="/login" class="btn btn-outline-primary me-2">Login</a>
+                <a href="/guestOrHost" class="btn btn-primary">Register</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- 페이지 헤더 -->
 <div class="container">
-    <h2>Available Restaurants</h2>
-    <table class="table">
-        <thead class="table-light">
-        <tr>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Parking</th>
-            <th>Open Time</th>
-            <th>Close Time</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="restaurant : ${restaurants}">
-            <td th:text="${restaurant.restaurantName}">Restaurant Name</td>
-            <td th:text="${restaurant.restaurantLocation}">Location</td>
-            <td th:text="${restaurant.restaurantParking != null and restaurant.restaurantParking} ? 'Yes' : 'No'"></td>
-            <td th:text="${restaurant.restaurantOpenTime}">Open Time</td>  <!-- 이미 문자열이므로 포맷 필요 없음 -->
-            <td th:text="${restaurant.restaurantEndTime}">End Time</td>  <!-- 이미 문자열이므로 포맷 필요 없음 -->
-        </tr>
-        </tbody>
-    </table>
+    <div class="page-header">
+        <h1 class="page-title">Restaurant List</h1>
+        <p class="page-subtitle">다양한 레스토랑을 찾아보세요.</p>
+    </div>
+
+    <!-- 필터 바 (숙소 필터 리스트 형식 적용) -->
+    <div class="filter-bar">
+        <div class="filter-item active">
+            <i class="filter-icon fas fa-utensils"></i>
+            <span class="filter-label">전체</span>
+        </div>
+        <div class="filter-item">
+            <i class="filter-icon fas fa-parking"></i>
+            <span class="filter-label">주차 가능</span>
+        </div>
+    </div>
+
+    <!-- 레스토랑 그리드 -->
+    <div class="restaurant-grid">
+        <div class="row">
+            <!-- 레스토랑 카드 반복 -->
+            <div class="col-md-6 col-lg-4" th:each="restaurant : ${restaurants}">
+                <div class="restaurant-card">
+                    <div class="card-img-container">
+                        <img class="card-img-top" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop" alt="Restaurant Image">
+                        <button class="favorite-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="restaurant-name" th:text="${restaurant.restaurantName}">레스토랑 이름</h5>
+
+                        <div class="rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                            <span class="rating-count">(123)</span>
+                        </div>
+
+                        <div class="restaurant-location">
+                            <i class="location-icon fas fa-map-marker-alt"></i>
+                            <span th:text="${restaurant.restaurantLocation}">서울, 강남</span>
+                        </div>
+
+                        <div class="restaurant-features">
+                                <span class="feature-badge" th:if="${restaurant.restaurantParking != null and restaurant.restaurantParking}">
+                                    <i class="feature-icon fas fa-parking"></i> 주차 가능
+                                </span>
+                            <span class="feature-badge">
+                                    <i class="feature-icon fas fa-wifi"></i> 와이파이 제공
+                                </span>
+                        </div>
+
+                        <div class="restaurant-hours">
+                            <div class="hours-item">
+                                <i class="hours-icon far fa-clock"></i>
+                                <span>오픈: <span th:text="${restaurant.restaurantOpenTime}">11:00</span></span>
+                            </div>
+                            <div class="hours-item">
+                                <i class="hours-icon far fa-clock"></i>
+                                <span>마감: <span th:text="${restaurant.restaurantEndTime}">22:00</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // 필터 아이템 클릭 이벤트
+    document.querySelectorAll('.filter-item').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.filter-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            // 여기에 필터링 로직 추가
+        });
+    });
+
+    // 즐겨찾기 버튼 클릭 이벤트
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                icon.style.color = '#4285F4';
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                icon.style.color = 'white';
+            }
+        });
+    });
+</script>
 </body>
 </html>
