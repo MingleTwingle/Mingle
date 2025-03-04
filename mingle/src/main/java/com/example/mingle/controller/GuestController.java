@@ -24,6 +24,15 @@ public class GuestController {
         return "/login";
     }
 
+    @GetMapping("/about")
+    public String showabout() {
+        return "/about";
+    }
+    @GetMapping("/contact")
+    public String showcontact() {
+        return "/contact";
+    }
+
     @GetMapping("/guests/register")
     public String showguestsRegisterForm() {
         return "guest/register";

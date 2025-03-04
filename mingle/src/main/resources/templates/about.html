@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mingle | Couple Reservation Platform</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif, 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 400;
+            color: #333;
+        }
+        .intro-section {
+            background-color: #f8f9fa;
+            padding: 80px 0;
+        }
+        .intro-section h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            text-align: center;
+            color: #343a40;
+        }
+        .intro-section p {
+            font-size: 1.2rem;
+            color: #495057;
+            text-align: center;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+        .intro-section ul {
+            font-size: 1.1rem;
+            color: #495057;
+            text-align: left;
+            margin-top: 30px;
+        }
+        .intro-section ul li {
+            margin-bottom: 10px;
+        }
+        .feature-item {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .feature-item h4 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #007bff;
+        }
+        .feature-item p {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Mingle</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link" href="/">홈</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about">소개</a></li>
+                <li class="nav-item"><a class="nav-link" href="/restaurants/filter">레스토랑</a></li>
+                <li class="nav-item"><a class="nav-link" href="/accommodation/filter">숙소</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
+            </ul>
+            <div class="d-flex">
+                <a href="/login" class="btn btn-outline-primary me-2">Login</a>
+                <a href="/guestOrHost" class="btn btn-primary">Register</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Introduction Section -->
+<section class="intro-section">
+    <div class="container">
+        <br>
+        <h2>당신과 그 사람을 위한 최고의 선택, Mingle</h2>
+        <p>
+            Mingle은 특별한 사람과 함께하는 특별한 순간을 더욱 특별하게 만들어 드립니다.
+            레스토랑 예약부터 숙소 추천, 그리고 커플을 위한 특별한 서비스까지, Mingle은 데이트의 모든 순간을 함께합니다.
+        </p>
+        <p>
+            "Mingle"은 사랑하는 사람과의 소중한 시간을 위해, 커플들에게 맞춤형 레스토랑과 숙소를 추천하고 예약할 수 있는 플랫폼입니다.
+            다양한 선택지 중에서 완벽한 장소를 찾아 예약하고, 특별한 혜택도 놓치지 마세요.
+        </p>
+
+
+<br>
+        <div style="text-align: center;">
+        <h3>왜 Mingle인가?</h3>
+        </div>
+        <p>
+            Mingle은 단순한 예약 플랫폼이 아닙니다. 커플들의 특별한 순간을 더욱 기억에 남을 수 있도록 돕는 파트너입니다.
+            다양한 선택지와 혜택을 통해, 여러분만의 특별한 경험을 만들어보세요.
+        </p>
+        <p>
+            Mingle을 통해 선택하는 장소와 서비스는 여러분의 데이트가 더욱 특별하고 의미 있는 시간이 될 수 있도록 엄선되었습니다.
+        </p>
+
+        <div class="row">
+            <!-- Feature 1: Easy Reservation -->
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <i class="bi bi-calendar-check" style="font-size: 40px; color: #007bff;"></i>
+                    <h4>간편한 예약</h4>
+                    <p>불편한 절차 없이, 몇 번의 클릭으로 원하는 레스토랑과 숙소를 예약할 수 있습니다.</p>
+                </div>
+            </div>
+            <!-- Feature 2: Curated Places -->
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <i class="bi bi-star" style="font-size: 40px; color: #007bff;"></i>
+                    <h4>엄선된 장소</h4>
+                    <p>다양한 커플들에게 최적화된 레스토랑과 숙소만을 선별하여 추천드립니다.</p>
+                </div>
+            </div>
+            <!-- Feature 3: Special Benefits -->
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <i class="bi bi-gift" style="font-size: 40px; color: #007bff;"></i>
+                    <h4>특별한 혜택</h4>
+                    <p>Mingle을 통해 예약하면, 커플들을 위한 다양한 혜택과 할인 서비스를 제공합니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer bg-light py-4">
+    <div class="container text-center">
+        <p>&copy; 2024 Mingle. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
