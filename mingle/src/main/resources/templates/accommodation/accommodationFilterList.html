@@ -302,8 +302,8 @@
     </style>
 </head>
 <body>
-<!-- 네비게이션 바 -->
-<nav class="navbar navbar-expand-lg navbar-light">
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
     <div class="container">
         <a class="navbar-brand" href="/">Mingle</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -313,18 +313,17 @@
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item"><a class="nav-link" href="/">홈</a></li>
                 <li class="nav-item"><a class="nav-link" href="/about">소개</a></li>
-                <li class="nav-item"><a class="nav-link" href="/restaurants">레스토랑</a></li>
-                <li class="nav-item"><a class="nav-link active" href="/accommodations">숙소</a></li>
+                <li class="nav-item"><a class="nav-link" href="/restaurants/filter">레스토랑</a></li>
+                <li class="nav-item"><a class="nav-link" href="/accommodation/filter">숙소</a></li>
                 <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
             </ul>
-            <div class="d-flex align-items-center gap-2">
-                <a href="/login" class="btn-login">Login</a>
-                <a href="/register" class="btn-register">Register</a>
+            <div class="d-flex">
+                <a href="/login" class="btn btn-outline-primary me-2">Login</a>
+                <a href="/guestOrHost" class="btn btn-primary">Register</a>
             </div>
         </div>
     </div>
 </nav>
-
 <!-- 페이지 헤더 -->
 <div class="container">
     <div class="page-header">
