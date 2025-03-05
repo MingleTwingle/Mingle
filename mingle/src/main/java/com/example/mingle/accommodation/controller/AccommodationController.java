@@ -72,7 +72,7 @@ public class AccommodationController {
         return "accommodation/accommodationFilterList";
     }
 
-    @GetMapping("accommodation/filterList")
+    @GetMapping("/accommodation/filterList")
     public String showFilterList(Model model) {
         List<Accommodation> accommodations = accommodationService.findAccommodation();
         return "accommodation/accommodationFilterList";
