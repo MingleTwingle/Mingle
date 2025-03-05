@@ -5,6 +5,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script>
+        // 로그인된 상태에서 Register 클릭 시 확인 메시지 띄우기
+        function confirmLogoutAndRegister(event) {
+            event.preventDefault();  // 기본 동작(링크 이동) 방지
+            const isConfirmed = confirm('로그아웃 후 회원가입을 하시겠습니까?');
+            if (isConfirmed) {
+                // 로그아웃 후 회원가입으로 이동
+                window.location.href = '/logout';  // 로그아웃 처리 후 이동할 URL
+            }
+        }
+    </script>
 </head>
 <body>
 <!-- src/main/resources/templates/fragments/navbar.html -->
@@ -22,12 +33,20 @@
                 <li class="nav-item"><a class="nav-link" href="/accommodation/filter">숙소</a></li>
                 <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
             </ul>
+
+            <!-- 로그인되지 않은 상태에서만 Register 버튼 보이기 -->
+            <div class="d-flex">
+                <a href="/guestOrHost" class="btn btn-primary" onclick="confirmLogoutAndRegister(event)">Register</a>
+            </div>
+
+            <!-- 로그인된 상태에서만 Logout 버튼 보이기 -->
             <div class="d-flex" sec:authorize="isAuthenticated()">
                 <a href="/logout" class="btn btn-outline-primary me-2" onclick="return confirm('로그아웃 하시겠습니까?')">Logout</a>
             </div>
+
+            <!-- 로그인되지 않은 상태에서 Login 버튼 보이기 -->
             <div class="d-flex" sec:authorize="!isAuthenticated()">
                 <a href="/login" class="btn btn-outline-primary me-2">Login</a>
-                <a href="/guestOrHost" class="btn btn-primary">Register</a>
             </div>
         </div>
     </div>
