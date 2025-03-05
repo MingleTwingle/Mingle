@@ -44,28 +44,8 @@
 </head>
 <body>
 
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-  <div class="container">
-    <a class="navbar-brand" href="/">Mingle</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mx-auto">
-        <li class="nav-item"><a class="nav-link" href="/">홈</a></li>
-        <li class="nav-item"><a class="nav-link" href="/about">소개</a></li>
-        <li class="nav-item"><a class="nav-link" href="/restaurants/filter">레스토랑</a></li>
-        <li class="nav-item"><a class="nav-link" href="/accommodation/filter">숙소</a></li>
-        <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
-      </ul>
-      <div class="d-flex">
-        <a href="/login" class="btn btn-outline-primary me-2">Login</a>
-        <a href="/guestOrHost" class="btn btn-primary">Register</a>
-      </div>
-    </div>
-  </div>
-</nav>
+<!-- 공통 네비게이션 바 포함 -->
+<div th:replace="fragments/navbar :: nav"></div>
 
 <!-- Main Content -->
 <div class="container">

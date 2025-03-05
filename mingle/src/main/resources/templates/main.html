@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +37,10 @@
                 <li class="nav-item"><a class="nav-link" href="/accommodation/filter">숙소</a></li>
                 <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
             </ul>
-            <div class="d-flex">
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <a href="/logout" class="btn btn-outline-primary me-2" onclick="return confirm('로그아웃 하시겠습니까?')">Logout</a>
+            </div>
+            <div th:if="${#authorization.expression('!isAuthenticated()')}">
                 <a href="/login" class="btn btn-outline-primary me-2">Login</a>
                 <a href="/guestOrHost" class="btn btn-primary">Register</a>
             </div>
