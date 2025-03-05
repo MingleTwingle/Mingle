@@ -2,8 +2,6 @@ package com.example.mingle.accommodation.controller;
 
 import com.example.mingle.accommodation.domain.Accommodation;
 import com.example.mingle.accommodation.service.AccommodationService;
-import com.example.mingle.restaurant.controller.RestaurantForm;
-import com.example.mingle.restaurant.domain.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,12 +22,9 @@ public class AccommodationController {
         this.accommodationService = accommodationService;
     }
 
-
-    //  (register.html)
     @GetMapping("/accommodation/new")
     public String createForm() {
         return "accommodation/register";
-
     }
 
     @PostMapping("/accommodation/new")
@@ -51,6 +46,7 @@ public class AccommodationController {
     @GetMapping("/accommodation/list")
     public String listAll(Model model) {
         List<Accommodation> accommodations = accommodationService.findAccommodation();
+        // Accommodation 객체에 포함된 outterPhotos가 이미 로드되므로 그대로 넘김
         model.addAttribute("accommodation", accommodations);
         return "accommodation/accommodationList";
     }
@@ -75,6 +71,7 @@ public class AccommodationController {
     @GetMapping("/accommodation/filterList")
     public String showFilterList(Model model) {
         List<Accommodation> accommodations = accommodationService.findAccommodation();
+        model.addAttribute("accommodations", accommodations);
         return "accommodation/accommodationFilterList";
     }
 }

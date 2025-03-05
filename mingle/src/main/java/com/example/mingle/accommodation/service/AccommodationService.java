@@ -46,7 +46,12 @@ public class AccommodationService {
                 .collect(Collectors.toList());
 
         // 필터링된 숙소 목록을 콘솔에 출력
-        filteredAccommodations.forEach(System.out::println);
+        filteredAccommodations.forEach(accommodation -> {
+            // 숙소와 관련된 외부 사진 출력
+            accommodation.getOutterPhotos().forEach(photo -> {
+                System.out.println("사진 URL: " + photo.getImage());
+            });
+        });
 
         return filteredAccommodations;
     }
