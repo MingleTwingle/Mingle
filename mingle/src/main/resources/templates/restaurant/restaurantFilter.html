@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,21 +76,21 @@
 </nav>
 
 <div class="container">
-    <form action="/restaurants/filter" method="post">
+    <form th:action="@{/restaurants/filter}" th:object="${restaurantFilterForm}" method="post">
     <div class="search-box">
         <div class="mb-3">
             <label class="form-label"><i class="fas fa-map-marker-alt text-danger"></i> 어디로 가시나요?</label>
-            <input type="text" class="form-control" placeholder="목적지를 입력하세요">
+            <input type="text" class="form-control" th:field="*{restaurantLocation}" placeholder="목적지를 입력하세요">
         </div>
 
         <div class="mb-3">
-            <label class="form-label"><i class="fas fa-calendar-alt text-danger"></i> 예약 날짜</label>
-            <input type="date" class="form-control">
+            <label class="form-label"><i class="fas fa-calendar-alt text-danger"></i> 오픈 시간</label>
+            <input type="time" class="form-control" th:field="*{restaurantOpenTime}">
         </div>
 
         <div class="mb-3">
-            <label class="form-label"><i class="fas fa-clock text-danger"></i> 예약 시간</label>
-            <input type="time" class="form-control">
+            <label class="form-label"><i class="fas fa-calendar-alt text-danger"></i> 마감 시간</label>
+            <input type="time" class="form-control" th:field="*{restaurantEndTime}">
         </div>
 
         <div class="mb-3">

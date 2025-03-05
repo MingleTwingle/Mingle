@@ -8,13 +8,9 @@ import java.time.LocalTime;
 @Getter
 @Setter
 public class RestaurantFilterForm {
-    private String restaurantName;
     private String restaurantLocation;
-    private Boolean restaurantParking;
-
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime restaurantOpenTime;
-
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime restaurantEndTime;
 }

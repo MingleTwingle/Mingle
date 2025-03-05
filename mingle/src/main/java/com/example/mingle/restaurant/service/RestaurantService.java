@@ -3,8 +3,10 @@ package com.example.mingle.restaurant.service;
 import com.example.mingle.restaurant.domain.Restaurant;
 import com.example.mingle.restaurant.repository.RestaurantRepository;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
@@ -36,13 +38,15 @@ public class RestaurantService {
         return restaurantRepository.findAll();
     }
 
-    public List<Restaurant> filterRestaurants(String restaurantName, String restaurantLocation, Boolean restaurantParking, LocalTime restaurantOpenTime, LocalTime restaurantEndTime) {
-        return restaurantRepository.findByFilters(
-                restaurantName,
-                restaurantLocation,
-                restaurantParking,
-                restaurantOpenTime,
-                restaurantEndTime
-        );
+
+    public List<Restaurant> searchRestaurant(String location, LocalTime openTime, LocalTime endTime) {
+        List<Restaurant> filteredRestaurants = restaurantRepository.findAll().stream()
+                .filter(a -> a.getRestaurantLocation().equals(location))
+                .filter(a -> openTime == null || a.getRestaurantOpenTime() == null || !a.getRestaurantOpenTime().isBefore(openTime))
+                .filter(a-> endTime == null || a.getRestaurantEndTime() == null || !a.getRestaurantEndTime().isAfter(endTime))
+                .collect(Collectors.toList());
+
+        filteredRestaurants.forEach(System.out::println);
+        return filteredRestaurants;
     }
 }
