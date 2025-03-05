@@ -131,11 +131,11 @@
     <button type="submit">로그인하기</button>
   </form>
 
-  <!-- 로그인 실패 시 에러 메시지 출력 -->
-  <p th:if="${error}" class="error-message">아이디 혹은 비밀번호를 잘못 입력하였습니다.</p>
+  <!-- 로그인 실패 메시지 표시 -->
+  <p th:if="${param.error}" class="error-message">아이디 혹은 비밀번호를 잘못 입력하였습니다.</p>
 
-  <!-- 로그인 성공 시 성공 메시지 출력 -->
-  <p th:if="${success}" class="success-message">로그인에 성공하였습니다!</p>
+  <!-- 로그아웃 성공 메시지 표시 -->
+  <p th:if="${param.logout}" class="success-message">로그아웃되었습니다.</p>
 </div>
 
 </body>

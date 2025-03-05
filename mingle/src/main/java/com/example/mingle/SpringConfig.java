@@ -22,10 +22,7 @@ public class SpringConfig {
         this.restaurantRepository = restaurantRepository;
     }
 
-    @Bean
-    public GuestService guestService() {
-        return new GuestService(guestRepository);
-    }
+
 
     @Bean
     public RestaurantService restaurantService() {
