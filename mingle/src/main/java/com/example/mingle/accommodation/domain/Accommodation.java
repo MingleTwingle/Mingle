@@ -5,9 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "tbl_accommodation_info")  // 테이블 이름을 소문자로 변경
+@Table(name = "tbl_accommodation_info")
 @Getter
 @Setter
 public class Accommodation {
@@ -34,6 +35,13 @@ public class Accommodation {
     @Column(name = "accommodation_checkout_time")
     private LocalDateTime checkOutTime;
 
+    // 1:N 관계 설정
+    @OneToMany(mappedBy = "accommodation")
+    private List<AccommodationRoom> rooms;
+
+    @OneToMany(mappedBy = "accommodation")
+    private List<AccommodationOutterPhoto> outterPhotos;
+
     @Override
     public String toString() {
         return "Accommodation{" +
@@ -42,5 +50,4 @@ public class Accommodation {
                 ", location='" + location + '\'' +
                 '}';
     }
-
 }

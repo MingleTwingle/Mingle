@@ -7,18 +7,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tbl_accommodation_photo")
-public class AccommodationPhoto {
+@Table(name = "tbl_accommodation_outter_photo")
+public class AccommodationOutterPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "accommodation_photo_id")
+    @Column(name = "accoOutPhoto_id")
     private Long id;
 
     @Lob
-    @Column(name = "accommodation_photo")
+    @Column(name = "accommodation_outter_photo")
     private byte[] photo;
 
     @ManyToOne
-    @JoinColumn(name = "accommodation_room_id")  // room ID와 연결
-    private AccommodationRoom accommodationRoom;
+    @JoinColumn(name = "accommodation_id")
+    private Accommodation accommodation;
 }
+
