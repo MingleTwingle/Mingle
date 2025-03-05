@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -19,6 +18,7 @@ import java.util.List;
 @Controller
 public class GuestController {
     private final GuestService guestService;
+
 
     @Autowired
     public GuestController(GuestService guestService) {
@@ -59,6 +59,8 @@ public class GuestController {
     public String showContact() {
         return "contact";
     }
+
+
 
     // 호스트 등록 페이지
     @GetMapping("/host/register")
@@ -102,6 +104,8 @@ public class GuestController {
             result.rejectValue("idid", "error.guest", "이미 존재하는 아이디입니다.");
             return "guest/register";
         }
+
+
     }
 
     // 게스트 리스트 조회
