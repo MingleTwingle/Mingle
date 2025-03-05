@@ -16,10 +16,9 @@ import java.util.Optional;
 public class GuestService implements UserDetailsService {
 
     private final GuestRepository guestRepository;
-    private final PasswordEncoder passwordEncoder;
-
+    private final  PasswordEncoder passwordEncoder ;
     @Autowired
-    public GuestService(GuestRepository guestRepository, PasswordEncoder passwordEncoder) {
+    public GuestService(GuestRepository guestRepository , PasswordEncoder passwordEncoder) {
         this.guestRepository = guestRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -54,16 +53,24 @@ public class GuestService implements UserDetailsService {
 //    public Optional<Guest> findOne(Long userId) {
 //        return guestRepository.findById(userId);
 //    }
-// ✅ Spring Security 로그인 처리
-@Override
-public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Guest guest = guestRepository.findByIdid(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//
 
-    return User.builder()
-            .username(guest.getIdid())
-            .password(guest.getPassword()) // Spring Security가 자동으로 비밀번호 검증
-            .roles("USER")
-            .build();
+    @Override
+    public UserDetails loadUserByUsername(String idid) throws UsernameNotFoundException {
+        System.out.println("🔍 로그인 시도: " + idid); // 디버깅 로그
+
+        Guest guest = guestRepository.findByIdid(idid)
+                .orElseThrow(() -> {
+                    System.out.println("❌ 로그인 실패: 아이디 없음");
+                    return new UsernameNotFoundException("User not found");
+                });
+
+        System.out.println("✅ 로그인 성공: " + guest.getIdid());
+
+        return User.builder()
+                .username(guest.getIdid())
+                .password(guest.getPassword()) // Spring Security가 자동으로 비밀번호 검증
+                .roles("USER")
+                .build();
     }
 }

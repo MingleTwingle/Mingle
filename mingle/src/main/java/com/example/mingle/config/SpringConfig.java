@@ -1,4 +1,4 @@
-package com.example.mingle;
+package com.example.mingle.config;
 
 import com.example.mingle.domain.Guest;
 import com.example.mingle.repository.GuestRepository;

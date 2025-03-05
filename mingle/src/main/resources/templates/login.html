@@ -116,7 +116,16 @@
 
 <div class="login-container">
   <h2>로그인</h2>
-  <div th:if="${error}" th:text="${error}" style="color: red;"></div>
+
+  <!-- 로그인 실패 시 에러 메시지 표시 -->
+  <p th:if="${param.error}" class="error-message">아이디 혹은 비밀번호를 잘못 입력하였습니다.</p>
+
+  <!-- 로그아웃 후 메시지 표시 -->
+  <p th:if="${param.logout}" class="success-message">로그아웃되었습니다.</p>
+
+  <!-- 회원가입 후 성공 메시지 -->
+  <p th:if="${successMessage}" th:text="${successMessage}" class="success-message"></p>
+
   <form action="/login" method="post">
     <div class="form-group">
       <label for="idid">아이디</label>

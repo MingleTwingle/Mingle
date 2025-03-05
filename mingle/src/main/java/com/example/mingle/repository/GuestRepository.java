@@ -1,11 +1,13 @@
 package com.example.mingle.repository;
 
 import com.example.mingle.domain.Guest;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-
-public interface GuestRepository {
+@Repository
+public interface GuestRepository extends JpaRepository<Guest, Long>  {
     Guest save(Guest guest);
     Optional<Guest> findByIdid(String idid);
     Optional<Guest> findByName(String name);
