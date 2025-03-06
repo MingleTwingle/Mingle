@@ -34,19 +34,21 @@
                 <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
             </ul>
 
-            <!-- 로그인되지 않은 상태에서만 Register 버튼 보이기 -->
-            <div class="d-flex">
-                <a href="/guestOrHost" class="btn btn-primary" onclick="confirmLogoutAndRegister(event)">Register</a>
-            </div>
+
 
             <!-- 로그인된 상태에서만 Logout 버튼 보이기 -->
             <div class="d-flex" sec:authorize="isAuthenticated()">
-                <a href="/logout" class="btn btn-outline-primary me-2" onclick="return confirm('로그아웃 하시겠습니까?')">Logout</a>
+                <a href="/logout" class="btn btn-outline-primary me-2" onclick="return confirm('로그아웃 하시겠습니까?')">로그아웃</a>
             </div>
 
             <!-- 로그인되지 않은 상태에서 Login 버튼 보이기 -->
             <div class="d-flex" sec:authorize="!isAuthenticated()">
-                <a href="/login" class="btn btn-outline-primary me-2">Login</a>
+                <a href="/login" class="btn btn-outline-primary me-2">로그인</a>
+            </div>
+
+            <!-- 로그인되지 않은 상태에서만 Register 버튼 보이기 -->
+            <div class="d-flex">
+                <a href="/guestOrHost" class="btn btn-primary" onclick="confirmLogoutAndRegister(event)">회원가입</a>
             </div>
         </div>
     </div>
