@@ -64,6 +64,10 @@ public class AccommodationController {
             return "accommodation/accommodationFilter";
         }
         List<Accommodation> filteredAccommodations = accommodationService.searchAccommodation(form.getLocation(), form.getCheckInTime(), form.getCheckOutTime());
+
+        // 조건에 맞는 숙소 개수   디버깅
+        System.out.println("필터링된 숙소 개수: " + filteredAccommodations.size());
+
         model.addAttribute("accommodations", filteredAccommodations);
         return "accommodation/accommodationFilterList";
     }
