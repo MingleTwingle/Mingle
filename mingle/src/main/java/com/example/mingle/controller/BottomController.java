@@ -9,17 +9,17 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class BottomController {
 
-    @GetMapping("/bottom/careers")
+    @GetMapping("/bottom/careers/careers")
     public String showCareersForm() {
         return "/bottom/careers/careers"; // Thymeleaf 템플릿 파일 (resources/templates/careers/apply.html)
     }
 
-    @GetMapping("/apply")
-    public String showApplyForm() {
-        return "/bottom/careers/apply"; // Thymeleaf 템플릿 파일 (resources/templates/careers/apply.html)
+    @GetMapping("/bottom/careers/apply")
+    public String showapplyForm() {
+        return "/bottom/careers/apply";
     }
 
-    @PostMapping("/apply")
+    @GetMapping("/bottom/careers/apply")
     public String submitApplication(@RequestParam("name") String name,
                                     @RequestParam("email") String email,
                                     @RequestParam("phone") String phone,
@@ -30,6 +30,7 @@ public class BottomController {
         System.out.println("지원 완료: " + name + " - " + email);
         return "redirect:/";
     }
+
   /*  @GetMapping("/bottom/blog/blog")
     public String blog() {
         return "bottom/blog/blog";  // templates/bottom/blog.html로 이동
