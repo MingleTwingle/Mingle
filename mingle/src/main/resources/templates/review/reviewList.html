@@ -108,25 +108,25 @@
 <div class="container">
   <h2>리뷰 목록</h2>
 
-  <h3>리뷰 필터링</h3>
+  <h3>리뷰 검색</h3>
   <!-- 필터링 폼 -->
   <form id="filterForm" class="filter-form" action="/reviews/filter" method="post">
     <div>
-      <label for="restaurantId">식당 ID:</label>
+      <label for="restaurantId">식당 ID</label>
       <input type="number" id="restaurantId" name="restaurantId">
     </div>
     <div>
-      <label for="accommodationRoomId">숙박 시설 ID:</label>
+      <label for="accommodationRoomId">숙박 시설 ID</label>
       <input type="number" id="accommodationRoomId" name="accommodationRoomId">
     </div>
     <div>
-      <label for="reviewScore">최소 평점:</label>
+      <label for="reviewScore">최소 평점</label>
       <input type="number" id="reviewScore" name="reviewScore" min="1" max="5">
     </div>
-    <button type="submit">필터링</button>
+    <button type="submit">검색</button>
   </form>
   <div th:replace="fragments/navbar :: nav"></div>
-  <h3>리뷰 목록</h3>
+
 
   <!-- 필터링된 리뷰 목록 표시 -->
   <div id="reviewsContainer">
@@ -134,10 +134,10 @@
     <div th:each="review : ${reviews}">
       <div class="review">
         <p th:text="${review.reviewComment}"></p>
-        <p class="review-score" th:text="'평점: ' + ${review.reviewScore}"></p>
-        <p class="restaurant-id" th:text="'식당 ID: ' + ${review.restaurantId}"></p>
-        <p class="accommodation-id" th:text="'숙박 시설 ID: ' + ${review.accommodationRoomId}"></p>
-        <p th:text="'게스트 키: ' + ${review.guestKey}"></p>
+        <p class="review-score" th:text="'평점 ' + ${review.reviewScore}"></p>
+        <p class="restaurant-id" th:text="'식당 ID ' + ${review.restaurantId}"></p>
+        <p class="accommodation-id" th:text="'숙박 시설 ID ' + ${review.accommodationRoomId}"></p>
+        <p th:text="'게스트 키 ' + ${review.guestKey}"></p>
       </div>
     </div>
   </div>
@@ -160,7 +160,7 @@
               document.getElementById("reviewsContainer").innerHTML = html;
             })
             .catch(error => {
-              console.error("필터링에 실패했습니다.", error);
+              console.error("검색하신 결과가 없습니다.", error);
             });
   });
 </script>

@@ -74,29 +74,29 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: nav"></div>
-<h2>리뷰 등록</h2>
+<h2>리뷰 작성</h2>
 
 <!-- 리뷰 등록 폼 -->
 <div class="form-container">
   <form action="/reviews/new" method="post">
     <div>
-      <label for="reviewComment">리뷰 내용:</label>
+      <label for="reviewComment">리뷰 내용</label>
       <textarea id="reviewComment" name="reviewComment" required></textarea>
     </div>
     <div>
-      <label for="reviewScore">평점:</label>
+      <label for="reviewScore">평점</label>
       <input type="number" id="reviewScore" name="reviewScore" min="1" max="5" required>
     </div>
     <div>
-      <label for="restaurantId">식당 ID:</label>
+      <label for="restaurantId">식당 ID</label>
       <input type="number" id="restaurantId" name="restaurantId">
     </div>
     <div>
-      <label for="accommodationRoomId">숙소 ID:</label>
+      <label for="accommodationRoomId">숙소 ID</label>
       <input type="number" id="accommodationRoomId" name="accommodationRoomId">
     </div>
     <div>
-      <label for="guestKey">게스트 키:</label>
+      <label for="guestKey">게스트 키</label>
       <input type="number" id="guestKey" name="guestKey" required>
     </div>
     <button type="submit">리뷰 등록</button>
