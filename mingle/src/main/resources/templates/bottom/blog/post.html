@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>블로그 게시글</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <h2 class="my-4 text-center" th:text="${post.title}">게시글 제목</h2>
+
+    <img th:src="${post.image}" class="img-fluid mb-4" alt="게시글 이미지">
+    <p th:text="${post.content}">게시글 내용</p>
+
+    <a th:href="@{/bottom/blog}" class="btn btn-secondary mt-3">블로그 목록으로</a>
+</div>
+</body>
+</html>

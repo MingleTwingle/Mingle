@@ -115,4 +115,10 @@ public class GuestController {
         model.addAttribute("guests", guests);
         return "guest/guestList";
     }
+
+    @GetMapping("/myPage")
+    public String showmyPage() {
+        return "myPage";
+    }
+
 }

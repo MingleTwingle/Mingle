@@ -2,20 +2,38 @@ package com.example.mingle.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class BottomController {
 
-
     @GetMapping("/bottom/careers")
-    public String careers() {
-        return "bottom/careers";  // templates/bottom/careers.html로 이동
+    public String showCareersForm() {
+        return "/bottom/careers/careers"; // Thymeleaf 템플릿 파일 (resources/templates/careers/apply.html)
     }
 
-    @GetMapping("/bottom/blog")
-    public String blog() {
-        return "bottom/blog";  // templates/bottom/blog.html로 이동
+    @GetMapping("/apply")
+    public String showApplyForm() {
+        return "/bottom/careers/apply"; // Thymeleaf 템플릿 파일 (resources/templates/careers/apply.html)
     }
+
+    @PostMapping("/apply")
+    public String submitApplication(@RequestParam("name") String name,
+                                    @RequestParam("email") String email,
+                                    @RequestParam("phone") String phone,
+                                    @RequestParam("job") String job,
+                                    @RequestParam("cover_letter") String coverLetter,
+                                    @RequestParam("resume") MultipartFile resume) {
+        // 여기서 지원서 저장 로직 구현
+        System.out.println("지원 완료: " + name + " - " + email);
+        return "redirect:/";
+    }
+  /*  @GetMapping("/bottom/blog/blog")
+    public String blog() {
+        return "bottom/blog/blog";  // templates/bottom/blog.html로 이동
+    }*/
 
     @GetMapping("/bottom/press")
     public String press() {

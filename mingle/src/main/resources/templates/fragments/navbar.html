@@ -46,8 +46,13 @@
                 <a href="/login" class="btn btn-outline-primary me-2">로그인</a>
             </div>
 
+
+            <div class="d-flex" sec:authorize="isAuthenticated()">
+                <a href="/myPage" class="btn btn-primary">마이 페이지</a>
+            </div>
+
             <!-- 로그인되지 않은 상태에서만 Register 버튼 보이기 -->
-            <div class="d-flex">
+            <div class="d-flex" sec:authorize="!isAuthenticated()">
                 <a href="/guestOrHost" class="btn btn-primary" onclick="confirmLogoutAndRegister(event)">회원가입</a>
             </div>
         </div>

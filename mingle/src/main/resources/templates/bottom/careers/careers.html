@@ -11,16 +11,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
+        body{
             font-family: 'Noto Sans KR', sans-serif, 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             font-weight: 400;
             color: #333;
         }
 
+        :root {
+            --primary-color: #007BFF;
+            --secondary-color: #66B3FF;
+            --text-dark: #333;
+        }
+
+
         .container {
             max-width: 900px;
             margin: 0 auto;
             padding: 50px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .job-header {
@@ -30,22 +40,31 @@
 
         .job-header h2 {
             font-size: 2.5rem;
-            color: #333;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .job-header p {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 40px;
         }
 
         .job-description, .requirements, .benefits {
             margin-bottom: 40px;
         }
 
-        .job-description h3, .requirements h3, .benefits h3 {
+        h3 {
             font-size: 1.8rem;
-            color: #ffcc00;
+            color: var(--primary-color);
             margin-bottom: 20px;
         }
 
-        .job-description ul, .requirements ul, .benefits ul {
+        ul {
             list-style-type: disc;
             padding-left: 20px;
+            font-size: 1rem;
+            color: var(--text-dark);
         }
 
         .apply-button {
@@ -53,22 +72,22 @@
         }
 
         .apply-button a {
-            background-color: #ffcc00;
+            background-color: var(--primary-color);
             color: white;
             padding: 15px 30px;
             text-decoration: none;
             font-size: 1.2rem;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
         .apply-button a:hover {
-            background-color: #e6b800;
+            background-color: var(--secondary-color);
         }
     </style>
 </head>
 <body>
-<!-- 공통 네비게이션 바 포함 -->
-<div th:replace="fragments/navbar :: nav"></div>
+
 <div class="container">
     <!-- 채용 공고 헤더 -->
     <div class="job-header">
@@ -115,7 +134,7 @@
 
     <!-- 지원 버튼 -->
     <div class="apply-button">
-        <a href="/apply" target="_blank">지금 지원하기</a>
+        <a th:href="@{/bottom/careers/apply}" target="_blank">지금 지원하기</a>
     </div>
 </div>
 
