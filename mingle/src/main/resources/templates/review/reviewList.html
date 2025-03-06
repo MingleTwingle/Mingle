@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>리뷰 목록</title>
+
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+
+    h2, h3 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #4a90e2;
+    }
+
+    /* 필터링 폼 스타일링 */
+    .filter-form {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 40px;
+    }
+
+    .filter-form div {
+      margin-bottom: 15px;
+    }
+
+    .filter-form label {
+      font-weight: 600;
+      color: #555;
+    }
+
+    .filter-form input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    .filter-form button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .filter-form button:hover {
+      background-color: #3a80d2;
+    }
+
+    /* 리뷰 목록 스타일링 */
+    #reviewsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .review {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .review:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .review p {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .review .review-score {
+      font-weight: bold;
+      color: #ff6b81;
+    }
+
+    .review .restaurant-id, .review .accommodation-id {
+      color: #4a90e2;
+    }
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>리뷰 목록</h2>
+
+  <h3>리뷰 필터링</h3>
+  <!-- 필터링 폼 -->
+  <form id="filterForm" class="filter-form" action="/reviews/filter" method="post">
+    <div>
+      <label for="restaurantId">식당 ID:</label>
+      <input type="number" id="restaurantId" name="restaurantId">
+    </div>
+    <div>
+      <label for="accommodationRoomId">숙박 시설 ID:</label>
+      <input type="number" id="accommodationRoomId" name="accommodationRoomId">
+    </div>
+    <div>
+      <label for="reviewScore">최소 평점:</label>
+      <input type="number" id="reviewScore" name="reviewScore" min="1" max="5">
+    </div>
+    <button type="submit">필터링</button>
+  </form>
+  <div th:replace="fragments/navbar :: nav"></div>
+  <h3>리뷰 목록</h3>
+
+  <!-- 필터링된 리뷰 목록 표시 -->
+  <div id="reviewsContainer">
+    <!-- 서버에서 렌더링된 데이터로 자동 채워짐 -->
+    <div th:each="review : ${reviews}">
+      <div class="review">
+        <p th:text="${review.reviewComment}"></p>
+        <p class="review-score" th:text="'평점: ' + ${review.reviewScore}"></p>
+        <p class="restaurant-id" th:text="'식당 ID: ' + ${review.restaurantId}"></p>
+        <p class="accommodation-id" th:text="'숙박 시설 ID: ' + ${review.accommodationRoomId}"></p>
+        <p th:text="'게스트 키: ' + ${review.guestKey}"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 필터링 폼 제출 시 AJAX 요청
+  document.getElementById("filterForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // 기본 폼 제출 동작 방지
+
+    const formData = new FormData(this);
+
+    fetch("/reviews/filter", {
+      method: "POST",
+      body: formData
+    })
+            .then(response => response.text())
+            .then(html => {
+              // 필터링된 리뷰 목록만 갱신
+              document.getElementById("reviewsContainer").innerHTML = html;
+            })
+            .catch(error => {
+              console.error("필터링에 실패했습니다.", error);
+            });
+  });
+</script>
+</body>
+</html>

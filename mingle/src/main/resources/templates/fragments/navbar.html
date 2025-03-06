@@ -16,10 +16,19 @@
             }
         }
     </script>
+    <style>
+        .fixed-size {
+            width: 1903px;
+            height: 83px;
+            max-width: 100%; /* 화면이 작아지면 100%까지만 줄어듦 */
+            overflow: hidden; /* 내용이 넘칠 경우 숨김 */
+        }
+
+    </style>
 </head>
 <body>
 <!-- src/main/resources/templates/fragments/navbar.html -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top fixed-size">
     <div class="container">
         <a class="navbar-brand" href="/">Mingle</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -32,6 +41,7 @@
                 <li class="nav-item"><a class="nav-link" href="/restaurants/filter">레스토랑</a></li>
                 <li class="nav-item"><a class="nav-link" href="/accommodation/filter">숙소</a></li>
                 <li class="nav-item"><a class="nav-link" href="/contact">문의하기</a></li>
+                <li class="nav-item"><a class="nav-link" href="/reviews/list">리뷰</a></li>
             </ul>
 
 
