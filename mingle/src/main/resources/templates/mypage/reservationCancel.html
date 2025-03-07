@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>예약 취소</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div th:replace="fragments/navbar :: nav"></div>
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">예약 취소</h2>
+
+  <form action="/reservation/cancel" method="post">
+    <input type="hidden" name="reservationId" th:value="${reservation.id}">
+
+    <p>예약을 취소하시겠습니까?</p>
+
+    <button type="submit" class="btn btn-danger">예약 취소</button>
+    <a href="/mypage" class="btn btn-secondary">취소</a>
+  </form>
+</div>
+
+</body>
+</html>

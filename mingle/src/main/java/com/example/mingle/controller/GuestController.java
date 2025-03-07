@@ -118,7 +118,7 @@ public class GuestController {
 
     @GetMapping("/myPage")
     public String showmyPage() {
-        return "myPage";
+        return "mypage";
     }
 
 }

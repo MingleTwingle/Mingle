@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>예약 현황 조회</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div th:replace="fragments/navbar :: nav"></div>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">예약 현황 조회</h2>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>예약번호</th>
+            <th>레스토랑/숙소</th>
+            <th>예약일</th>
+            <th>시간</th>
+            <th>상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reservation : ${reservations}">
+            <td th:text="${reservation.id}"></td>
+            <td th:text="${reservation.placeName}"></td>
+            <td th:text="${reservation.date}"></td>
+            <td th:text="${reservation.time}"></td>
+            <td th:text="${reservation.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
