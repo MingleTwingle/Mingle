@@ -27,12 +27,6 @@ public class Host {
     private String phone;
     @Column(name = "host_gender")
     private String gender;
-
-    public enum HostType {
-        식당, 숙소
-    }
-
     @Column(name = "host_type")
-    @Enumerated(EnumType.STRING)
-    private HostType type;
+    private String type;
 }

@@ -63,10 +63,10 @@ public class GuestController {
 
 
     // 호스트 등록 페이지
-    @GetMapping("/host/register")
-    public String showHostRegisterForm() {
-        return "host/register";
-    }
+//    @GetMapping("/host/register")
+//    public String showHostRegisterForm() {
+//        return "host/register";
+//    }
 
     // 게스트 or 호스트 선택 페이지
     @GetMapping("/guestOrHost")
