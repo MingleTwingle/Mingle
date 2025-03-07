@@ -63,13 +63,25 @@ public class AccommodationController {
         if (result.hasErrors()) {
             return "accommodation/accommodationFilter";
         }
-        List<Accommodation> filteredAccommodations = accommodationService.searchAccommodation(form.getLocation(), form.getCheckInTime(), form.getCheckOutTime());
 
-        // 조건에 맞는 숙소 개수   디버깅
-        System.out.println("필터링된 숙소 개수: " + filteredAccommodations.size());
+        List<Accommodation> filteredAccommodations;
+
+        if (isFilterEmpty(form)) {
+            filteredAccommodations = accommodationService.findAccommodation(); // 모든 숙소 반환
+            System.out.println("입력값 없음 -> 전체 숙소 반환: " + filteredAccommodations.size());
+        } else {
+            filteredAccommodations = accommodationService.searchAccommodation(form.getLocation(), form.getCheckInTime(), form.getCheckOutTime());
+            System.out.println("필터링된 숙소 개수: " + filteredAccommodations.size());
+        }
 
         model.addAttribute("accommodations", filteredAccommodations);
         return "accommodation/accommodationFilterList";
+    }
+
+    private boolean isFilterEmpty(AccommodationFilterForm form) {
+        return (form.getLocation() == null || form.getLocation().isBlank()) &&
+                (form.getCheckInTime() == null) &&
+                (form.getCheckOutTime() == null);
     }
 
     @GetMapping("/accommodation/filterList")

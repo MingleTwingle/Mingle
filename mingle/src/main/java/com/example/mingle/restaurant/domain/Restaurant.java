@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,4 +24,12 @@ public class Restaurant {
     private LocalTime restaurantOpenTime;
     @Column(name = "restaurant_end_time", nullable = false)
     private LocalTime restaurantEndTime;
+
+    @OneToMany(mappedBy = "restaurant")
+    private List<RestaurantOutterPhoto> outterPhotos;
+
+    @OneToMany(mappedBy = "restaurant")
+    private List<RestaurantMenu> menus;
+
+
 }

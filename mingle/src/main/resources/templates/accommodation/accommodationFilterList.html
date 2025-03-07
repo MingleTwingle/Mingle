@@ -333,8 +333,9 @@
         <div class="col-md-6 col-lg-4" th:each="accommodation : ${accommodations}">
             <div class="accommodation-card">
                 <div class="card-img-container">
-                    <img class="card-img-top" th:src="${accommodation.outterPhotos[0].image}" alt="Accommodation Photo">
-                    <button class="wishlist-btn">
+                    <div th:if="${!accommodation.outterPhotos.isEmpty()}">
+                        <img th:src="${accommodation.outterPhotos[0].image}" />
+                    </div>                    <button class="wishlist-btn">
                         <i class="far fa-heart"></i>
                     </button>
                 </div>

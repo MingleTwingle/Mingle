@@ -318,7 +318,8 @@
         <div class="col-md-6 col-lg-4" th:each="restaurant : ${restaurants}">
             <div class="restaurant-card">
                 <div class="card-img-container">
-                    <img class="card-img-top" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop" alt="Restaurant Image">
+                    <div th:if="${!restaurant.outterPhotos.isEmpty()}">
+                        <img th:src="${restaurant.outterPhotos[0].image}" />
                     <button class="favorite-btn">
                         <i class="far fa-heart"></i>
                     </button>
@@ -350,9 +351,8 @@
                         </span>
                     </div>
 
-                    <div class="price-info">
-                        <span th:text="${restaurant.restaurantPrice}">30,000</span>
-                        <span class="price-unit">/ 원</span>
+                    <div class="price">
+                        ₩120,000 <span class="price-unit">/ 박</span>
                     </div>
 
                     <div class="restaurant-hours">

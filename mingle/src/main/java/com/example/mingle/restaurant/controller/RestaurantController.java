@@ -1,5 +1,7 @@
 package com.example.mingle.restaurant.controller;
 
+import com.example.mingle.accommodation.controller.AccommodationFilterForm;
+import com.example.mingle.accommodation.domain.Accommodation;
 import com.example.mingle.restaurant.domain.Restaurant;
 import com.example.mingle.restaurant.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +66,24 @@ public class RestaurantController {
         if (result.hasErrors()) {
             return "restaurant/restaurantFilter";
         }
-        List<Restaurant> filteredRestaurants = restaurantService.searchRestaurant(form.getRestaurantLocation(), form.getRestaurantOpenTime(), form.getRestaurantEndTime());
+
+        List<Restaurant> filteredRestaurants;
+        if (isFilterEmpty(form)) {
+            filteredRestaurants = restaurantService.findRestaurant(); // 모든 숙소 반환
+            System.out.println("입력값 없음 -> 전체 식당 반환: " + filteredRestaurants.size());
+        } else {
+            filteredRestaurants = restaurantService.searchRestaurant(form.getRestaurantLocation(), form.getRestaurantOpenTime(), form.getRestaurantEndTime());
+            System.out.println("필터링된 식당 개수: " + filteredRestaurants.size());
+        }
+
         model.addAttribute("restaurants", filteredRestaurants);
         return "restaurant/restaurantFilterList";
+    }
+
+    private boolean isFilterEmpty(RestaurantFilterForm form) {
+        return (form.getRestaurantLocation() == null || form.getRestaurantLocation().isBlank()) &&
+                (form.getRestaurantOpenTime() == null) &&
+                (form.getRestaurantEndTime() == null);
     }
 
     @GetMapping("/restaurants/filterList")
