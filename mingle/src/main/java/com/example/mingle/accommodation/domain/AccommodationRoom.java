@@ -7,26 +7,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tbl_accommodation_room_info")
+@Table(name = "tbl_accommodationroom_info")
 public class AccommodationRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "accommodation_room_id")
+    @Column(name = "accommodationRoom_Id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "accommodation_id")  // 숙소와 연결된 외래 키
     private Accommodation accommodation;
 
-    @Column(name = "accommodation_room_cost")
+    @Column(name = "accommodationRoom_cost")
     private int cost;
 
-    @Column(name = "accommodation_room_min")
+    @Column(name = "accommodationRoom_min")
     private int minCapacity;
 
-    @Column(name = "accommodation_room_max")
+    @Column(name = "accommodationRoom_max")
     private int maxCapacity;
 
-    @Column(name = "accommodation_room_name")
+    @Column(name = "accommodationRoom_name")
     private String name;
 }
