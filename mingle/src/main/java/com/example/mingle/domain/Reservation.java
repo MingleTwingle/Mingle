@@ -1,3 +1,4 @@
+/*
 package com.example.mingle.domain;
 
 import jakarta.persistence.*;
@@ -31,3 +32,4 @@ public class Reservation {
         this.newTime = newTime;
     }
 }
+*/

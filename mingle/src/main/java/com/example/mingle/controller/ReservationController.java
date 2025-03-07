@@ -1,3 +1,4 @@
+/*
 package com.example.mingle.controller;
 
 import com.example.mingle.domain.Guest;
@@ -69,3 +70,4 @@ public class ReservationController<Reservation> {
         return "redirect:/reservation/status?success=canceled";
     }
 }
+*/

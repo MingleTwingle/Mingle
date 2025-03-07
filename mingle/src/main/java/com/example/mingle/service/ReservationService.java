@@ -1,3 +1,4 @@
+/*
 package com.example.mingle.service;
 
 import com.example.mingle.domain.Reservation;
@@ -37,3 +38,4 @@ public class ReservationService {
         reservationRepository.deleteById(reservationId);
     }
 }
+*/

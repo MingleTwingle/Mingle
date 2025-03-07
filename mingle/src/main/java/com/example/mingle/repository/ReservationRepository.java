@@ -1,3 +1,4 @@
+/*
 package com.example.mingle.repository;
 
 import com.example.mingle.domain.Reservation;
@@ -9,3 +10,4 @@ import java.util.List;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByGuestId(Long guestId);
 }
+*/
