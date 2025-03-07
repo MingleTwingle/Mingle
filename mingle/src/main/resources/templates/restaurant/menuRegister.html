@@ -19,7 +19,7 @@
 </head>
 <body>
 <!-- 공통 네비게이션 바 포함 -->
-<div th:replace="fragments/navbar :: nav"></div>
+<div th:replace="~{fragments/navbar :: nav}"></div>
 <h2>Register a New Menu Item</h2>
 <div class="container">
 <form action="/menus/new" method="post">

@@ -73,7 +73,7 @@
 </div>
 
 <!-- 공통 네비게이션 바 포함 -->
-<div th:replace="fragments/navbar :: nav"></div>
+<div th:replace="~{fragments/navbar :: nav}"></div>
 
 <div class="container">
     <form th:action="@{/restaurants/filter}" th:object="${restaurantFilterForm}" method="post">

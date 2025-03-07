@@ -19,7 +19,7 @@
 </head>
 <body>
 <!-- 공통 네비게이션 바 포함 -->
-<div th:replace="fragments/navbar :: nav"></div>
+<div th:replace="~{fragments/navbar :: nav}"></div>
 <h2>Upload a Menu Photo</h2>
 <form action="/photos/upload" method="post" enctype="multipart/form-data">
   <label for="menuId">Menu ID:</label>
