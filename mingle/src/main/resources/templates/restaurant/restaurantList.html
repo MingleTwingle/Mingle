@@ -24,47 +24,71 @@
 <!-- 공통 네비게이션 바 포함 -->
 <div th:replace="fragments/navbar :: nav"></div>
 
-      <!-- 메인 컨테이너 -->
-      <div class="container-lg table-container">
-        <div class="card shadow-sm">
-          <div class="card-body p-4">
-            <h1 class="text-center text-primary display-4 mb-4">Restaurants List</h1>
+<!-- 메인 컨테이너 -->
+<div class="container-lg table-container">
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <h1 class="text-center text-primary display-4 mb-4">레스토랑 목록</h1>
 
-            <!-- 반응형 테이블 -->
-            <div class="table-responsive">
-              <table class="table table-striped table-hover table-bordered w-100">
-                <thead class="table-dark">
-                <tr>
-                  <th>Restaurant ID</th>
-                  <th>Name</th>
-                  <th>Location</th>
-                  <th>Parking</th>
-                  <th>Open Time</th>
-                  <th>End Time</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="restaurant : ${restaurants}">
-                  <td th:text="${restaurant.restaurant_id}"></td>
-                  <td th:text="${restaurant.restaurantName}"></td>
-                  <td th:text="${restaurant.restaurantLocation}"></td>
-                  <td>
-                    <span class="badge bg-success" th:if="${restaurant.restaurantParking}">Yes</span>
-                    <span class="badge bg-danger" th:unless="${restaurant.restaurantParking}">No</span>
-                  </td>
-                  <td th:text="${restaurant.restaurantOpenTime}"></td>
-                  <td th:text="${restaurant.restaurantEndTime}"></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+      <!-- 반응형 테이블 -->
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered w-100">
+          <thead class="table-dark">
+          <tr>
+            <th>Restaurant ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Parking</th>
+            <th>Open Time</th>
+            <th>End Time</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="restaurant : ${restaurants}" class="restaurant-card" data-restaurant-id="${restaurant.restaurant_id}" data-restaurant-name="${restaurant.restaurantName}" data-restaurant-location="${restaurant.restaurantLocation}" data-restaurant-parking="${restaurant.restaurantParking}" data-restaurant-open-time="${restaurant.restaurantOpenTime}" data-restaurant-end-time="${restaurant.restaurantEndTime}">
+            <td th:text="${restaurant.restaurant_id}"></td>
+            <td th:text="${restaurant.restaurantName}"></td>
+            <td th:text="${restaurant.restaurantLocation}"></td>
+            <td>
+              <span class="badge bg-success" th:if="${restaurant.restaurantParking}">Yes</span>
+              <span class="badge bg-danger" th:unless="${restaurant.restaurantParking}">No</span>
+            </td>
+            <td th:text="${restaurant.restaurantOpenTime}"></td>
+            <td th:text="${restaurant.restaurantEndTime}"></td>
+          </tr>
+          </tbody>
+        </table>
       </div>
-
+    </div>
+  </div>
+</div>
 
 <!-- Bootstrap JS 추가 -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script>
+  // 레스토랑 카드 클릭 시 모달에 데이터 삽입
+  document.querySelectorAll('.col-md-6 col-lg-4').forEach(card => {
+    card.addEventListener('click', function() {
+      const restaurantName = this.getAttribute('data-restaurant-name');
+      const restaurantLocation = this.getAttribute('data-restaurant-location');
+      const restaurantOpenTime = this.getAttribute('data-restaurant-open-time');
+      const restaurantEndTime = this.getAttribute('data-restaurant-end-time');
+      const parking = this.getAttribute('data-restaurant-parking') === 'true';
+
+      // 모달에 데이터 설정
+      document.getElementById('modal-restaurant-name').textContent = restaurantName;
+      document.getElementById('modal-restaurant-location').textContent = restaurantLocation;
+      document.getElementById('modal-restaurant-open-time').textContent = restaurantOpenTime;
+      document.getElementById('modal-restaurant-end-time').textContent = restaurantEndTime;
+      document.getElementById('modal-restaurant-parking').style.display = parking ? 'inline-flex' : 'none';
+
+      // 모달을 강제로 띄우는 방법
+      const myModal = new bootstrap.Modal(document.getElementById('restaurantModal'), {
+        keyboard: false
+      });
+      myModal.show();
+    });
+  });
+</script>
 
 </body>
 </html>

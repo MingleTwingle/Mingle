@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>레스토랑 목록 | Mingle</title>
+    <title>레스토랑 목록</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -350,8 +351,8 @@
                     </div>
 
                     <div class="price-info">
-                        ₩<span th:text="${restaurant.restaurantPrice}">30,000</span>
-                        <span class="price-unit">/ 인</span>
+                        <span th:text="${restaurant.restaurantPrice}">30,000</span>
+                        <span class="price-unit">/ 원</span>
                     </div>
 
                     <div class="restaurant-hours">
@@ -472,10 +473,13 @@
             </div>
         </div>
     </div>
+
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+
+
     // 필터 아이템 클릭 이벤트
     document.querySelectorAll('.filter-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -501,6 +505,37 @@
             }
         });
     });
+
+    // 레스토랑 카드 클릭 시 모달에 데이터 삽입
+    document.querySelectorAll('.col-md-6 col-lg-4').forEach(card => {
+        card.addEventListener('click', function() {
+            const restaurantName = this.getAttribute('data-restaurant-name');
+            const restaurantDescription = this.getAttribute('data-restaurant-description');
+            const restaurantLocation = this.getAttribute('data-restaurant-location');
+            const restaurantHours = this.getAttribute('data-restaurant-hours');
+            const restaurantPrice = this.getAttribute('data-restaurant-price');
+            const parking = this.getAttribute('data-restaurant-parking') === 'true';
+            const wifi = this.getAttribute('data-restaurant-wifi') === 'true';
+
+            // 모달에 데이터 설정
+            document.getElementById('modal-restaurant-name').textContent = restaurantName;
+            document.getElementById('modal-restaurant-description').textContent = restaurantDescription;
+            document.getElementById('modal-restaurant-location').textContent = restaurantLocation;
+            document.getElementById('modal-restaurant-open-time').textContent = restaurantHours.split(' - ')[0];
+            document.getElementById('modal-restaurant-end-time').textContent = restaurantHours.split(' - ')[1];
+            document.getElementById('modal-restaurant-price').textContent = restaurantPrice;
+            document.getElementById('modal-restaurant-parking').style.display = parking ? 'inline-flex' : 'none';
+            document.getElementById('modal-restaurant-wifi').style.display = wifi ? 'inline-flex' : 'none';
+
+            // 모달을 강제로 띄우는 방법
+            const myModal = new bootstrap.Modal(document.getElementById('restaurantModal'), {
+                keyboard: false
+            });
+            myModal.show();
+        });
+    });
+
 </script>
+
 </body>
 </html>
