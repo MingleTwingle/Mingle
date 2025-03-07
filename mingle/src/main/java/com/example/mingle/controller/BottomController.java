@@ -19,7 +19,7 @@ public class BottomController {
         return "/bottom/careers/apply";
     }
 
-    @GetMapping("/bottom/careers/apply")
+    @PostMapping("/bottom/careers/apply")
     public String submitApplication(@RequestParam("name") String name,
                                     @RequestParam("email") String email,
                                     @RequestParam("phone") String phone,
