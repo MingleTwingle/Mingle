@@ -1,29 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mingle 예약 서비스</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome & Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        body{
-            font-family: 'Noto Sans KR', sans-serif, 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            font-weight: 400;
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffeef8; /* 부드러운 핑크톤 배경 */
+            margin: 0;
+            padding: 0;
             color: #333;
+        }
+        /* Hero 섹션 */
+        .hero {
+            background: linear-gradient(135deg, #ff7eb9, #ff65a3);
+            color: #fff;
+            padding: 100px 20px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 1.25rem;
+        }
+        .btn-romantic {
+            background-color: #ff65a3;
+            border-color: #ff65a3;
+            color: #fff;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        .btn-romantic:hover {
+            background-color: #ff7eb9;
+            border-color: #ff7eb9;
+        }
+        /* Booking 섹션 */
+        .booking-section {
+            padding: 60px 0;
+        }
+        .booking-section h2 {
+            color: #ff65a3;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+        .booking-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .booking-card:hover {
+            transform: translateY(-5px);
+        }
+        .booking-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .booking-card .card-body {
+            padding: 20px;
+        }
+        .booking-card .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ff65a3;
+            margin-bottom: 10px;
+        }
+        .booking-card .card-text {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .booking-card .package-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #34A853;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
-<!-- 공통 네비게이션 바 포함 -->
 <div th:replace="fragments/navbar :: nav"></div>
 <br>
 <br>
 <br>
-<br>
-<h2>지금 뭐해</h2>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <h1>예약 서비스</h1>
+        <p>로맨틱한 레스토랑과 숙소를 예약하고, 특별한 추억을 만들어 보세요.</p>
+        <a href="#booking" class="btn btn-romantic btn-lg">예약하러 가기</a>
+    </div>
+</section>
+
+<!-- Booking Section -->
+<section id="booking" class="booking-section">
+    <div class="container">
+        <h2 class="text-center mb-5">예약 가능한 서비스</h2>
+        <div class="row g-4">
+            <!-- 로맨틱 레스토랑 카드 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card booking-card">
+                    <img src="https://images.unsplash.com/photo-1576671080085-d2cfa33a8402?auto=format&fit=crop&w=800&q=60" alt="로맨틱 레스토랑">
+                    <div class="card-body">
+                        <h5 class="card-title">로맨틱 레스토랑</h5>
+                        <p class="card-text">특별한 날, 사랑하는 사람과 함께하는 맛있는 식사. 분위기와 맛, 두 가지 모두를 즐기세요.</p>
+                        <p class="package-price">₩150,000</p>
+                        <a href="/restaurant-booking" class="btn btn-romantic w-100">예약하기</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 로맨틱 숙소 카드 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card booking-card">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=60" alt="로맨틱 숙소">
+                    <div class="card-body">
+                        <h5 class="card-title">로맨틱 숙소</h5>
+                        <p class="card-text">감성적인 인테리어와 아늑한 분위기의 숙소에서 둘만의 시간을 즐겨보세요.</p>
+                        <p class="package-price">₩200,000</p>
+                        <a href="/accommodation-booking" class="btn btn-romantic w-100">예약하기</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 스페셜 패키지 카드 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card booking-card">
+                    <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=800&q=60" alt="스페셜 패키지">
+                    <div class="card-body">
+                        <h5 class="card-title">스페셜 패키지</h5>
+                        <p class="card-text">레스토랑과 숙소를 함께 예약하면 할인 혜택까지! 완벽한 커플을 위한 스페셜 플랜.</p>
+                        <p class="package-price">₩300,000</p>
+                        <a href="/special-package" class="btn btn-romantic w-100">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
