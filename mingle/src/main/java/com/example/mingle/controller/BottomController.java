@@ -15,7 +15,7 @@ public class BottomController {
     }
 
     @GetMapping("/bottom/careers/apply")
-    public String showapplyForm() {
+    public String showApplyForm() {
         return "/bottom/careers/apply";
     }
 
@@ -30,11 +30,6 @@ public class BottomController {
         System.out.println("지원 완료: " + name + " - " + email);
         return "redirect:/";
     }
-
-  /*  @GetMapping("/bottom/blog/blog")
-    public String blog() {
-        return "bottom/blog/blog";  // templates/bottom/blog.html로 이동
-    }*/
 
     @GetMapping("/bottom/press")
     public String press() {

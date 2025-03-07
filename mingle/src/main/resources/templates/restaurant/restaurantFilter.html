@@ -51,6 +51,26 @@
     </style>
 </head>
 <body>
+<!-- 모달 -->
+<div class="modal fade" id="restaurantModal" tabindex="-1" role="dialog" aria-labelledby="restaurantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="restaurantModalLabel">레스토랑 상세정보</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="restaurantDetailContent">
+                <!-- 레스토랑 상세 정보가 여기에 로드됨 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="reserveButton">예약하기</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- 공통 네비게이션 바 포함 -->
 <div th:replace="fragments/navbar :: nav"></div>
@@ -83,6 +103,31 @@
         <button type="submit" class="search-btn">검색</button>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        // 레스토랑 카드 클릭 시 모달 열기
+        $('.restaurant-card').click(function() {
+            var restaurantId = $(this).attr('data-restaurant-id');
+
+            // 상세 정보 로드
+            $('#restaurantDetailContent').load('/restaurant/detail/' + restaurantId, function(response, status, xhr) {
+                if (status == "error") {
+                    $('#restaurantDetailContent').html("<p>레스토랑 정보를 불러오지 못했습니다.</p>");
+                }
+            });
+
+            // 모달 표시
+            $('#restaurantModal').modal('show');
+        });
+
+        // 예약 버튼 클릭 시 예약 페이지로 이동
+        $('#reserveButton').click(function() {
+            alert('예약 페이지로 이동합니다.');
+            window.location.href = '/reservation/form';
+        });
+    });
+</script>
 
 </body>
 </html>
