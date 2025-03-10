@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -15,8 +16,6 @@ public class AccommodationForm {
     private String location;
     private boolean parkingAvailable;
     private boolean morningAvailable;
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime checkInTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime checkOutTime;
+    private LocalTime checkInTime;
+    private LocalTime checkOutTime;
 }

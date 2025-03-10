@@ -6,6 +6,7 @@ import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ public class AccommodationService {
     }
 
     //지역으로 숙소 찾기
-    public List<Accommodation> searchAccommodation(String location, LocalDateTime checkInTime, LocalDateTime checkOutTime) {
+    public List<Accommodation> searchAccommodation(String location, LocalTime checkInTime, LocalTime checkOutTime) {
         List<Accommodation> filteredAccommodations = accommodationRepository.findAll().stream()
                 .filter(a -> a.getLocation().equals(location))
                 .filter(a -> checkInTime == null || a.getCheckInTime() == null || !a.getCheckInTime().isBefore(checkInTime))

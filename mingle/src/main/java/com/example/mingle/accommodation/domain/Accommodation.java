@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -30,10 +31,10 @@ public class Accommodation {
     private boolean morningAvailable;
 
     @Column(name = "accommodation_checkin_time")
-    private LocalDateTime checkInTime;
+    private LocalTime checkInTime;
 
     @Column(name = "accommodation_checkout_time")
-    private LocalDateTime checkOutTime;
+    private LocalTime checkOutTime;
 
     // 1:N 관계 설정
     @OneToMany(mappedBy = "accommodation")
