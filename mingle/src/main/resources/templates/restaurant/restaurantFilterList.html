@@ -207,34 +207,33 @@
         font-size: 0.85rem;
     }
 
-    /* 에어비앤비 스타일 편의시설 배지 */
     .restaurant-features {
         display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin: 6px 0;
+        gap: 8px;
+        margin-top: 8px;
     }
-
     .feature-badge {
-        font-size: 0.75rem;
-        padding: 4px 8px;
-        border-radius: 4px;
-        background-color: #F5F5F5;
-        color: #555;
-        display: inline-flex;
+        display: flex;
         align-items: center;
+        gap: 6px;
+        background-color: #F7F9FC;
+        color: #2D2D2D;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        transition: all 0.2s ease-in-out;
     }
-
     .feature-icon {
-        margin-right: 4px;
-        color: var(--primary-color);
-        font-size: 0.75rem;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        color: #4285F4; /* Google 블루 */
     }
-
-    .feature-text {
-        font-size: 0.75rem;
-    }
-
     /* 운영 시간 */
     .restaurant-hours {
         display: flex;
@@ -253,20 +252,6 @@
         margin-right: 4px;
         color: var(--primary-color);
         font-size: 0.75rem;
-    }
-
-    /* 가격 정보 */
-    .price-info {
-        font-weight: 600;
-        font-size: 0.95rem;
-        margin-top: auto;
-        color: var(--text-color);
-    }
-
-    .price-unit {
-        font-weight: normal;
-        color: #717171;
-        font-size: 0.85rem;
     }
 
     /* 반응형 */
@@ -339,12 +324,10 @@
 
                         <div class="restaurant-features">
                         <span class="feature-badge" th:if="${restaurant.restaurantParking != null and restaurant.restaurantParking}">
-                            <i class="feature-icon fas fa-parking"></i>
-                            <span class="feature-text">주차</span>
+                            <i class="feature-icon fas fa-square-parking"></i>주차
                         </span>
                             <span class="feature-badge">
-                            <i class="feature-icon fas fa-wifi"></i>
-                            <span class="feature-text">와이파이</span>
+                            <i class="feature-icon fas fa-wifi"></i>와이파이
                         </span>
                         </div>
                         <div class="restaurant-hours">
@@ -361,6 +344,7 @@
                 </div>
             </div>
     </div>
+</div>
 
     <script>
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
@@ -422,6 +406,5 @@
         });
 
     </script>
-
 </body>
 </html>

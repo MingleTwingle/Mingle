@@ -20,21 +20,26 @@
             <th>예약번호</th>
             <th>레스토랑/숙소</th>
             <th>예약일</th>
+            <th>인원수</th>
+            <th>취소여부</th>
             <th>시간</th>
-            <th>상태</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="reservation : ${reservations}">
             <td th:text="${reservation.id}"></td>
-            <td th:text="${reservation.placeName}"></td>
+
+            <!-- 레스토랑과 숙소 구분 -->
+            <td th:if="${reservation.restaurantId != null}" th:text="'레스토랑 (ID: ' + ${reservation.restaurantId} + ')'"></td>
+            <td th:if="${reservation.accommodationRoomId != null}" th:text="'숙소 (ID: ' + ${reservation.accommodationRoomId} + ')'"></td>
+
             <td th:text="${reservation.date}"></td>
-            <td th:text="${reservation.time}"></td>
-            <td th:text="${reservation.status}"></td>
+            <td th:text="${reservation.people}"></td>
+            <td th:text="${reservation.cancel}"></td>
+            <td th:text="${reservation.newTime}"></td>
         </tr>
         </tbody>
     </table>
 </div>
-
 </body>
 </html>

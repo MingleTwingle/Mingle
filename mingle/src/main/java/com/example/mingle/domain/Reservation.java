@@ -1,4 +1,3 @@
-/*
 package com.example.mingle.domain;
 
 import jakarta.persistence.*;
@@ -21,9 +20,9 @@ public class Reservation {
     @Column(name = "reservation_cancel")
     private String cancel;
     @Column(name = "restaurant_id")
-    private String restaurant_id;
+    private String restaurantId;
     @Column(name = "accommodationRoom_Id")
-    private String accommodationRoom_Id;
+    private String accommodationRoomId;
     @Column(name = "guest_key")
     private String key;
     private String newTime;
@@ -32,4 +31,4 @@ public class Reservation {
         this.newTime = newTime;
     }
 }
-*/
+
