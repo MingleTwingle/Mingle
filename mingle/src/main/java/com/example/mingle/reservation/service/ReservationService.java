@@ -1,8 +1,8 @@
-/*
-package com.example.mingle.service;
+package com.example.mingle.reservation.service;
 
-import com.example.mingle.domain.Reservation;
-import com.example.mingle.repository.ReservationRepository;
+import com.example.mingle.reservation.domain.Reservation;
+
+import com.example.mingle.reservation.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
@@ -38,4 +38,4 @@ public class ReservationService {
         reservationRepository.deleteById(reservationId);
     }
 }
-*/
+

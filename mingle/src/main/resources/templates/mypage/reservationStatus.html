@@ -13,7 +13,6 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">예약 현황 조회</h2>
 
-
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -23,20 +22,29 @@
             <th>인원수</th>
             <th>취소여부</th>
             <th>시간</th>
+            <th>작업</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="reservation : ${reservations}">
             <td th:text="${reservation.id}"></td>
 
-            <!-- 레스토랑과 숙소 구분 -->
-            <td th:if="${reservation.restaurantId != null}" th:text="'레스토랑 (ID: ' + ${reservation.restaurantId} + ')'"></td>
-            <td th:if="${reservation.accommodationRoomId != null}" th:text="'숙소 (ID: ' + ${reservation.accommodationRoomId} + ')'"></td>
+            <!-- 레스토랑과 숙소 구분, 동시에 나타나지 않도록 처리 -->
+            <td>
+                <span th:if="${reservation.restaurantId != null}" th:text="'레스토랑 (ID: ' + ${reservation.restaurantId} + ')'"></span>
+                <span th:if="${reservation.accommodationRoomId != null}" th:text="'숙소 (ID: ' + ${reservation.accommodationRoomId} + ')'"></span>
+            </td>
 
             <td th:text="${reservation.date}"></td>
             <td th:text="${reservation.people}"></td>
             <td th:text="${reservation.cancel}"></td>
             <td th:text="${reservation.newTime}"></td>
+
+            <!-- 수정 버튼 추가 -->
+            <td>
+                <a th:href="@{/reservations/edit/{id}(id=${reservation.id})}" class="btn btn-warning">수정</a>
+                <a th:href="@{/reservations/delete/{id}(id=${reservation.id})}" class="btn btn-warning">삭제</a>
+            </td>
         </tr>
         </tbody>
     </table>
