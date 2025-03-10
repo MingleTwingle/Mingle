@@ -26,6 +26,7 @@ public class Restaurant {
     @Column(name = "restaurant_end_time", nullable = false)
     private LocalTime restaurantEndTime;
 
+
     @OneToMany(mappedBy = "restaurant")
     private List<RestaurantOutterPhoto> outterPhotos;
 
