@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 @Service
-public class GuestService implements UserDetailsService {
+public class GuestService {
 
     private final GuestRepository guestRepository;
     private final  PasswordEncoder passwordEncoder ;
@@ -37,14 +37,14 @@ public class GuestService implements UserDetailsService {
                 });
     }
 
-    public boolean validateLogin(String idid, String password) {
-        Optional<Guest> optionalGuest = guestRepository.findByIdid(idid);
-        if (optionalGuest.isPresent() && optionalGuest.get().getPassword().equals(password)) {
-            System.out.println("LOGIN SUCCESS");
-            return true;
-        }
-        return false;
-    }
+//    public boolean validateLogin(String idid, String password) {
+//        Optional<Guest> optionalGuest = guestRepository.findByIdid(idid);
+//        if (optionalGuest.isPresent() && optionalGuest.get().getPassword().equals(password)) {
+//            System.out.println("LOGIN SUCCESS");
+//            return true;
+//        }
+//        return false;
+//    }
 
     public List<Guest> findUser() {
         return guestRepository.findAll();
@@ -55,30 +55,22 @@ public class GuestService implements UserDetailsService {
 //    }
 //
 
-    @Override
-    public UserDetails loadUserByUsername(String idid) throws UsernameNotFoundException {
-        System.out.println("🔍 로그인 시도: " + idid); // 디버깅 로그
-
-        Guest guest = guestRepository.findByIdid(idid)
-                .orElseThrow(() -> {
-                    System.out.println("❌ 로그인 실패: 아이디 없음");
-                    return new UsernameNotFoundException("User not found");
-                });
-
-        System.out.println("✅ 로그인 성공: " + guest.getIdid());
-
-        return User.builder()
-                .username(guest.getIdid())
-                .password(guest.getPassword()) // Spring Security가 자동으로 비밀번호 검증
-                .roles("USER")
-                .build();
-    }
-    public Guest findByEmail(String email) {
-        return (Guest) guestRepository.findByEmail(email)
-                .orElse(null); // orElseThrow(() -> new IllegalArgumentException("해당 이메일로 사용자를 찾을 수 없습니다."));
-    }
-
-    public Guest findByIdid(String idid) {
-        return guestRepository.findByIdid(idid).orElse(null);
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String idid) throws UsernameNotFoundException {
+//        System.out.println("🔍 로그인 시도: " + idid); // 디버깅 로그
+//
+//        Guest guest = guestRepository.findByIdid(idid)
+//                .orElseThrow(() -> {
+//                    System.out.println("❌ 로그인 실패: 아이디 없음");
+//                    return new UsernameNotFoundException("User not found");
+//                });
+//
+//        System.out.println("✅ 로그인 성공: " + guest.getIdid());
+//
+//        return User.builder()
+//                .username(guest.getIdid())
+//                .password(guest.getPassword()) // Spring Security가 자동으로 비밀번호 검증
+//                .roles("USER")
+//                .build();
+//    }
 }

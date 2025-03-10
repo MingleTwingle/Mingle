@@ -34,24 +34,11 @@ public class GuestController {
 
     // Spring Security가 자동으로 로그인 검증을 처리하므로 직접 로그인 검증 코드 제거
 
-    @GetMapping("/loginSuccess")
-    public String loginSuccess(HttpSession session) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName(); // 로그인한 사용자 이름 (이메일)
-
-        System.out.println("로그인된 사용자 이메일: " + username);
-
-        Guest loggedInUser = guestService.findByIdid(username); // ✅ idid로 검색
-
-
-        if (loggedInUser != null) {
-            session.setAttribute("guestId", loggedInUser.getId()); // ✅ guest_id 저장
-            System.out.println("로그인된 사용자 아이디: " + loggedInUser.getId());
-        } else {
-            throw new IllegalStateException("해당 이메일로 사용자를 찾을 수 없습니다.");
-        }
-
-        return "redirect:/";
+    // 로그아웃 처리 (Spring Security가 자동으로 처리하지만, 로그아웃 후 메시지 전달 가능)
+    @GetMapping("/logout")
+    public String logout(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("logoutMessage", "로그아웃되었습니다.");
+        return "redirect:/login";
     }
 
 
