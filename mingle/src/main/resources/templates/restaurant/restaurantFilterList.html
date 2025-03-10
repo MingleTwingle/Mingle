@@ -121,20 +121,18 @@
 
     .card-img-container {
         position: relative;
-        padding-top: 66.67%; /* 3:2 비율 */
+        width: 100%;
+        height: 200px; /* 고정 높이 설정 */
         border-radius: 12px;
         overflow: hidden;
     }
 
-    .card-img-top {
-        position: absolute;
-        top: 0;
-        left: 0;
+    .card-img-container img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s;
+        object-fit: cover; /* 이미지가 컨테이너에 꽉 차도록 설정 */
     }
+
 
     .restaurant-card:hover .card-img-top {
         transform: scale(1.05);
@@ -318,13 +316,12 @@
         <div class="col-md-6 col-lg-4" th:each="restaurant : ${restaurants}">
             <div class="restaurant-card">
                 <div class="card-img-container">
-                    <div th:if="${!restaurant.outterPhotos.isEmpty()}">
-                        <img th:src="${restaurant.outterPhotos[0].image}" />
-                        <button class="favorite-btn">
-                            <i class="far fa-heart"></i>
-                        </button>
-                    </div>
-                    <div class="card-body">
+                    <img th:if="${!restaurant.outterPhotos.isEmpty()}" th:src="${restaurant.outterPhotos[0].image}" alt="레스토랑 이미지">
+                    <button class="favorite-btn">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="card-body">
                         <div class="rating">
                             <div class="rating-stars">
                                 <i class="fas fa-star"></i>
