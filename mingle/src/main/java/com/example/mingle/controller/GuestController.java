@@ -46,6 +46,7 @@ public class GuestController {
 
         if (loggedInUser != null) {
             session.setAttribute("guestId", loggedInUser.getId()); // ✅ guest_id 저장
+            System.out.println("로그인된 사용자 아이디: " + loggedInUser.getId());
         } else {
             throw new IllegalStateException("해당 이메일로 사용자를 찾을 수 없습니다.");
         }

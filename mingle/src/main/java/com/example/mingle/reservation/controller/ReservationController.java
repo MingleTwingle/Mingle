@@ -31,8 +31,9 @@ public class ReservationController {
     // 예약 현황 조회 (로그인한 사용자만 본인 예약을 조회)
     @GetMapping("/reservationStatus")
     public String getReservations(HttpSession session, Model model) {
-        Guest guest = getGuestFromSession(session);
-        List<Reservation> reservations = reservationRepository.findByGuest_Id(guest.getId()); // findByGuest_Id로 수정
+        Long guest = (Long) session.getAttribute("guestId");
+        List<Reservation> reservations = reservationRepository.findByGuest_Id(guest); // findByGuest_Id로 수정
+        System.out.println("뺀 데이터"+reservations);
         model.addAttribute("reservations", reservations);
         return "mypage/reservationStatus"; // 예약 목록을 보여주는 페이지
     }
