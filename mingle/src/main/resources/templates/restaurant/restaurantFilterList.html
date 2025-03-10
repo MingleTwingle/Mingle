@@ -301,6 +301,7 @@
         <div class="col-md-6 col-lg-4" th:each="restaurant : ${restaurants}">
             <div class="restaurant-card">
                 <div class="card-img-container">
+                    <a th:href="@{/restaurants/{id}(id=${restaurant.id})}" class="stretched-link"></a>
                     <img th:if="${!restaurant.outterPhotos.isEmpty()}" th:src="${restaurant.outterPhotos[0].image}" alt="레스토랑 이미지">
                     <button class="favorite-btn">
                         <i class="far fa-heart"></i>

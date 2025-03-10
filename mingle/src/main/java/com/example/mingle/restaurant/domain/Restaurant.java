@@ -13,7 +13,8 @@ import java.util.List;
 @Table(name = "tbl_restaurant_info")
 public class Restaurant {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long restaurant_id;
+    @Column(name = "restaurant_id")
+    private Long id;
     @Column(name = "restaurant_Name", nullable = false)
     private String restaurantName;
     @Column(name = "restaurant_Location", nullable = false)

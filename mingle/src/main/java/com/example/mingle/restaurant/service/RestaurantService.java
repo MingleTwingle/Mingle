@@ -19,7 +19,7 @@ public class RestaurantService {
         try {
             validateDuplicationMember(restaurant);
             restaurantRepository.save(restaurant);
-            return restaurant.getRestaurant_id();
+            return restaurant.getId();
         } catch (Exception e) {
             System.out.println("Error saving restaurant: " + e.getMessage());
             throw e;
@@ -48,5 +48,12 @@ public class RestaurantService {
 
         filteredRestaurants.forEach(System.out::println);
         return filteredRestaurants;
+    }
+    public Restaurant findById(Long id) {
+        return restaurantRepository.findById(id).orElse(null);
+    }
+
+    public List<Restaurant> getAllRestaurants() {
+        return restaurantRepository.findAll();
     }
 }

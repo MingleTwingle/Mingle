@@ -5,13 +5,19 @@ import com.example.mingle.accommodation.domain.Accommodation;
 import com.example.mingle.restaurant.domain.Restaurant;
 import com.example.mingle.restaurant.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -91,5 +97,16 @@ public class RestaurantController {
         List<Restaurant> restaurants = restaurantService.findRestaurant();
         model.addAttribute("restaurants", restaurants);
         return "restaurant/restaurantFilterList";
+    }
+    // 🔹 레스토랑 상세 페이지 조회
+    @GetMapping("/restaurants/{id}")
+    public String getRestaurantDetail(@PathVariable Long id, Model model) {
+        Restaurant restaurant = restaurantService.findById(id);
+        if (restaurant == null) {
+            return "error/404";  // 데이터가 없을 경우 404 페이지
+        }
+
+        model.addAttribute("restaurant", restaurant);
+        return "restaurant/detail";  // 상세 페이지 템플릿
     }
 }
