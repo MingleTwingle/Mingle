@@ -34,9 +34,15 @@
     <div class="card-header">예약 관리</div>
     <div class="card-body">
       <ul class="list-group">
-        <li class="list-group-item">예약 현황 조회</li>
-        <li class="list-group-item">예약 수정</li>
-        <li class="list-group-item">예약 취소</li>
+        <li class="list-group-item">
+          <a th:href="@{/mypage/reservationStatus}" class="text-decoration-none">예약 현황 조회</a>
+        </li>
+        <li class="list-group-item">
+          <a th:href="@{/mypage/reservationEdit}" class="text-decoration-none">예약 수정</a>
+        </li>
+        <li class="list-group-item">
+          <a th:href="@{/mypage/reservationCancel}" class="text-decoration-none">예약 취소</a>
+        </li>
       </ul>
     </div>
   </div>

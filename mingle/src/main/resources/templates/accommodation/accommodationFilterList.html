@@ -132,19 +132,17 @@
 
         .card-img-container {
             position: relative;
-            padding-top: 66.67%; /* 3:2 비율 */
             border-radius: 12px;
             overflow: hidden;
+            width: 100%;
+            height: 200px; /* 고정된 높이 대신 auto로 설정 가능 */
         }
 
-        .card-img-top {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .card-img-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
+            object-fit: cover; /* 이미지를 잘리지 않고 비율 유지 */
+            display: block;
         }
 
         .accommodation-card:hover .card-img-top {
@@ -348,11 +346,11 @@
                         <span class="rating-count">(123)</span>
                     </div>
 
-                    <h5 class="accommodation-name" th:text="${accommodation.name}">비치사이드 리조트</h5>
+                    <h5 class="accommodation-name" th:text="${accommodation.name}"></h5>
 
                     <div class="accommodation-location">
                         <i class="location-icon fas fa-map-marker-alt"></i>
-                        <span th:text="${accommodation.location}">제주, 중문</span>
+                        <span th:text="${accommodation.location}"></span>
                     </div>
 
                     <div class="accommodation-features">

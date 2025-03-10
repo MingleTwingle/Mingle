@@ -118,7 +118,20 @@ public class GuestController {
 
     @GetMapping("/myPage")
     public String showmyPage() {
-        return "mypage";
+        return "mypage/mypage";
+    }
+
+    @GetMapping("/mypage/reservationStatus")
+    public String reservationStatus(Model model) {
+        return "mypage/reservationStatus";
+    }
+    @GetMapping("/mypage/reservationEdit")
+    public String reservationEdit(Model model) {
+        return "mypage/reservationEdit";
+    }
+    @GetMapping("/mypage/reservationCancel")
+    public String reservationCancel(Model model) {
+        return "mypage/reservationCancel";
     }
 
 }
