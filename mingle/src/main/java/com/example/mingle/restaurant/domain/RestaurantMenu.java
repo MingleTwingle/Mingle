@@ -11,16 +11,16 @@ import lombok.Setter;
 public class RestaurantMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "restaurantmenu_id")
+    @Column(name = "restaurant_menu_id")
     private Long id;
 
-    @Column(name = "restaurantmenu_menu")
+    @Column(name = "restaurant_menu_menu")
     private String menu;
 
-    @Column(name = "restaurantmenu_category")
+    @Column(name = "restaurant_menu_category")
     private String category;
 
-    @Column(name = "restaurantmenu_cost")
+    @Column(name = "restaurant_menu_cost")
     private int cost;
 
     @ManyToOne

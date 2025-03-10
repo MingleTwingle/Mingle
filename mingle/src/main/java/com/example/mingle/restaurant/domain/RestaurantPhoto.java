@@ -11,7 +11,7 @@ import lombok.Setter;
 public class RestaurantPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "restaurantphoto_id")
+    @Column(name = "restaurant_photo_id")
     private Long id;
 
     @Lob
@@ -19,6 +19,6 @@ public class RestaurantPhoto {
     private byte[] photo;
 
     @ManyToOne
-    @JoinColumn(name = "restaurantmenu_id")
+    @JoinColumn(name = "restaurant_menu_id")
     private RestaurantMenu restaurantMenu;
 }

@@ -15,11 +15,11 @@ public class Restaurant {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "restaurant_id")
     private Long id;
-    @Column(name = "restaurant_Name", nullable = false)
+    @Column(name = "restaurant_name", nullable = false)
     private String restaurantName;
-    @Column(name = "restaurant_Location", nullable = false)
+    @Column(name = "restaurant_location", nullable = false)
     private String restaurantLocation;
-    @Column(name = "restaurant_Parking", nullable = false)
+    @Column(name = "restaurant_parking", nullable = false)
     private boolean restaurantParking;
     @Column(name = "restaurant_open_time", nullable = false)
     private LocalTime restaurantOpenTime;

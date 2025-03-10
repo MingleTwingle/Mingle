@@ -21,7 +21,7 @@ public class Reservation {
     private String cancel;
     @Column(name = "restaurant_id")
     private String restaurantId;
-    @Column(name = "accommodationRoom_Id")
+    @Column(name = "accommodation_room_id")
     private String accommodationRoomId;
     @Column(name = "guest_key")
     private String key;

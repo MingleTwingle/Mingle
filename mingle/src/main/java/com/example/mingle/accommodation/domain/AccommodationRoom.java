@@ -11,22 +11,22 @@ import lombok.Setter;
 public class AccommodationRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "accommodationRoom_Id")
+    @Column(name = "accommodation_room_Id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "accommodation_id")  // 숙소와 연결된 외래 키
     private Accommodation accommodation;
 
-    @Column(name = "accommodationRoom_cost")
+    @Column(name = "accommodation_room_cost")
     private int cost;
 
-    @Column(name = "accommodationRoom_min")
+    @Column(name = "accommodation_room_min")
     private int minCapacity;
 
-    @Column(name = "accommodationRoom_max")
+    @Column(name = "accommodation_room_max")
     private int maxCapacity;
 
-    @Column(name = "accommodationRoom_name")
+    @Column(name = "accommodation_room_name")
     private String name;
 }
