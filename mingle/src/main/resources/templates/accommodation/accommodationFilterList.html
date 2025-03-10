@@ -327,13 +327,13 @@
 <!-- 숙소 그리드 (에어비앤비 스타일) -->
 <div class="accommodation-grid">
     <div class="row">
-        <!-- 숙소 카드 반복 -->
         <div class="col-md-6 col-lg-4" th:each="accommodation : ${accommodations}">
-            <div class="accommodation-card">
+            <div class="accommodation-card" th:onclick="|window.location.href='/accommodationDetail/' + ${accommodation.id}|">
                 <div class="card-img-container">
                     <div th:if="${!accommodation.outterPhotos.isEmpty()}">
                         <img th:src="${accommodation.outterPhotos[0].image}" />
-                    </div>                    <button class="wishlist-btn">
+                    </div>
+                    <button class="wishlist-btn">
                         <i class="far fa-heart"></i>
                     </button>
                 </div>
@@ -346,23 +346,23 @@
                         <span class="rating-count">(123)</span>
                     </div>
 
-                    <h5 class="accommodation-name" th:text="${accommodation.name}"></h5>
+                    <h5 class="accommodation-name" th:text="${accommodation.name}">비치사이드 리조트</h5>
 
                     <div class="accommodation-location">
                         <i class="location-icon fas fa-map-marker-alt"></i>
-                        <span th:text="${accommodation.location}"></span>
+                        <span th:text="${accommodation.location}">제주, 중문</span>
                     </div>
 
                     <div class="accommodation-features">
-                        <span class="feature-badge" th:if="${accommodation.parkingAvailable}">
-                            <i class="feature-icon fas fa-parking"></i> 주차
-                        </span>
+                <span class="feature-badge" th:if="${accommodation.parkingAvailable}">
+                    <i class="feature-icon fas fa-parking"></i> 주차
+                </span>
                         <span class="feature-badge" th:if="${accommodation.morningAvailable}">
-                            <i class="feature-icon fas fa-coffee"></i> 조식
-                        </span>
+                    <i class="feature-icon fas fa-coffee"></i> 조식
+                </span>
                         <span class="feature-badge">
-                            <i class="feature-icon fas fa-wifi"></i> 와이파이
-                        </span>
+                    <i class="feature-icon fas fa-wifi"></i> 와이파이
+                </span>
                     </div>
 
                     <div class="price">
@@ -382,8 +382,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>

@@ -60,5 +60,13 @@ public class AccommodationService {
     public List<Accommodation> findAccommodation() {
         return accommodationRepository.findAll();
     }
+
+
+    public Accommodation findById(Long id) {
+        return accommodationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("숙소를 찾을 수 없습니다. ID: " + id));
+    }
+
 }
+
 

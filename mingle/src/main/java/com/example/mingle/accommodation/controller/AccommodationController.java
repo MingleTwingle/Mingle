@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -90,4 +92,21 @@ public class AccommodationController {
         model.addAttribute("accommodations", accommodations);
         return "accommodation/accommodationFilterList";
     }
+    @GetMapping("/accommodationDetail/{id}")
+    public String showAccommodationDetail(@PathVariable("id") Long id, Model model) {
+        System.out.println("요청된 숙소 ID: " + id);  // ✅ 디버깅용 로그 추가
+
+        // 숙소 정보 가져오기 (변수 선언 및 초기화)
+        Accommodation accommodation = accommodationService.findById(id);
+
+        if (accommodation == null) {
+            throw new RuntimeException("숙소 정보를 찾을 수 없습니다. ID: " + id);
+        }
+
+        // 모델에 숙소 정보 추가
+        model.addAttribute("accommodation", accommodation);
+
+        return "accommodation/accommodationDetail";  // ✅ 올바른 View 반환
+    }
+
 }
