@@ -1,6 +1,7 @@
 package com.example.mingle.reservation.domain;
 
 import com.example.mingle.domain.Guest;
+import com.example.mingle.domain.Host;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +37,10 @@ public class Reservation {
     @JoinColumn(name = "guest_key")
     private Guest guest;  // guest라는 필드명으로 변경
 
+    @ManyToOne
+    @JoinColumn(name = "host_key")
+    private Host host;  // host라는 필드명으로 변경
+
     private String newTime;
 
     public void setTime(String newTime) {
@@ -50,8 +55,6 @@ public class Reservation {
         }
     }
 
-
-
     public void setAccommodationRoomId(Long accommodationRoomId) {
         if (accommodationRoomId == null || accommodationRoomId.equals("")) {
             this.accommodationRoomId = null;
@@ -59,5 +62,4 @@ public class Reservation {
             this.accommodationRoomId = accommodationRoomId;
         }
     }
-
 }

@@ -27,14 +27,31 @@ public class ReservationController {
         }
         return new Guest(); // guestId를 통해 Guest 객체를 생성하는 방식
     }
+    private Guest getHostFromSession(HttpSession session) {
+        Long hostId = (Long) session.getAttribute("hostId");
+        if (hostId == null) {
+            throw new IllegalStateException("로그인이 필요합니다.");
+        }
+        return new Guest(); // hostId 통해 Guest 객체를 생성하는 방식
+    }
 
     // 예약 현황 조회 (로그인한 사용자만 본인 예약을 조회)
     @GetMapping("/reservationStatus")
     public String getReservations(HttpSession session, Model model) {
         Long guest = (Long) session.getAttribute("guestId");
-        List<Reservation> reservations = reservationRepository.findByGuest_Id(guest); // findByGuest_Id로 수정
-        System.out.println("뺀 데이터"+reservations);
-        model.addAttribute("reservations", reservations);
+        Long host = (Long) session.getAttribute("hostId");
+        System.out.println("게스트"+guest);
+        System.out.println("호스트"+host);
+        if (host == null) {
+            List<Reservation> reservations = reservationRepository.findByGuest_Id(guest); // findByGuest_Id로 수정
+            System.out.println("뺀 데이터"+reservations);
+            model.addAttribute("reservations", reservations);
+        }if(guest == null) {
+            List<Reservation> reservations = reservationRepository.findByHost_Id(host); // findByHost_Id로 수정
+            System.out.println("뺀 데이터"+reservations);
+            model.addAttribute("reservations", reservations);
+        }
+
         return "mypage/reservationStatus"; // 예약 목록을 보여주는 페이지
     }
 
