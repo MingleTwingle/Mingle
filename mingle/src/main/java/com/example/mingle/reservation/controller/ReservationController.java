@@ -1,19 +1,25 @@
 package com.example.mingle.reservation.controller;
 
 import com.example.mingle.domain.Guest;
+import com.example.mingle.repository.GuestRepository;
 import com.example.mingle.reservation.domain.Reservation;
 import com.example.mingle.reservation.repository.ReservationRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ReservationController {
 
     private final ReservationRepository reservationRepository;
+
+    @Autowired
+    private GuestRepository guestRepository; // GuestRepository 주입
 
     public ReservationController(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
@@ -22,11 +28,16 @@ public class ReservationController {
     // 공통적으로 사용되는 guestId를 가져오는 메소드
     private Guest getGuestFromSession(HttpSession session) {
         Long guestId = (Long) session.getAttribute("guestId");
+        System.out.println("세션 사용자 아이디: " + (Long) session.getAttribute("guestId"));
         if (guestId == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
-        return new Guest(); // guestId를 통해 Guest 객체를 생성하는 방식
+
+        // guestId를 통해 Guest 객체를 데이터베이스에서 찾기
+        Optional<Guest> guest = guestRepository.findById(guestId);
+        return guest.orElseThrow(() -> new IllegalStateException("로그인한 사용자를 찾을 수 없습니다."));
     }
+
     private Guest getHostFromSession(HttpSession session) {
         Long hostId = (Long) session.getAttribute("hostId");
         if (hostId == null) {
@@ -40,35 +51,40 @@ public class ReservationController {
     public String getReservations(HttpSession session, Model model) {
         Long guest = (Long) session.getAttribute("guestId");
         Long host = (Long) session.getAttribute("hostId");
-        System.out.println("게스트"+guest);
-        System.out.println("호스트"+host);
+
         if (host == null) {
             List<Reservation> reservations = reservationRepository.findByGuest_Id(guest); // findByGuest_Id로 수정
-            System.out.println("뺀 데이터"+reservations);
-            model.addAttribute("reservations", reservations);
-        }if(guest == null) {
-            List<Reservation> reservations = reservationRepository.findByHost_Id(host); // findByHost_Id로 수정
-            System.out.println("뺀 데이터"+reservations);
             model.addAttribute("reservations", reservations);
         }
-
+        if (guest == null) {
+            List<Reservation> reservations = reservationRepository.findByHost_Id(host); // findByHost_Id로 수정
+            model.addAttribute("reservations", reservations);
+        }
         return "mypage/reservationStatus"; // 예약 목록을 보여주는 페이지
     }
 
-    // 예약 추가 페이지 (form)
-    @GetMapping("/reservations/add")
-    public String addReservationForm() {
-        return "/reservationStatus"; // 예약 추가 폼
-    }
-
     // 예약 추가 처리
-    @PostMapping("/reservations")
-    public String addReservation(HttpSession session, @ModelAttribute Reservation reservation) {
-        Guest guest = getGuestFromSession(session); // 세션에서 guest 가져오기
-        reservation.setGuest(guest); // 예약에 guest 설정
+    @PostMapping("/reservation")
+    public String addReservation(HttpSession session,
+                                 @RequestParam("roomId") Long roomId,
+                                 @RequestParam("checkinDate") String checkinDate,
+                                 @RequestParam("stayDays") int stayDays) {
 
-        reservationRepository.save(reservation); // 예약 저장
-        return "redirect:/reservationStatus"; // 예약 목록 페이지로 리다이렉트
+        // 세션에서 로그인된 Guest 객체 가져오기
+        Guest guest = getGuestFromSession(session);
+
+        // Reservation 객체 생성
+        Reservation reservation = new Reservation();
+        reservation.setGuest(guest); // 로그인한 Guest와 예약 연결
+        reservation.setAccommodationRoomId(roomId); // 선택한 객실 ID 설정
+        reservation.setDate(checkinDate); // 체크인 날짜 설정
+        reservation.setPeople(String.valueOf(stayDays)); // 숙박 기간을 'people' 필드에 저장
+
+        // 예약 저장
+        reservationRepository.save(reservation);
+
+        // 예약 목록 페이지로 리다이렉트
+        return "redirect:/reservationStatus";
     }
 
     // 예약 수정 페이지 (form)

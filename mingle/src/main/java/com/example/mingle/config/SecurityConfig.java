@@ -32,7 +32,7 @@ public class SecurityConfig {
                 )
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/loginSuccess", true)
                         .failureUrl("/login?error=true")
                         .usernameParameter("idid") // ✅ idid를 username으로 설정
                         .passwordParameter("password")

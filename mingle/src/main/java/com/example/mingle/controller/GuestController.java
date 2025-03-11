@@ -64,7 +64,7 @@ public class GuestController {
             session.setAttribute("hostId", host.getId()); // ✅ guest_id 저장
             System.out.println("로그인된 사용자 아이디: " + host.getId());
         }
-
+        System.out.println("세션 사용자 아이디: " + (Long) session.getAttribute("guestId"));
         return "redirect:/";
     }
 
