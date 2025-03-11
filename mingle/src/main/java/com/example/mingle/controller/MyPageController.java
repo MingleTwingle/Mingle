@@ -1,6 +1,8 @@
 package com.example.mingle.controller;
 
+import com.example.mingle.domain.Guest;
 import com.example.mingle.security.CustomUserDetails;
+import com.example.mingle.service.GuestService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MyPageController {
+
+    private GuestService guestService;
+
+    public MyPageController(GuestService guestService) {
+        this.guestService = guestService;
+    }
 
 //    @GetMapping("/mypage/guest")
 //    public String showMyPage() {
@@ -23,7 +31,6 @@ public class MyPageController {
     @GetMapping("/mypage")
     public String myPage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         if (userDetails == null) {
-            System.out.println("[DEBUG] userDetails가 null입니다. 로그인 페이지로 이동!");
 
             return "redirect:/login"; // 로그인 안 했으면 로그인 페이지로
         }
@@ -44,9 +51,15 @@ public class MyPageController {
 
     @GetMapping("/mypage/guest")
     public String guestMyPage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
-        System.out.println("[DEBUG] userDetails가 null입니다. 로그인 페이지로 이동!");
+
         if (userDetails == null) {
             return "redirect:/login"; // 로그인 안 했으면 로그인 페이지로
+        }
+
+        // userDetails에서 아이디를 가져와 Guest 찾기
+        Guest guest = guestService.findByIdid(userDetails.getUsername());
+        if (guest != null) {
+            model.addAttribute("coupleCode", guest.getCoupleCode()); // 커플 코드 추가
         }
 
         System.out.println(" 로그인된 사용자: " + userDetails.getUsername());

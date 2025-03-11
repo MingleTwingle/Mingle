@@ -5,6 +5,7 @@ import com.example.mingle.repository.GuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,12 @@ public class GuestService {
     public Long join(Guest guest) {
         validateDuplicationMember(guest);
         guest.setPassword(passwordEncoder.encode(guest.getPassword())); // 비밀번호 암호화
+
+        //  커플 코드 자동 생성
+        if (guest.getCoupleCode() == null || guest.getCoupleCode().isEmpty()) {
+            guest.setCoupleCode(generateUniqueCoupleCode());
+        }
+
         guestRepository.save(guest);
         return guest.getId();
     }
@@ -33,6 +40,15 @@ public class GuestService {
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
+    }
+
+    //  랜덤 커플 코드 생성
+    private String generateUniqueCoupleCode() {
+        String newCode;
+        do {
+            newCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase(); // 8자리 생성
+        } while (guestRepository.findByCoupleCode(newCode).isPresent()); // 중복 검사
+        return newCode;
     }
 
     public List<Guest> findUser() {

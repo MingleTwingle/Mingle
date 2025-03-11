@@ -29,6 +29,13 @@
 <div class="container">
   <h2 class="text-center mb-4">회원정보</h2>
 
+  <div class="card-header">
+    <p>안녕하세요, <span th:text="${user.username}"></span>님! 🎉</p>
+    <div class="card-body">
+      <p>커플코드: <span th:text="${coupleCode}"></span> 입니다</p>
+    </div>
+  </div>
+
   <!-- 예약 관리 -->
   <div class="card">
     <div class="card-header">예약 관리</div>
