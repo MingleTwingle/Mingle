@@ -1,6 +1,8 @@
 package com.example.mingle.accommodation.controller;
 
 import com.example.mingle.accommodation.domain.Accommodation;
+import com.example.mingle.accommodation.domain.AccommodationRoom;
+import com.example.mingle.accommodation.service.AccommodationRoomService;
 import com.example.mingle.accommodation.service.AccommodationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +20,13 @@ import java.util.List;
 public class AccommodationController {
 
     private final AccommodationService accommodationService;
+    private final AccommodationRoomService accommodationRoomService;
 
     @Autowired
-    public AccommodationController(AccommodationService accommodationService) {
+    public AccommodationController(AccommodationService accommodationService, AccommodationRoomService accommodationRoomService) {
         this.accommodationService = accommodationService;
+        this.accommodationRoomService = accommodationRoomService;
+
     }
 
     @GetMapping("/accommodation/new")
@@ -92,6 +97,7 @@ public class AccommodationController {
         model.addAttribute("accommodations", accommodations);
         return "accommodation/accommodationFilterList";
     }
+
     @GetMapping("/accommodationDetail/{id}")
     public String showAccommodationDetail(@PathVariable("id") Long id, Model model) {
         System.out.println("요청된 숙소 ID: " + id);  // ✅ 디버깅용 로그 추가
@@ -102,11 +108,12 @@ public class AccommodationController {
         if (accommodation == null) {
             throw new RuntimeException("숙소 정보를 찾을 수 없습니다. ID: " + id);
         }
+        List<AccommodationRoom> rooms = accommodationRoomService.findByAccommodationId(id);
 
         // 모델에 숙소 정보 추가
         model.addAttribute("accommodation", accommodation);
+        model.addAttribute("rooms", rooms);
 
         return "accommodation/accommodationDetail";  // ✅ 올바른 View 반환
     }
-
 }

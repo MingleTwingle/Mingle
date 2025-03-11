@@ -21,11 +21,11 @@ public class AccommodationRoom {
     @Column(name = "accommodation_room_cost")
     private int cost;
 
-    @Column(name = "accommodation_room_min")
-    private int minCapacity;
-
-    @Column(name = "accommodation_room_max")
-    private int maxCapacity;
+//    @Column(name = "accommodation_room_min")
+//    private int minCapacity;
+//
+//    @Column(name = "accommodation_room_max")
+//    private int maxCapacity;
 
     @Column(name = "accommodation_room_name")
     private String name;
