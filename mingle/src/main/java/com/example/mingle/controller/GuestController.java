@@ -2,7 +2,6 @@ package com.example.mingle.controller;
 
 import com.example.mingle.domain.Guest;
 import com.example.mingle.service.GuestService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -118,10 +117,10 @@ public class GuestController {
         return "guest/guestList";
     }
 
-    @GetMapping("/myPage")
-    public String showmyPage() {
-        return "mypage/mypage";
-    }
+//    @GetMapping("/myPage")
+//    public String showmyPage() {
+//        return "guest";
+//    }
 
     @GetMapping("/mypage/reservationStatus")
     public String reservationStatus(Model model) {
