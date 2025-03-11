@@ -1,6 +1,8 @@
 package com.example.mingle.restaurant.service;
 
 import com.example.mingle.restaurant.domain.Restaurant;
+import com.example.mingle.restaurant.domain.RestaurantMenu;
+import com.example.mingle.restaurant.repository.RestaurantMenuRepository;
 import com.example.mingle.restaurant.repository.RestaurantRepository;
 
 import java.time.LocalDateTime;
@@ -10,9 +12,11 @@ import java.util.stream.Collectors;
 
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantMenuRepository restaurantMenuRepository;
 
-    public RestaurantService(RestaurantRepository restaurantRepository) {
+    public RestaurantService(RestaurantRepository restaurantRepository, RestaurantMenuRepository restaurantMenuRepository) {
         this.restaurantRepository = restaurantRepository;
+        this.restaurantMenuRepository = restaurantMenuRepository;
     }
 
     public Long join(Restaurant restaurant) {
@@ -55,5 +59,9 @@ public class RestaurantService {
 
     public List<Restaurant> getAllRestaurants() {
         return restaurantRepository.findAll();
+    }
+    // 🔹 특정 식당의 메뉴 리스트 조회
+    public List<RestaurantMenu> getMenusByRestaurantId(Long restaurantId) {
+        return restaurantMenuRepository.findByRestaurantId(restaurantId);
     }
 }

@@ -3,6 +3,7 @@ package com.example.mingle.restaurant.controller;
 import com.example.mingle.accommodation.controller.AccommodationFilterForm;
 import com.example.mingle.accommodation.domain.Accommodation;
 import com.example.mingle.restaurant.domain.Restaurant;
+import com.example.mingle.restaurant.domain.RestaurantMenu;
 import com.example.mingle.restaurant.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -106,7 +107,12 @@ public class RestaurantController {
             return "error/404";  // 데이터가 없을 경우 404 페이지
         }
 
+        // 🔹 해당 식당의 메뉴 리스트 가져오기
+        List<RestaurantMenu> menuList = restaurantService.getMenusByRestaurantId(id);
+
         model.addAttribute("restaurant", restaurant);
+        model.addAttribute("menuList", menuList);  // 메뉴 데이터 추가
+
         return "restaurant/detail";  // 상세 페이지 템플릿
     }
 }

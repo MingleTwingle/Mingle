@@ -117,34 +117,44 @@
 <br>
   <br>
   <br>
-<!-- 숙소 상세 컨테이너 -->
+
 <div class="container">
-  <!-- 숙소 이미지 갤러리 -->
+
   <div class="image-gallery">
     <img th:each="photo : ${restaurant.outterPhotos}" th:src="${photo.image}" alt="숙소 이미지">
   </div>
 
-  <!-- 숙소 기본 정보 -->
   <h1 class="title" th:text="${restaurant.restaurantName}"></h1>
   <p class="location">
     <i class="fas fa-map-marker-alt"></i> <span th:text="${restaurant.restaurantLocation}"></span>
   </p>
-
 <!--   평점
   <div class="rating">
     <i class="fas fa-star"></i>
     <span class="rating-value" th:text="${restaurant.restaurantrating}"></span>
     <span class="rating-count" th:text="'(' + ${restaurant.restaurantreviewCount} + ')'"></span>
   </div>-->
-
   <!-- 편의시설 -->
   <span class="feature-badge" th:if="${restaurant.restaurantParking}"> </span>
             <i class="fas fa-parking"></i> 주차 가능
+  <!-- 메뉴 정보 섹션 -->
+  <div class="menu-section">
+    <h2>메뉴정보</h2>
+    <div class="menu-list">
+      <div th:each="menu : ${menuList}" class="menu-item">
+        <div class="menu-info">
+          <!-- 메뉴 이름 출력 -->
+          <h3 th:text="${menu.menu}">메뉴 이름</h3>
 
-<!--    &lt;!&ndash; 가격 정보 &ndash;&gt;
-  <div class="price">
-    ₩<span th:text="${restaurant.restaurantcost}"></span> 원
-  </div>-->
+          <!-- 가격 출력 (3자리 콤마 추가) -->
+          <p class="menu-price">
+            ₩<span th:text="${#numbers.formatInteger(menu.cost, 3, 'COMMA')}"></span> 원
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- 체크인/체크아웃 시간 -->
   <div class="accommodation-times">
