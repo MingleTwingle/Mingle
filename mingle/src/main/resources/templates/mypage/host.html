@@ -29,6 +29,10 @@
 <div class="container">
   <h2 class="text-center mb-4">회원정보</h2>
 
+
+  <div class="card-header">
+    <p>안녕하세요, <span th:text="${user.username}"></span>님! 🎉</p>
+    </div>
   <!-- 예약 관리 -->
   <div class="card">
     <div class="card-header">예약 관리</div>
@@ -37,12 +41,6 @@
         <li class="list-group-item">
           <a th:href="@{/reservationStatus}" class="text-decoration-none">예약 확인</a>
         </li>
-        <!-- <li class="list-group-item">
-             <a th:href="@{/mypage/reservationEdit}" class="text-decoration-none">예약 수정</a>
-         </li>-->
-        <!--  <li class="list-group-item">
-              <a th:href="@{/mypage/reservationCancel}" class="text-decoration-none">예약 취소</a>
-          </li>-->
       </ul>
     </div>
   </div>
@@ -53,10 +51,10 @@
     <div class="card-body">
       <ul class="list-group">
         <li class="list-group-item">
-          <a th:href="@{/mypage/Profile}" class="text-decoration-none">회원 정보</a>
+          <a th:href="@{/hostProfile}" class="text-decoration-none">회원 정보</a>
         </li>
         <li class="list-group-item">내 가게 등록</li>
-        <li class="list-group-item text-danger">회원 탈퇴</li>
+        <li th:href="@{/delete_account}" class="list-group-item text-danger">회원 탈퇴</li>
       </ul>
     </div>
   </div>

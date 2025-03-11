@@ -19,7 +19,7 @@ public class Review {
     private Integer reviewScore;
     @Column(name = "restaurant_id",nullable = true)
     private Integer restaurantId;
-    @Column(name = "accommodationRoom_Id",nullable = true)
+    @Column(name = "accommodation_room_Id",nullable = true)
     private Integer accommodationRoomId;
     @Column(name = "guest_key",nullable = false)
     private Integer guestKey;

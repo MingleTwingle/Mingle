@@ -3,6 +3,10 @@ package com.example.mingle.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Setter
 @Getter
@@ -38,5 +42,9 @@ public class Host {
     @Column(name = "host_type")
     private String type;
 
-    // ✅ 잘못된 @OneToMany 삭제
+    @Repository
+    public interface HostRepository extends JpaRepository<Host, Long> {
+        Optional<Host> findById(Long id);
+    }
+
 }
