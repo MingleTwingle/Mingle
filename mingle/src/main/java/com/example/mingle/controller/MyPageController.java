@@ -77,4 +77,20 @@ public class MyPageController {
         model.addAttribute("user", userDetails);
         return "mypage/host"; //  host.html로 연결
     }
+
+    //회원 정보  누르면 회원 정보 페이지로 넘어가기~
+    @GetMapping("/mypage/profile")
+    public String guestProfile(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        if (userDetails == null) {
+            return "redirect:/login"; // 로그인 안 했으면 로그인 페이지로
+        }
+
+        Guest guest = guestService.findByIdid(userDetails.getUsername());
+        if (guest != null) {
+            model.addAttribute("guest", guest); // Guest 정보를 모델에 추가
+        }
+
+        return "mypage/profile"; // profile.html로 이동
+    }
 }
+
