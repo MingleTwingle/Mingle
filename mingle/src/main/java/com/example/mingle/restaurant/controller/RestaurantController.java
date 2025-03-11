@@ -6,6 +6,7 @@ import com.example.mingle.restaurant.domain.Restaurant;
 import com.example.mingle.restaurant.domain.RestaurantMenu;
 import com.example.mingle.restaurant.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,12 +19,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class RestaurantController {
     private final RestaurantService restaurantService;
+
+    @Value("${spring.web.resources.static-locations}")
+    private String imageBasePath;
 
     @Autowired
     public RestaurantController(RestaurantService restaurantService) {
@@ -103,6 +110,7 @@ public class RestaurantController {
     @GetMapping("/restaurants/{id}")
     public String getRestaurantDetail(@PathVariable Long id, Model model) {
         Restaurant restaurant = restaurantService.findById(id);
+
         if (restaurant == null) {
             return "error/404";  // 데이터가 없을 경우 404 페이지
         }
@@ -110,8 +118,19 @@ public class RestaurantController {
         // 🔹 해당 식당의 메뉴 리스트 가져오기
         List<RestaurantMenu> menuList = restaurantService.getMenusByRestaurantId(id);
 
+        // 🔹 `image/ac/` 폴더의 모든 이미지 가져오기
+        String imageFolderPath = imageBasePath.replace("file:", "") + "ac";
+        File folder = new File(imageFolderPath);
+        // 🔹 메뉴 ID에 맞는 이미지 경로 매핑
+        Map<Long, String> menuImageMap = new HashMap<>();
+        for (RestaurantMenu menu : menuList) {
+            String imagePath = "/images/menu/menu" + menu.getId() + ".jpg";  // 파일명 규칙
+            menuImageMap.put(menu.getId(), imagePath);
+        }
+
         model.addAttribute("restaurant", restaurant);
         model.addAttribute("menuList", menuList);  // 메뉴 데이터 추가
+        model.addAttribute("menuImageMap", menuImageMap);  // 이미지 매핑 추가
 
         return "restaurant/detail";  // 상세 페이지 템플릿
     }

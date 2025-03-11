@@ -142,6 +142,11 @@
     <h2>메뉴정보</h2>
     <div class="menu-list">
       <div th:each="menu : ${menuList}" class="menu-item">
+        <!-- 개별 메뉴 이미지 출력 -->
+        <div class="menu-image">
+          <img th:src="@{${menuImageMap[menu.id]}}" alt="메뉴 이미지">
+        </div>
+
         <div class="menu-info">
           <!-- 메뉴 이름 출력 -->
           <h3 th:text="${menu.menu}">메뉴 이름</h3>
@@ -154,6 +159,7 @@
       </div>
     </div>
   </div>
+
 
 
   <!-- 체크인/체크아웃 시간 -->
