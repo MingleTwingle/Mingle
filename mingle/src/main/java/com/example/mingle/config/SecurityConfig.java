@@ -25,6 +25,9 @@ public class SecurityConfig {
                                 "/guestOrHost","/host/register","/guests/register","/about","/restaurants/**","/accommodation/**",
                                 "/contact", "/css/**", "/js/**", "/images/**"
                                 ,"/reviews/**").permitAll()
+                        .requestMatchers("/mypage/**").authenticated()  // mypage에 로그인해야지만 접근
+                        .requestMatchers("/mypage/guest").hasRole("USER")
+                        .requestMatchers("/mypage/host").hasRole("HOST")
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login

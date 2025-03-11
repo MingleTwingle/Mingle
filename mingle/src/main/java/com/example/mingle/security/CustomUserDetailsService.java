@@ -1,4 +1,4 @@
-package com.example.mingle.service;
+package com.example.mingle.security;
 
 import com.example.mingle.domain.Guest;
 import com.example.mingle.domain.Host;
@@ -41,12 +41,14 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .password(guest.getPassword()) // 암호화된 비밀번호 사용
                     .roles("USER")
                     .build();
+            return new CustomUserDetails(guest.getIdid(), guest.getPassword(), "ROLE_USER");
         }
 
         // Host 검색
         Host host = hostRepository.findByIdid(idid).orElse(null);
         if (host != null) {
             System.out.println("✅ 로그인 성공 (Host): " + host.getIdid());
+            return new CustomUserDetails(host.getIdid(), host.getPassword(), "ROLE_HOST");
             return User.builder()
                     .username(host.getIdid())
                     .password(host.getPassword()) // 암호화된 비밀번호 사용
