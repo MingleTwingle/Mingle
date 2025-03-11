@@ -39,10 +39,13 @@ public class GuestController {
     // Spring Security가 자동으로 로그인 검증을 처리하므로 직접 로그인 검증 코드 제거
 
     // 로그아웃 처리 (Spring Security가 자동으로 처리하지만, 로그아웃 후 메시지 전달 가능)
+    // 로그아웃 처리 (세션 초기화 추가)
     @GetMapping("/logout")
-    public String logout(RedirectAttributes redirectAttributes) {
+    public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+        session.invalidate(); // ✅ 세션 초기화
         redirectAttributes.addFlashAttribute("logoutMessage", "로그아웃되었습니다.");
         return "redirect:/login";
+    }
 
     @GetMapping("/loginSuccess")
     public String loginSuccess(HttpSession session) {

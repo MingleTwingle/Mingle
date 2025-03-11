@@ -36,12 +36,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         Guest guest = guestRepository.findByIdid(idid).orElse(null);
         if (guest != null) {
             System.out.println("✅ 로그인 성공 (Guest): " + guest.getIdid());
-            return User.builder()
-                    .username(guest.getIdid())
-                    .password(guest.getPassword()) // 암호화된 비밀번호 사용
-                    .roles("USER")
-                    .build();
             return new CustomUserDetails(guest.getIdid(), guest.getPassword(), "ROLE_USER");
+
         }
 
         // Host 검색
@@ -49,11 +45,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (host != null) {
             System.out.println("✅ 로그인 성공 (Host): " + host.getIdid());
             return new CustomUserDetails(host.getIdid(), host.getPassword(), "ROLE_HOST");
-            return User.builder()
-                    .username(host.getIdid())
-                    .password(host.getPassword()) // 암호화된 비밀번호 사용
-                    .roles("HOST")
-                    .build();
+
         }
 
         System.out.println("❌ 로그인 실패: 아이디 없음");

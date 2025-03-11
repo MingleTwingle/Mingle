@@ -39,10 +39,7 @@ public class GuestService {
         return guestRepository.findAll();
     }
 
-    public Guest findByEmail(String email) {
-        return (Guest) guestRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("해당 이메일로 사용자를 찾을 수 없습니다."));
-    }
+
 
     public Guest findByIdid(String idid) {
         return guestRepository.findByIdid(idid).orElse(null);
