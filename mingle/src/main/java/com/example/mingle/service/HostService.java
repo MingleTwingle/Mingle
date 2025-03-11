@@ -23,18 +23,24 @@ public class HostService {
 
     public Long join(Host host) {
         validateDuplicationMember(host);
-        host.setPassword(passwordEncoder.encode(host.getPassword()));
+        host.setPassword(passwordEncoder.encode(host.getPassword())); // 비밀번호 암호화
         hostRepository.save(host);
         return host.getId();
     }
 
     private void validateDuplicationMember(Host host) {
         hostRepository.findByName(host.getName())
-                .ifPresent(m ->{
-                        throw new IllegalStateException("이미 존재하는 호스트입니다.");
+                .ifPresent(m -> {
+                    throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
     }
 
-    public List<Host> findHost() { return hostRepository.findAll(); }
+    public List<Host> findUser() {
+        return hostRepository.findAll();
+    }
+
+    public Host findByIdid(String idid) {
+        return hostRepository.findByIdid(idid).orElse(null);
+    }
 
 }

@@ -15,7 +15,10 @@ public class ReservationService {
 
     // 예약 조회 (사용자의 예약 목록 반환)
     public List<Reservation> getReservationsByGuest(Long guestId) {
-        return reservationRepository.findByGuestId(guestId);
+        return reservationRepository.findByGuest_Id(guestId);
+    }
+    public List<Reservation> getReservationsByHost(Long hostId) {
+        return reservationRepository.findByHost_Id(hostId);
     }
 
     // 특정 예약 조회

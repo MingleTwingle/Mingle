@@ -1,7 +1,9 @@
 package com.example.mingle.controller;
 
 import com.example.mingle.domain.Guest;
+import com.example.mingle.domain.Host;
 import com.example.mingle.service.GuestService;
+import com.example.mingle.service.HostService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,11 +21,13 @@ import java.util.List;
 @Controller
 public class GuestController {
     private final GuestService guestService;
+    private final HostService hostService;
 
 
     @Autowired
-    public GuestController(GuestService guestService) {
+    public GuestController(GuestService guestService, HostService hostService) {
         this.guestService = guestService;
+        this.hostService = hostService;
     }
 
     // 로그인 페이지
@@ -39,6 +43,26 @@ public class GuestController {
     public String logout(RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("logoutMessage", "로그아웃되었습니다.");
         return "redirect:/login";
+
+    @GetMapping("/loginSuccess")
+    public String loginSuccess(HttpSession session) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName(); // 로그인한 사용자 이름 (이메일)
+
+
+        System.out.println("로그인된 사용자 이메일: " + username);
+        Guest loggedInUser = guestService.findByIdid(username); // ✅ idid로 검색
+        Host host = hostService.findByIdid(username);
+
+        if (loggedInUser != null) {
+            session.setAttribute("guestId", loggedInUser.getId()); // ✅ guest_id 저장
+            System.out.println("로그인된 사용자 아이디: " + loggedInUser.getId());
+        } else if(host != null) {
+            session.setAttribute("hostId", host.getId()); // ✅ guest_id 저장
+            System.out.println("로그인된 사용자 아이디: " + host.getId());
+        }
+
+        return "redirect:/";
     }
 
 
