@@ -29,7 +29,7 @@ public class Reservation {
     @Column(name = "restaurant_id")
     private Long restaurantId;
 
-    @Column(name = "accommodation_room_Id")
+    @Column(name = "accommodationRoom_Id")
     private Long accommodationRoomId;
 
     // guest_key 외래 키 연결
