@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.util.UUID;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GuestService {
@@ -24,8 +24,8 @@ public class GuestService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Long join(Guest guest) {
-        validateDuplicationMember(guest);
+    public Long join(Guest guest, BindingResult result) {
+        validateDuplicationMember(guest, result);
         guest.setPassword(passwordEncoder.encode(guest.getPassword())); // 비밀번호 암호화
 
         //  커플 코드 자동 생성
@@ -37,8 +37,8 @@ public class GuestService {
         return guest.getId();
     }
 
-    private void validateDuplicationMember(Guest guest) {
-        guestRepository.findByName(guest.getName())
+    private void validateDuplicationMember(Guest guest, BindingResult result) {
+        guestRepository.findByIdid(guest.getIdid())
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
@@ -56,6 +56,8 @@ public class GuestService {
     public List<Guest> findUser() {
         return guestRepository.findAll();
     }
+
+
 
     public Guest findByIdid(String idid) {
         return guestRepository.findByIdid(idid).orElse(null);

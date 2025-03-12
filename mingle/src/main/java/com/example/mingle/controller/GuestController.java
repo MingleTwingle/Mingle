@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -105,13 +106,14 @@ public class GuestController {
 
     // 게스트 회원가입 폼
     @GetMapping("/guests/register")
-    public String createRegisterForm() {
+    public String createRegisterForm(Model model) {
+        model.addAttribute("guestForm", new GuestForm());
         return "guest/register";
     }
 
     // 게스트 회원가입 처리
     @PostMapping("/guests/register")
-    public String create(@Validated GuestForm form, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String create(@Validated @ModelAttribute("guestForm") GuestForm form, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "guest/register";
         }
@@ -126,11 +128,14 @@ public class GuestController {
         guest.setPhone(form.getGuest_phone_number());
 
         try {
-            guestService.join(guest); // 암호화된 비밀번호로 회원가입
+            guestService.join(guest, result); // 암호화된 비밀번호로 회원가입
+            if (result.hasErrors()) {
+                return "guest/register"; // 에러가 있으면 다시 폼 페이지로
+            }
             redirectAttributes.addFlashAttribute("successMessage", "회원가입이 완료되었습니다! 로그인하세요.");
             return "redirect:/login";
         } catch (IllegalStateException e) {
-            result.rejectValue("idid", "error.guest", "이미 존재하는 아이디입니다.");
+            result.rejectValue("guest_idid", "error.guest", e.getMessage());
             return "guest/register";
         }
 
