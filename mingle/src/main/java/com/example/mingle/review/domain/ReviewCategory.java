@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ReviewCategory {
-    NOTICE("NOTICE"),
+/*    NOTICE("NOTICE"),
     REVIEW("REVIEW"),
-    GENERAL("GENERAL"),
+    GENERAL("GENERAL"),*/
     숙소("숙소"),
     식당("식당");
 
