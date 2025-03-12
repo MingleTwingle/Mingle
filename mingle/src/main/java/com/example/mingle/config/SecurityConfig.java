@@ -24,7 +24,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login","/bottom/**",
                                 "/guestOrHost","/host/register","/guests/register","/about","/restaurants/**","/accommodation/**",
                                 "/contact", "/css/**", "/js/**", "/images/**"
-                                ,"/reviews/**").permitAll()
+                                ,"/reviews/**","/review/**").permitAll()
                         .requestMatchers("/mypage/**").authenticated()  // mypage에 로그인해야지만 접근
                         .requestMatchers("/mypage/guest").hasRole("USER")
                         .requestMatchers("/mypage/host").hasRole("HOST")

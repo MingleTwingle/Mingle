@@ -3,163 +3,153 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>리뷰</title>
+  <title>익명 게시판</title>
 
   <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-  <link rel="stylesheet" href="/css/styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function submitPost() {
+      let formData = new FormData(document.getElementById("postForm"));
+
+      fetch("/anonymous-board/new", {
+        method: "POST",
+        body: formData
+      })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  alert("게시글이 등록되었습니다.");
+                  window.location.reload();
+                } else {
+                  alert("게시글 등록 실패: " + data.message);
+                }
+              })
+              .catch(error => console.error("게시글 등록 오류:", error));
+    }
+
+    function filterPosts() {
+      let selectedRegion = document.getElementById("regionFilter").value;
+
+      fetch("/anonymous-board/filter?region=" + selectedRegion, {
+        method: "GET"
+      })
+              .then(response => response.text())
+              .then(html => {
+                document.getElementById("postsContainer").innerHTML = html;
+              })
+              .catch(error => console.error("게시글 필터링 오류:", error));
+    }
+  </script>
+
   <style>
     body {
       font-family: 'Noto Sans KR', sans-serif, 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       font-weight: 400;
       color: #333;
     }
-
-    h2, h3 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #4a90e2;
-    }
-
-    /* 필터링 폼 스타일링 */
-    .filter-form {
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      margin-bottom: 40px;
-    }
-
-    .filter-form div {
-      margin-bottom: 15px;
-    }
-
-    .filter-form label {
-      font-weight: 600;
-      color: #555;
-    }
-
-    .filter-form input[type="number"] {
-      width: 100%;
-      padding: 8px;
-      border-radius: 5px;
-      border: 1px solid #ddd;
-      font-size: 16px;
-    }
-
-    .filter-form button {
-      width: 100%;
-      padding: 10px;
-      background-color: #4a90e2;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .filter-form button:hover {
-      background-color: #3a80d2;
-    }
-
-    /* 리뷰 목록 스타일링 */
-    #reviewsContainer {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .review {
-      background-color: white;
+  /*  .container {
+      max-width: 800px;
+      margin: 50px auto;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
+    }*/
+    .post-form {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
     }
-
-    .review:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .review p {
+    .post {
+      border: 1px solid #ddd;
+      padding: 15px;
       margin-bottom: 10px;
-      font-size: 16px;
+      border-radius: 8px;
+      background-color: white;
     }
-
-    .review .review-score {
-      font-weight: bold;
-      color: #ff6b81;
+    .post p {
+      margin: 0;
     }
-
-    .review .restaurant-id, .review .accommodation-id {
-      color: #4a90e2;
+    .post .meta {
+      font-size: 12px;
+      color: #888;
     }
   </style>
 </head>
 <body>
-<br>
+<!-- 공통 네비게이션 바 포함 -->
 <div th:replace="~{fragments/navbar :: nav}"></div>
+<br>
+<br>
+<br>
 <div class="container">
+  <h2 class="text-center">익명 게시판</h2>
+  <p class="text-center">
+    여기는 익명으로 운영되는 게시판입니다! <br>
+    식당, 숙소가 마음에 안들었거나 좋았던 점을 익명으로 적어보아요! <br>
+    좋았던 점은 사람들에게 추천해주세요!
+  </p> <br>
+  <!-- 등록하기 버튼 (reviewRegister.html로 이동) -->
+  <a href="/reviewRegister" class="register-btn">등록하기</a>
 
-  <h3>리뷰 검색</h3>
-  <!-- 필터링 폼 -->
-  <form id="filterForm" class="filter-form" action="/reviews/filter" method="post">
-    <div>
-      <label for="restaurantId">식당 ID</label>
-      <input type="number" id="restaurantId" name="restaurantId">
-    </div>
-    <div>
-      <label for="accommodationRoomId">숙박 시설 ID</label>
-      <input type="number" id="accommodationRoomId" name="accommodationRoomId">
-    </div>
-    <div>
-      <label for="reviewScore">최소 평점</label>
-      <input type="number" id="reviewScore" name="reviewScore" min="1" max="5">
-    </div>
-    <button type="submit">검색</button>
-  </form>
+  <!-- 지역 필터링 검색 -->
+  <div class="mb-3">
+    <label for="regionFilter">지역 선택:</label>
+    <select id="regionFilter" class="form-control" onchange="filterPosts()">
+      <option value="">전체</option>
+      <option value="서울">서울</option>
+      <option value="부산">부산</option>
+      <option value="제주도">제주도</option>
+      <option value="속초">속초</option>
+      <option value="강릉">강릉</option>
+      <option value="전주">전주</option>
+      <option value="대구">대구</option>
+      <option value="경주">경주</option>
+      <option value="여수">여수</option>
+      <option value="서귀포">서귀포</option>
+      <option value="대전">대전</option>
+      <option value="인천">인천</option>
+    </select>
+  </div>
 
-  <!-- 필터링된 리뷰 목록 표시 -->
-  <div id="reviewsContainer">
-    <!-- 서버에서 렌더링된 데이터로 자동 채워짐 -->
-    <div th:each="review : ${reviews}">
-      <div class="review">
-        <p th:text="${review.reviewComment}"></p>
-        <p class="review-score" th:text="'평점 ' + ${review.reviewScore}"></p>
-        <p class="restaurant-id" th:text="'식당 ID ' + ${review.restaurantId}"></p>
-        <p class="accommodation-id" th:text="'숙박 시설 ID ' + ${review.accommodationRoomId}"></p>
-        <p th:text="'게스트 키 ' + ${review.guestKey}"></p>
-      </div>
+  <div id="postsContainer">
+    <!-- 예시 게시글 1 -->
+    <div class="post">
+      <p>강남에서 방문한 맛집! 🍽️ 고기 질도 좋고, 분위기도 좋아서 강추합니다!</p>
+      <p class="meta">지역: 서울 | 작성일: 2025-03-11</p>
+    </div>
+
+    <!-- 예시 게시글 2 -->
+    <div class="post">
+      <p>부산 해운대 숙소 너무 별로였어요.. 😞 방음이 안 되고, 침대도 불편했어요. 다음엔 다른 곳 찾아봐야겠어요.</p>
+      <p class="meta">지역: 부산 | 작성일: 2025-03-09</p>
+    </div>
+
+    <!-- 예시 게시글 3 -->
+    <div class="post">
+      <p>제주도에서 가본 카페 중 최고! ☕ 뷰도 좋고 커피도 맛있어요. 꼭 방문해보세요!</p>
+      <p class="meta">지역: 제주도 | 작성일: 2025-03-07</p>
+    </div>
+
+    <!-- 실제 데이터 표시 -->
+    <div th:each="post : ${posts}" class="post">
+      <p th:text="${post.content}"></p>
+      <p class="meta">
+        지역: <span th:text="${post.region}"></span> |
+        작성일: <span th:text="${post.createdAt}"></span>
+      </p>
     </div>
   </div>
-</div>
 
-<script>
-  // 필터링 폼 제출 시 AJAX 요청
-  document.getElementById("filterForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // 기본 폼 제출 동작 방지
+    <div th:each="post : ${posts}" class="post">
+      <p th:text="${post.content}"></p>
+      <p class="meta">
+        지역: <span th:text="${post.region}"></span> |
+        작성일: <span th:text="${post.createdAt}"></span>
+      </p>
+    </div>
+  </div>
 
-    const formData = new FormData(this);
 
-    fetch("/reviews/filter", {
-      method: "POST",
-      body: formData
-    })
-            .then(response => response.text())
-            .then(html => {
-              // 필터링된 리뷰 목록만 갱신
-              document.getElementById("reviewsContainer").innerHTML = html;
-            })
-            .catch(error => {
-              console.error("검색하신 결과가 없습니다.", error);
-            });
-  });
-</script>
 </body>
 </html>

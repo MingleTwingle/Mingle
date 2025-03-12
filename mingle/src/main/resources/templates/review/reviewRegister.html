@@ -76,31 +76,33 @@
 <div th:replace="~{fragments/navbar :: nav}"></div>
 <h2>리뷰 작성</h2>
 
-<!-- 리뷰 등록 폼 -->
-<div class="form-container">
-  <form action="/reviews/new" method="post">
-    <div>
-      <label for="reviewComment">리뷰 내용</label>
-      <textarea id="reviewComment" name="reviewComment" required></textarea>
-    </div>
-    <div>
-      <label for="reviewScore">평점</label>
-      <input type="number" id="reviewScore" name="reviewScore" min="1" max="5" required>
-    </div>
-    <div>
-      <label for="restaurantId">식당 ID</label>
-      <input type="number" id="restaurantId" name="restaurantId">
-    </div>
-    <div>
-      <label for="accommodationRoomId">숙소 ID</label>
-      <input type="number" id="accommodationRoomId" name="accommodationRoomId">
-    </div>
-    <div>
-      <label for="guestKey">게스트 키</label>
-      <input type="number" id="guestKey" name="guestKey" required>
-    </div>
-    <button type="submit">리뷰 등록</button>
+
+
+<!-- 게시글 작성 폼 -->
+<div class="post-form">
+  <form id="postForm">
+    <label for="content">내용</label>
+    <textarea id="content" name="content" class="form-control" rows="3" required></textarea>
+
+    <label for="region">지역 선택</label>
+    <select id="region" name="region" class="form-control" required>
+      <option value="서울">서울</option>
+      <option value="부산">부산</option>
+      <option value="제주도">제주도</option>
+      <option value="속초">속초</option>
+      <option value="강릉">강릉</option>
+      <option value="전주">전주</option>
+      <option value="대구">대구</option>
+      <option value="경주">경주</option>
+      <option value="여수">여수</option>
+      <option value="서귀포">서귀포</option>
+      <option value="대전">대전</option>
+      <option value="인천">인천</option>
+    </select>
+
+    <button type="button" class="btn btn-primary mt-2" onclick="submitPost()">게시글 작성</button>
   </form>
 </div>
+
 </body>
 </html>
