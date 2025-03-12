@@ -29,6 +29,12 @@ public class Guest {
     @Column(name = "guest_couple_code")
     private String coupleCode;
 
+    @Column(name = "pending_couple_code")
+    private String pendingCoupleCode;
+
+    @Column(name = "is_matched", nullable = false)
+    private boolean isMatched = false;
+
     @PrePersist // 회원가입(INSERT) 전에 자동 실행되는 메서드
     public void generateCoupleCode() {
         if (this.coupleCode == null || this.coupleCode.isEmpty()) {

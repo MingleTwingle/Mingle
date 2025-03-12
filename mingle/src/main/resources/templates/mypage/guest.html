@@ -31,6 +31,11 @@
 
   <div class="card-header">
     <p>안녕하세요, <span th:text="${user.username}"></span>님! 🎉</p>
+    <div th:if="${guest1Name != null and guest2Name != null}" class="text-center">
+      <p style="font-size: 18px; color: #ff4d4d; font-weight: bold;">
+        <span th:text="${guest1Name}"></span> ♥ <span th:text="${guest2Name}"></span>
+      </p>
+    </div>
     <div class="card-body">
       <p>커플코드: <span th:text="${coupleCode}"></span> 입니다</p>
     </div>
