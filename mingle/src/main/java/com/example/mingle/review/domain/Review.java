@@ -37,6 +37,6 @@ public class Review {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ReviewCategory category;  // 카테고리 (예: 공지사항, 일반 게시글 등) 따로 만들어야댐
+    private ReviewCategory category;  // 숙소, 식당
 
 }

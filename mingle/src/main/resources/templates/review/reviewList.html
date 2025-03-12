@@ -120,7 +120,6 @@
       <p class="meta">내용: <span th:text="${review.content}"></span></p>
       <p class="meta">작성자: <span th:text="${review.author}"></span></p>
       <p class="meta">작성일: <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
-      <p class="meta">조회수: <span th:text="${review.viewCount}"></span></p>
     </div>
   </div>
 </div>
