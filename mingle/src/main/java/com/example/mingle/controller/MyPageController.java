@@ -1,20 +1,30 @@
 package com.example.mingle.controller;
 
 import com.example.mingle.domain.Guest;
+import com.example.mingle.domain.Host;
+import com.example.mingle.review.service.ReviewService;
 import com.example.mingle.security.CustomUserDetails;
 import com.example.mingle.service.GuestService;
+import com.example.mingle.service.HostService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class MyPageController {
 
     private GuestService guestService;
+    private HostService hostService;
 
-    public MyPageController(GuestService guestService) {
+    public MyPageController(GuestService guestService, HostService hostService) {
         this.guestService = guestService;
+        this.hostService = hostService;
     }
 
 //    @GetMapping("/mypage/guest")
@@ -91,6 +101,35 @@ public class MyPageController {
         }
 
         return "mypage/profile"; // profile.html로 이동
+    }
+
+    // 회원 탈퇴 기능
+    @PostMapping("/mypage/delete")
+    public String deleteGuest(@AuthenticationPrincipal CustomUserDetails userDetails,
+                              HttpServletRequest request,
+                              HttpServletResponse response) {
+        if(userDetails == null) {
+            return "redirect:/login";
+        }
+
+        String role = userDetails.getRole();   // guest인지 host인지
+
+        if("ROLE_USER".equals(role)) {
+            Guest guest = guestService.findByIdid(userDetails.getUsername());
+            if(guest != null) {
+                guestService.deleteGuestById(guest.getId());
+            }
+        } else if("ROLE_HOST".equals(role)) {
+            Host host = hostService.findByIdid(userDetails.getUsername());
+            if(host != null) {
+                hostService.deleteHostById(host.getId());
+            }
+        }
+        // ✅ 자동 로그아웃 처리 (세션 무효화)
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(request, response, null);
+
+        return "redirect:/"; // 탈퇴하면 메인 페이지로 이동
     }
 }
 

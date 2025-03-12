@@ -2,32 +2,42 @@ package com.example.mingle.controller;
 
 import com.example.mingle.domain.Guest;
 import com.example.mingle.domain.Host;
+import com.example.mingle.repository.GuestRepository;
 import com.example.mingle.service.GuestService;
 import com.example.mingle.service.HostService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class GuestController {
     private final GuestService guestService;
     private final HostService hostService;
+    private final GuestRepository guestRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public GuestController(GuestService guestService, HostService hostService) {
+    public GuestController(GuestService guestService, HostService hostService, GuestRepository guestRepository, PasswordEncoder passwordEncoder) {
         this.guestService = guestService;
         this.hostService = hostService;
+        this.guestRepository = guestRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // 로그인 페이지
@@ -60,7 +70,7 @@ public class GuestController {
         if (loggedInUser != null) {
             session.setAttribute("guestId", loggedInUser.getId()); // ✅ guest_id 저장
             System.out.println("로그인된 사용자 아이디: " + loggedInUser.getId());
-        } else if(host != null) {
+        } else if (host != null) {
             session.setAttribute("hostId", host.getId()); // ✅ guest_id 저장
             System.out.println("로그인된 사용자 아이디: " + host.getId());
         }
@@ -90,7 +100,6 @@ public class GuestController {
     }
 
 
-
     // 호스트 등록 페이지
 //    @GetMapping("/host/register")
 //    public String showHostRegisterForm() {
@@ -105,13 +114,14 @@ public class GuestController {
 
     // 게스트 회원가입 폼
     @GetMapping("/guests/register")
-    public String createRegisterForm() {
+    public String createRegisterForm(Model model) {
+        model.addAttribute("guestForm", new GuestForm());
         return "guest/register";
     }
 
     // 게스트 회원가입 처리
     @PostMapping("/guests/register")
-    public String create(@Validated GuestForm form, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String create(@Validated @ModelAttribute("guestForm") GuestForm form, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "guest/register";
         }
@@ -126,11 +136,14 @@ public class GuestController {
         guest.setPhone(form.getGuest_phone_number());
 
         try {
-            guestService.join(guest); // 암호화된 비밀번호로 회원가입
+            guestService.join(guest, result); // 암호화된 비밀번호로 회원가입
+            if (result.hasErrors()) {
+                return "guest/register"; // 에러가 있으면 다시 폼 페이지로
+            }
             redirectAttributes.addFlashAttribute("successMessage", "회원가입이 완료되었습니다! 로그인하세요.");
             return "redirect:/login";
         } catch (IllegalStateException e) {
-            result.rejectValue("idid", "error.guest", "이미 존재하는 아이디입니다.");
+            result.rejectValue("guest_idid", "error.guest", e.getMessage());
             return "guest/register";
         }
 
@@ -154,13 +167,84 @@ public class GuestController {
     public String reservationStatus(Model model) {
         return "mypage/reservationStatus";
     }
+
     @GetMapping("/mypage/reservationEdit")
     public String reservationEdit(Model model) {
         return "mypage/reservationEdit";
     }
+
     @GetMapping("/mypage/reservationCancel")
     public String reservationCancel(Model model) {
         return "mypage/reservationCancel";
     }
 
+    //email 변경
+    @Transactional
+    @PostMapping("/mypage/guest/email")
+    public String updateEmail(@RequestParam("guestId") Long guestId,
+                              @RequestParam("email") String email,
+                              RedirectAttributes redirectAttributes) {
+        Optional<Guest> guestOptional = guestRepository.findById(guestId);
+
+        if (guestOptional.isPresent()) {
+            Guest guest = guestOptional.get();
+            guest.setEmail(email);
+            guestRepository.save(guest);
+            redirectAttributes.addFlashAttribute("emailMessage", "이메일이 성공적으로 변경되었습니다!");
+        } else {
+            redirectAttributes.addFlashAttribute("emailError", "사용자를 찾을 수 없습니다.");
+        }
+        return "redirect:/mypage/profile";
+    }
+
+    //전화번호 변경
+    @Transactional
+    @PostMapping("/mypage/guest/updatePhone")
+    public String updatePhone(@RequestParam("guestId") Long guestId,
+                              @RequestParam("phone") String phone,
+                              RedirectAttributes redirectAttributes) {
+        Optional<Guest> guestOptional = guestRepository.findById(guestId);
+
+        if (guestOptional.isPresent()) {
+            Guest guest = guestOptional.get();
+            guest.setPhone(phone);
+            guestRepository.save(guest);
+
+            redirectAttributes.addFlashAttribute("phoneMessage", "전화번호가 성공적으로 변경되었습니다!");
+        } else {
+            redirectAttributes.addFlashAttribute("phoneError", "사용자를 찾을 수 없습니다.");
+        }
+
+        return "redirect:/mypage/profile";
+    }
+
+    //비밀번호 변경
+    @PostMapping("/mypage/guest/updatePassword")
+    public String updatePassword(@RequestParam("guestId") Long guestId,
+                                 @RequestParam("currentPassword") String currentPassword,
+                                 @RequestParam("newPassword") String newPassword,
+                                 RedirectAttributes redirectAttributes) {
+        Optional<Guest> guestOptional = guestRepository.findById(guestId);
+
+        if (guestOptional.isPresent()) {
+            Guest guest = guestOptional.get();
+
+            // 현재 비밀번호 확인 (Spring Security 사용 시)
+            if (!passwordEncoder.matches(currentPassword, guest.getPassword())) {
+                redirectAttributes.addFlashAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
+                return "redirect:/mypage/profile";
+            }
+
+            // 새 비밀번호 암호화 후 저장
+            guest.setPassword(passwordEncoder.encode(newPassword));
+            guestRepository.save(guest);
+
+            // 성공 메시지 설정
+            redirectAttributes.addFlashAttribute("passwordMessage", "비밀번호가 성공적으로 변경되었습니다!");
+        } else {
+            redirectAttributes.addFlashAttribute("passwordError", "사용자를 찾을 수 없습니다.");
+        }
+        return "redirect:/mypage/profile";
+    }
 }
+

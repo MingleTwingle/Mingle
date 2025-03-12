@@ -5,6 +5,7 @@ import com.example.mingle.repository.HostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,11 @@ public class HostService {
 
     public Host findByIdid(String idid) {
         return hostRepository.findByIdid(idid).orElse(null);
+    }
+
+    @Transactional
+    public void deleteHostById(Long id) {
+        hostRepository.deleteById(id);
     }
 
 }

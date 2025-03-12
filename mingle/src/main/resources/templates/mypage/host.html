@@ -53,10 +53,12 @@
     <div class="card-body">
       <ul class="list-group">
         <li class="list-group-item">
-          <a th:href="@{/mypage/Profile}" class="text-decoration-none">회원 정보</a>
+          <a th:href="@{/mypage/hostprofile}" class="text-decoration-none">회원 정보</a>
         </li>
         <li class="list-group-item">내 가게 등록</li>
-        <li class="list-group-item text-danger">회원 탈퇴</li>
+        <form id="deleteForm" action="/mypage/delete" method="post" onsubmit="return confirmDelete();">
+          <button type="submit" class="btn btn-danger w-100">회원 탈퇴</button>
+        </form>
       </ul>
     </div>
   </div>
@@ -74,4 +76,11 @@
   </div>
 </div>
 </body>
+
+<!-- 탈퇴 확인 경고창 자바스크립트 -->
+<script>
+  function confirmDelete() {
+    return confirm("정말 회원 탈퇴를 하시겠습니까?");
+  }
+</script>
 </html>

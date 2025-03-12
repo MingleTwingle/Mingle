@@ -48,4 +48,8 @@ public class HostController {
             return "host/register";
         }
     }
+    @GetMapping("/mypage/hostprofile")
+    public String showHostProfile() {
+        return "mypage/hostprofile";
+    }
 }
