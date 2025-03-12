@@ -3,11 +3,14 @@ package com.example.mingle.review.controller;
 import com.example.mingle.review.domain.Review;
 import com.example.mingle.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/reviews")
@@ -33,11 +36,16 @@ public class ReviewController {
         return "review/reviewRegister"; // ✅ 리뷰 작성 페이지 (`reviewRegister.html`)
     }
 
-    // ✅ 리뷰 저장
+
+    // ✅ 리뷰 저장 (AJAX 요청 처리)
     @PostMapping("/new")
-    public String saveReview(@ModelAttribute Review review) {
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> saveReview(@RequestBody Review review) {
+        Map<String, Object> response = new HashMap<>();
         reviewService.saveReview(review);
-        return "redirect:/reviews"; // ✅ 저장 후 리뷰 목록으로 이동
+        response.put("success", true);
+        response.put("message", "리뷰 등록 성공");
+        return ResponseEntity.ok(response);
     }
 
     // ✅ 리뷰 상세 조회

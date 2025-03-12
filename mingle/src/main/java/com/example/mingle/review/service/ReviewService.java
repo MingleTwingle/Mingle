@@ -27,8 +27,8 @@ public class ReviewService {
     }
 
     // ✅ 2. 리뷰 저장
-    public Review saveReview(Review review) {
-        return reviewRepository.save(review);
+    public void saveReview(Review review) {
+        reviewRepository.save(review);
     }
 
     // ✅ 3. 리뷰 상세 조회
@@ -40,4 +40,5 @@ public class ReviewService {
     public void deleteReview(Long id) {
         reviewRepository.deleteById(id);
     }
+
 }
