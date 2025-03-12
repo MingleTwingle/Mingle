@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>회원정보</title>
+    <title>호스트 정보</title>
 
     <!-- 스타일 및 폰트 -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -28,18 +28,18 @@
 <div th:replace="~{fragments/navbar :: nav}"></div>
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4">회원 정보</h2>
+    <h2 class="text-center mb-4">호스트 정보</h2>
 
     <div class="card">
         <div class="card-body">
 
-            <!-- 기본 회원 정보 -->
-            <p><strong>이름:</strong> <span th:text="${guest.name}"></span></p>
-            <p><strong>아이디:</strong> <span th:text="${guest.idid}"></span></p>
+            <!-- 기본 호스트 정보 -->
+            <p><strong>이름:</strong> <span th:text="${host.name}"></span></p>
+            <p><strong>아이디:</strong> <span th:text="${host.idid}"></span></p>
 
             <!-- 비밀번호 변경 폼 -->
-            <form th:action="@{/mypage/guest/updatePassword}" method="post">
-                <input type="hidden" name="guestId" th:value="${guest.id}">
+            <form th:action="@{/mypage/host/updatePassword}" method="post">
+                <input type="hidden" name="hostId" th:value="${host.id}">
 
                 <p><strong>현재 비밀번호:</strong>
                     <input type="password" name="currentPassword" class="form-control" required>
@@ -60,11 +60,11 @@
             </div>
 
             <!-- 이메일 변경 폼 -->
-            <form th:action="@{/mypage/guest/email}" method="post">
+            <form th:action="@{/mypage/host/email}" method="post">
                 <p><strong>이메일:</strong>
-                    <input type="email" name="email" class="form-control" th:value="${guest.email}" required>
+                    <input type="email" name="email" class="form-control" th:value="${host.email}" required>
                 </p>
-                <input type="hidden" name="guestId" th:value="${guest.id}">
+                <input type="hidden" name="hostId" th:value="${host.id}">
                 <button type="submit" class="btn btn-primary mb-3">이메일 변경</button>
             </form>
 
@@ -76,14 +76,14 @@
                 <span th:text="${emailError}"></span>
             </div>
 
-            <!-- 추가 회원 정보 -->
-            <p><strong>성별:</strong> <span th:text="${guest.gender}"></span></p>
+            <!-- 추가 호스트 정보 -->
+            <p><strong>성별:</strong> <span th:text="${host.gender}"></span></p>
 
             <!-- 전화번호 변경 폼 -->
-            <form th:action="@{/mypage/guest/updatePhone}" method="post">
-                <input type="hidden" name="guestId" th:value="${guest.id}">
+            <form th:action="@{/mypage/host/updatePhone}" method="post">
+                <input type="hidden" name="hostId" th:value="${host.id}">
                 <p><strong>전화 번호:</strong>
-                    <input type="text" name="phone" class="form-control" th:value="${guest.phone}" required>
+                    <input type="text" name="phone" class="form-control" th:value="${host.phone}" required>
                 </p>
                 <button type="submit" class="btn btn-primary mb-3">전화번호 변경</button>
             </form>
@@ -100,7 +100,7 @@
     </div>
 
     <!-- 마이페이지로 돌아가기 버튼 -->
-    <a href="/mypage/guest" class="btn btn-secondary mt-3">마이페이지로 돌아가기</a>
+    <a href="/mypage/host" class="btn btn-secondary mt-3">마이페이지로 돌아가기</a>
 </div>
 
 </body>
