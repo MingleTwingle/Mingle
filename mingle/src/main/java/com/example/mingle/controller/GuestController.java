@@ -1,15 +1,20 @@
 package com.example.mingle.controller;
 
+import com.example.mingle.domain.Couple;
 import com.example.mingle.domain.Guest;
 import com.example.mingle.domain.Host;
+import com.example.mingle.repository.CoupleRepository;
 import com.example.mingle.repository.GuestRepository;
+import com.example.mingle.service.CoupleService;
 import com.example.mingle.service.GuestService;
 import com.example.mingle.service.HostService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,19 +29,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Controller
 public class GuestController {
     private final GuestService guestService;
     private final HostService hostService;
+    private final CoupleService coupleService;
     private final GuestRepository guestRepository;
+    private final CoupleRepository coupleRepository;
     private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public GuestController(GuestService guestService, HostService hostService, GuestRepository guestRepository, PasswordEncoder passwordEncoder) {
+    public GuestController(GuestService guestService, HostService hostService, CoupleService coupleService, GuestRepository guestRepository, CoupleRepository coupleRepository, PasswordEncoder passwordEncoder) {
         this.guestService = guestService;
         this.hostService = hostService;
+        this.coupleService = coupleService;
         this.guestRepository = guestRepository;
+        this.coupleRepository = coupleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -159,9 +169,53 @@ public class GuestController {
     }
 
     @GetMapping("/myPage")
-    public String showmyPage() {
-        return "mypage/mypage";
+    public String showmyPage(Model model) {
+        // ✅ 현재 로그인된 사용자 가져오기
+        String username = getCurrentUsername();
+        if (username == null) {
+            return "redirect:/login"; // 로그인되지 않은 경우 로그인 페이지로 이동
+        }
+
+        // ✅ 사용자 정보에서 커플 코드 가져오기
+        Guest guest = guestRepository.findByName(username).orElse(null);
+        Couple couple = coupleRepository.findByGuest1Id(Long.valueOf(guest.getIdid()));
+        if (guest == null) {
+            return "redirect:/login";
+        }
+
+        String myCoupleCode = guest.getCoupleCode(); // 현재 로그인된 사용자의 커플 코드
+//        String partnerCoupleCode = guest.getPendingCoupleCode(); // 상대방 커플 코드
+        String partnerCoupleCode = couple.getGuest2().getCoupleCode();
+        log.info("asdfasdf");
+        System.out.println("myCoupleCode = " + myCoupleCode);
+        System.out.println("partnerCoupleCode = " + partnerCoupleCode);
+
+        String guest1Name = coupleService.getGuest1Name(myCoupleCode);
+        String guest2Name = coupleService.getGuest2Name(partnerCoupleCode);
+
+        System.out.println("guest1Name = " + guest1Name);
+        System.out.println("guest2Name = " + guest2Name);
+//        if (coupleService.getGuest1Name(myCoupleCode) != null)
+//            guest1Name = coupleService.getGuest1Name(myCoupleCode);
+//        if (coupleService.getGuest2Name(partnerCoupleCode) != null)
+//            guest2Name = coupleService.getGuest2Name(partnerCoupleCode);
+
+        model.addAttribute("guest1Name", guest1Name);
+        model.addAttribute("guest2Name", guest2Name);
+        model.addAttribute("coupleCode", myCoupleCode);
+
+        return "mypage/guest";
     }
+
+    private String getCurrentUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        }
+        return null;
+//        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
 
     @GetMapping("/mypage/reservationStatus")
     public String reservationStatus(Model model) {

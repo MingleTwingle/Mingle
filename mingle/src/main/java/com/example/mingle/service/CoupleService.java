@@ -54,6 +54,9 @@ public class CoupleService {
 
     // ✅ guest1 이름 가져오기
     public String getGuest1Name(String myCoupleCode) {
+        if (myCoupleCode == null) {
+            return null;
+        }
         Guest guest = guestRepository.findByCoupleCode(myCoupleCode).orElse(null);
         if (guest != null) {
             Couple couple = coupleRepository.findByGuest1Id(guest.getId());
@@ -64,6 +67,9 @@ public class CoupleService {
 
     // ✅ guest2 이름 가져오기
     public String getGuest2Name(String partnerCoupleCode) {
+        if (partnerCoupleCode == null) {
+            return null;
+        }
         Guest guest = guestRepository.findByCoupleCode(partnerCoupleCode).orElse(null);
         if (guest != null) {
             Couple couple = coupleRepository.findByGuest2Id(guest.getId());
