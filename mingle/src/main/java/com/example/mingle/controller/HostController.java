@@ -4,9 +4,11 @@ import com.example.mingle.domain.Host;
 import com.example.mingle.service.HostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,10 +23,12 @@ public class HostController {
 
     // 호스트 등록 페이지
     @GetMapping("/host/register")
-    public String showHostRegisterForm() { return "host/register"; }
+    public String showHostRegisterForm(Model model) {
+        model.addAttribute("hostForm", new HostForm());
+        return "host/register"; }
 
     @PostMapping("/host/register")
-    public String create(@Validated HostForm form, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String create(@Validated @ModelAttribute("hostForm") HostForm form, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "host/register";
         }
@@ -40,11 +44,14 @@ public class HostController {
         host.setType(form.getHost_type());
 
         try {
-            hostService.join(host);
+            hostService.join(host, result);
+            if (result.hasErrors()) {
+                return "host/register";
+            }
             redirectAttributes.addFlashAttribute("successMessage", "회원가입이 완료되었습니다! 로그인하세요.");
             return "redirect:/login";
         } catch (IllegalStateException e) {
-            result.rejectValue("idid", "error.host", "이미 존재하는 아이디입니다.");
+            result.rejectValue("host_idid", "error.host", "이미 존재하는 아이디입니다.");
             return "host/register";
         }
     }
