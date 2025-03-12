@@ -27,7 +27,7 @@ public class ReviewController {
     }
 
     // ✅ 리뷰 작성 페이지 (폼)
-    @GetMapping("/review/Register")
+    @GetMapping("/new")
     public String createReviewForm(Model model) {
         model.addAttribute("review", new Review());
         return "review/reviewRegister"; // ✅ 리뷰 작성 페이지 (`reviewRegister.html`)
