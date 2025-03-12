@@ -90,7 +90,7 @@
     좋았던 점은 사람들에게 추천해주세요!
   </p> <br>
   <!-- 등록하기 버튼 (reviewRegister.html로 이동) -->
-  <a href="/reviewRegister" class="register-btn">등록하기</a>
+  <a href="/review/reviewRegister" class="register-btn">등록하기</a>
 
   <!-- 지역 필터링 검색 -->
   <div class="mb-3">
@@ -112,6 +112,33 @@
     </select>
   </div>
 
+  <!-- 게시글 목록 테이블 -->
+  <table class="post-table">
+    <thead>
+    <tr>
+      <th>번호</th>
+      <th>카테고리</th>
+      <th class="post-title">제목</th>
+      <th>작성자</th>
+      <th>작성일</th>
+      <th>조회수</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="review : ${reviews}">
+      <td th:text="${review.id}"></td>
+      <td th:text="${review.category}"></td>
+      <td class="post-title">
+        <a th:href="@{/reviews/{id}(id=${review.id})}" th:text="${review.title}"></a>
+      </td>
+      <td th:text="${review.author}"></td>
+      <td th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+      <td th:text="${review.viewCount}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
   <div id="postsContainer">
     <!-- 예시 게시글 1 -->
     <div class="post">
@@ -129,24 +156,6 @@
     <div class="post">
       <p>제주도에서 가본 카페 중 최고! ☕ 뷰도 좋고 커피도 맛있어요. 꼭 방문해보세요!</p>
       <p class="meta">지역: 제주도 | 작성일: 2025-03-07</p>
-    </div>
-
-    <!-- 실제 데이터 표시 -->
-    <div th:each="post : ${posts}" class="post">
-      <p th:text="${post.content}"></p>
-      <p class="meta">
-        지역: <span th:text="${post.region}"></span> |
-        작성일: <span th:text="${post.createdAt}"></span>
-      </p>
-    </div>
-  </div>
-
-    <div th:each="post : ${posts}" class="post">
-      <p th:text="${post.content}"></p>
-      <p class="meta">
-        지역: <span th:text="${post.region}"></span> |
-        작성일: <span th:text="${post.createdAt}"></span>
-      </p>
     </div>
   </div>
 
