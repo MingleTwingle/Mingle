@@ -5,6 +5,8 @@ import com.example.mingle.repository.GuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.UUID;
 
 import java.util.List;
@@ -55,9 +57,13 @@ public class GuestService {
         return guestRepository.findAll();
     }
 
-
-
     public Guest findByIdid(String idid) {
         return guestRepository.findByIdid(idid).orElse(null);
     }
+
+    @Transactional
+    public void deleteGuestById(Long id) {
+        guestRepository.deleteById(id);
+    }
+
 }
