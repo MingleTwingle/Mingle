@@ -1,27 +1,42 @@
 package com.example.mingle.review.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDateTime;
+
+@Entity
+@Table
 @Getter
 @Setter
-@Entity
-@Table(name = "tbl_review")
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Review {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer reviewId;
-    @Column(name = "review_comment",nullable = false)
-    private String reviewComment;
-    @Column(name = "review_score",nullable = false)
-    private Integer reviewScore;
-    @Column(name = "restaurant_id",nullable = true)
-    private Integer restaurantId;
-    @Column(name = "accommodationRoom_Id",nullable = true)
-    private Integer accommodationRoomId;
-    @Column(name = "guest_key",nullable = false)
-    private Integer guestKey;
+    private Long id;  // 게시글 id
+
+    @Column(nullable = false)
+    private String title;  // 제목
+
+    @Column(nullable = false, length = 2000)
+    private String content;  // 내용
+
+    @Column(nullable = false)
+    private String author = "익명";  // 작성자 (기본값: 익명)
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();  // 작성일시
+
+    private LocalDateTime updatedAt;  // 수정일시
+
+    @Column(nullable = false)
+    private int viewCount = 0;  // 조회수 (기본값 0)
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ReviewCategory category;  // 카테고리 (예: 공지사항, 일반 게시글 등) 따로 만들어야댐
 
 }
