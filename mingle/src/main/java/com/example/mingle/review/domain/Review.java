@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table
+@Table(name = "tbl_review")
 @Getter
 @Setter
 @NoArgsConstructor
