@@ -32,7 +32,7 @@
   <div class="card-header">
     <p>안녕하세요, <span th:text="${user.username}"></span>님! 🎉</p>
     <div th:if="${guest1Name != null && guest2Name != null}">
-      <p style="font-size: 18px; color: #ff1fbf; font-weight: bold;">
+      <p>
         <span th:text="${guest1Name}"></span> ♥ <span th:text="${guest2Name}"></span>
       </p>
     </div>
