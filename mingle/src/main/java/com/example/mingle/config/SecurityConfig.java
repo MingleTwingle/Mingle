@@ -29,9 +29,13 @@ public class SecurityConfig {
 
                 .csrf(csrf -> csrf.disable()) // ✅ CSRF 보호 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/bottom/**",
-                                "/guestOrHost", "/host/register", "/guests/register", "/about", "/restaurants/**", "/accommodation/**",
-                                "/contact", "/css/**", "/js/**", "/images/**", "/reviews/**").permitAll()
+                        .requestMatchers("/", "/login","/bottom/**",
+                                "/guestOrHost","/host/register","/guests/register","/about","/restaurants/**","/accommodation/**",
+                                "/contact", "/css/**", "/js/**", "/images/**"
+                                ,"/reviews/**","/review/**").permitAll()
+                        .requestMatchers("/mypage/**").authenticated()  // mypage에 로그인해야지만 접근
+                        .requestMatchers("/mypage/guest").hasRole("USER")
+                        .requestMatchers("/mypage/host").hasRole("HOST")
                         .requestMatchers("/mypage/profile").hasRole("USER") // 게스트 전용 마이페이지
                         .requestMatchers("/mypage/hostprofile").hasRole("HOST") // 호스트 전용 마이페이지
                         .anyRequest().authenticated()

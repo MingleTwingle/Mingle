@@ -1,31 +1,18 @@
 package com.example.mingle.review.repository;
 
 import com.example.mingle.review.domain.Review;
+import com.example.mingle.review.domain.ReviewCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface ReviewRepository extends JpaRepository<Review, Integer> {
+@Repository
+public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    Optional<Review> findById(Integer reviewId);
+    // ✅ 특정 카테고리의 리뷰 조회
+    List<Review> findByCategory(ReviewCategory category);
 
-    List<Review> findByRestaurantId(Integer restaurantId);
-
-    List<Review> findByAccommodationRoomId(Integer accommodationRoomId);
-
-    List<Review> findByGuestKey(Integer guestKey);
-
-    @Query("SELECT r FROM Review r " +
-            "WHERE (:restaurant_id IS NULL OR r.restaurantId = :restaurant_id) " +
-            "AND (:accommodationRoom_Id IS NULL OR r.accommodationRoomId = :accommodationRoom_Id) " +
-            "AND (:guest_key IS NULL OR r.guestKey = :guest_key) " +
-            "AND (:review_score IS NULL OR r.reviewScore >= :review_score)")
-    List<Review> findByFilters(
-            @Param("restaurant_id") Integer restaurantId,
-            @Param("accommodationRoom_Id") Integer accommodationRoomId,
-            @Param("guest_key") Integer guestKey,
-            @Param("review_score") Integer reviewScore);
+    // ✅ 제목에서 특정 키워드를 포함하는 리뷰 조회
+    List<Review> findByTitleContaining(String keyword);
 }

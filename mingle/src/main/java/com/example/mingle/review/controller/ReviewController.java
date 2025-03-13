@@ -3,77 +3,66 @@ package com.example.mingle.review.controller;
 import com.example.mingle.review.domain.Review;
 import com.example.mingle.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Controller
+@RequestMapping("/reviews")
 public class ReviewController {
-    private final ReviewService reviewService;
 
     @Autowired
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
+    private ReviewService reviewService;
 
-    // ✅ 리뷰 등록 폼
-    @GetMapping("/reviews/new")
-    public String createForm(Model model) {
-        model.addAttribute("reviewForm", new ReviewForm());
-        return "review/reviewRegister";
-    }
-
-    // ✅ 리뷰 등록
-    @PostMapping("/reviews/new")
-    public String create(@Validated ReviewForm form, BindingResult result) {
-        if (result.hasErrors()) {
-            return "review/reviewRegister";
-        }
-        Review review = new Review();
-        review.setReviewComment(form.getReviewComment());
-        review.setReviewScore(form.getReviewScore());
-        review.setRestaurantId(form.getRestaurantId());
-        review.setAccommodationRoomId(form.getAccommodationRoomId());
-        review.setGuestKey(form.getGuestKey());
-
-        reviewService.addReview(review);
-        return "redirect:/reviews/list";
-    }
-
-    // ✅ 리뷰 목록 조회
-    @GetMapping("/reviews/list")
-    public String list(Model model) {
-        List<Review> reviews = reviewService.findAllReviews();
+    // ✅ 리뷰 목록 조회 (검색 & 카테고리 필터 가능)
+    @GetMapping
+    public String getReviews(@RequestParam(required = false) String category,
+                             @RequestParam(required = false) String keyword,
+                             Model model) {
+        List<Review> reviews = reviewService.getReviews(category, keyword);
         model.addAttribute("reviews", reviews);
-        return "review/reviewList";
+        return "review/reviewList"; // ✅ 리뷰 목록 페이지 (`reviewList.html`)
     }
 
-    // ✅ 리뷰 필터링 폼 및 필터링된 리뷰 목록 조회
-    @GetMapping("/reviews/filter")
-    public String filterList(Model model) {
-        model.addAttribute("reviewFilterForm", new ReviewFilterForm());
-        List<Review> reviews = reviewService.findAllReviews();  // 초기에는 전체 리뷰를 가져옴
-        model.addAttribute("reviews", reviews);
-        return "review/reviewFilterAndList";  // 새로운 HTML 파일을 반환
+    // ✅ 리뷰 작성 페이지 (폼)
+    @GetMapping("/new")
+    public String createReviewForm(Model model) {
+        model.addAttribute("review", new Review());
+        return "review/reviewRegister"; // ✅ 리뷰 작성 페이지 (`reviewRegister.html`)
     }
 
-    // ✅ 리뷰 필터링 및 필터링된 리뷰 목록 보기
-    @PostMapping("/reviews/filter")
-    public String customFilter(@Validated ReviewFilterForm form, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "review/reviewFilterAndList";  // 오류가 있으면 다시 필터링 페이지로 돌아감
+
+    // ✅ 리뷰 저장 (AJAX 요청 처리)
+    @PostMapping("/new")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> saveReview(@RequestBody Review review) {
+        Map<String, Object> response = new HashMap<>();
+        reviewService.saveReview(review);
+        response.put("success", true);
+        response.put("message", "리뷰 등록 성공");
+        return ResponseEntity.ok(response);
+    }
+
+    // ✅ 리뷰 상세 조회
+    @GetMapping("/{id}")
+    public String getReview(@PathVariable Long id, Model model) {
+        Review review = reviewService.getReview(id);
+        if (review == null) {
+            return "redirect:/reviews"; // ✅ 없는 리뷰 ID일 경우 목록으로 이동
         }
-        List<Review> filteredReviews = reviewService.searchReviews(
-                form.getRestaurantId(),
-                form.getAccommodationRoomId(),
-                form.getReviewScore()
-        );
-        model.addAttribute("reviews", filteredReviews);
-        return "review/reviewFilterAndList";  // 필터링된 리뷰를 보여주는 페이지 반환
+        model.addAttribute("review", review);
+        return "review/reviewDetail"; // ✅ 리뷰 상세 페이지 (`reviewDetail.html`)
+    }
+
+    // ✅ 리뷰 삭제
+    @PostMapping("/{id}/delete")
+    public String deleteReview(@PathVariable Long id) {
+        reviewService.deleteReview(id);
+        return "redirect:/reviews"; // ✅ 삭제 후 목록으로 이동
     }
 }

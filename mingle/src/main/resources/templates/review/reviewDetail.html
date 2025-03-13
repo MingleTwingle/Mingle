@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세 보기</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+
+<div class="container">
+    <h2 class="text-center">게시글 상세 보기</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title" th:text="${review.title}"></h3>
+            <p class="text-muted">작성자: <span th:text="${review.author}"></span></p>
+            <p class="text-muted">작성일: <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <p class="text-muted">조회수: <span th:text="${review.viewCount}"></span></p>
+            <hr>
+            <p class="card-text" th:text="${review.content}"></p>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- 뒤로가기 버튼 -->
+    <a href="/reviews" class="btn btn-secondary">목록으로</a>
+
+    <!-- 삭제 버튼 -->
+    <form th:action="@{/reviews/{id}/delete(id=${review.id})}" method="post" style="display: inline;">
+        <button type="submit" class="btn btn-danger">삭제</button>
+    </form>
+</div>
+
+</body>
+</html>
