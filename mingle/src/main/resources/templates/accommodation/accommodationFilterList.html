@@ -43,7 +43,7 @@
             padding: 1rem 0;
             gap: 1.5rem;
             border-bottom: 1px solid var(--border-color);
-            background-color: white;
+/*            background-color: white;*/
             width: 100%;
             -webkit-overflow-scrolling: touch; /* iOS 스크롤 부드럽게 */
             scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
@@ -293,12 +293,11 @@
 <!-- 숙소 그리드 (에어비앤비 스타일) -->
 <div class="accommodation-grid">
     <div class="row">
-        <div class="col-md-6 col-lg-4" th:each="accommodation : ${accommodations}">
+        <div class="col-md-6 col-lg-4" th:each="accommodation, iter : ${accommodations}">
             <div class="accommodation-card" th:onclick="|window.location.href='/accommodationDetail/' + ${accommodation.id}|">
                 <div class="card-img-container">
-                    <div th:if="${!accommodation.outterPhotos.isEmpty()}">
-                        <img th:src="${accommodation.outterPhotos[0].image}" />
-                    </div>
+                    <a th:href="@{/accommodation/{id}(id=${accommodation.id})}" class="stretched-link"></a>
+                    <img th:src="@{'/images/reo/reo' + (${iter.index + 1}) + '.jpg'}" alt="숙소 이미지">
                     <button class="wishlist-btn">
                         <i class="far fa-heart"></i>
                     </button>
@@ -316,7 +315,7 @@
 
                     <div class="accommodation-location">
                         <i class="location-icon fas fa-map-marker-alt"></i>
-                        <span th:text="${accommodation.location}">제주, 중문</span>
+                        <span th:text="${accommodation.location}"></span>
                     </div>
 
                     <div class="accommodation-features">

@@ -53,10 +53,10 @@ public class AccommodationController {
     @GetMapping("/accommodation/list")
     public String listAll(Model model) {
         List<Accommodation> accommodations = accommodationService.findAccommodation();
-        // Accommodation 객체에 포함된 outterPhotos가 이미 로드되므로 그대로 넘김
-        model.addAttribute("accommodation", accommodations);
+        model.addAttribute("accommodations", accommodations);  // ✅ 변수명 수정
         return "accommodation/accommodationList";
     }
+
 
     @GetMapping("/accommodation/filter")
     public String filterList(Model model) {
@@ -116,4 +116,5 @@ public class AccommodationController {
 
         return "accommodation/accommodationDetail";  // ✅ 올바른 View 반환
     }
+
 }
