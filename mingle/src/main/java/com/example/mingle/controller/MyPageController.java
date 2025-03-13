@@ -96,6 +96,9 @@ public class MyPageController {
         }
         assert guest != null;
         Couple couple = coupleRepository.findByGuestId(guest.getId());
+        if (couple == null) {
+            return "mypage/guest";
+        }
         String myCoupleCode = guest.getCoupleCode();
         String partnerCoupleCode;
         String guest1Name;
