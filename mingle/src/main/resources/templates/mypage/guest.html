@@ -65,10 +65,15 @@
         <li class="list-group-item">
           <a th:href="@{/mypage/profile}" class="text-decoration-none">회원 정보</a>
         </li>
-        <li class="list-group-item text-danger">회원 탈퇴</li>
+        <li class="list-group-item">
+          <a href="#" class="text-danger" style="text-decoration: none;" onclick="confirmDelete()">회원 탈퇴</a>
+        </li>
       </ul>
     </div>
   </div>
+
+  <!-- 탈퇴 요청 폼 -->
+  <form id="deleteForm" action="/mypage/delete" method="post" style="display: none;"></form>
 
 
   <!-- 추가 기능 -->
@@ -83,4 +88,13 @@
   </div>
 </div>
 </body>
+
+<!-- 탈퇴 확인 경고창 자바스크립트 -->
+<script>
+  function confirmDelete() {
+    if (confirm("정말 회원 탈퇴를 하시겠습니까?")) {
+      document.getElementById("deleteForm").submit();
+    }
+  }
+</script>
 </html>
