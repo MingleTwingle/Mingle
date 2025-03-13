@@ -38,7 +38,7 @@ public class SecurityConfig {
                 )
                 .formLogin(login -> login
                         .loginPage("/login")  // 로그인 페이지 설정
-                        .defaultSuccessUrl("/", true) // ✅ 로그인 후 홈으로 이동
+                        .defaultSuccessUrl("/loginSuccess", true) // ✅ 로그인 후 홈으로 이동
                         .failureUrl("/login?error=true")
                         .usernameParameter("idid")
                         .passwordParameter("password")

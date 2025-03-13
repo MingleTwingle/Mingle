@@ -11,7 +11,7 @@ import lombok.Setter;
 public class AccommodationRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "accommodation_room_Id")
+    @Column(name = "accommodation_room_id")  // 기본 키 컬럼명 'accommodation_room_Id'
     private Long id;
 
     @ManyToOne

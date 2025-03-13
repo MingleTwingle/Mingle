@@ -1,7 +1,9 @@
 package com.example.mingle.reservation.domain;
 
+import com.example.mingle.accommodation.domain.AccommodationRoom;
 import com.example.mingle.domain.Guest;
 import com.example.mingle.domain.Host;
+import com.example.mingle.restaurant.domain.Restaurant;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,40 +28,27 @@ public class Reservation {
     @Column(name = "reservation_cancel")
     private String cancel;
 
-    @Column(name = "restaurant_id")
-    private Long restaurantId;
+    private String newTime;
+    private String restaurantName;
+    private String accommodationRoomName;
+    private String dated;
 
-    @Column(name = "accommodationRoom_Id")
-    private Long accommodationRoomId;
+    // 레스토랑과의 관계 매핑 (restaurant_id를 직접 참조)
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
-    // guest_key 외래 키 연결
+    // 숙소 객실과의 관계 매핑 (accommodation_room_Id를 직접 참조)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accommodation_room_Id", referencedColumnName = "accommodation_room_Id")
+    private AccommodationRoom accommodationRoom;  // 필드 이름은 'accommodationRoom'
+
+    // guest 외래 키 연결
     @ManyToOne
     @JoinColumn(name = "guest_key")
-    private Guest guest;  // guest라는 필드명으로 변경
+    private Guest guest;
 
     @ManyToOne
     @JoinColumn(name = "host_key")
-    private Host host;  // host라는 필드명으로 변경
-
-    private String newTime;
-
-    public void setTime(String newTime) {
-        this.newTime = newTime;
-    }
-
-    public void setRestaurantId(Long restaurantId) {
-        if (restaurantId == null || restaurantId.equals("")) {
-            this.restaurantId = null;
-        } else {
-            this.restaurantId = restaurantId;
-        }
-    }
-
-    public void setAccommodationRoomId(Long accommodationRoomId) {
-        if (accommodationRoomId == null || accommodationRoomId.equals("")) {
-            this.accommodationRoomId = null;
-        } else {
-            this.accommodationRoomId = accommodationRoomId;
-        }
-    }
+    private Host host;
 }
