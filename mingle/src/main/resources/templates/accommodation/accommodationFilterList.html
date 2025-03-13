@@ -296,7 +296,7 @@
         <div class="col-md-6 col-lg-4" th:each="accommodation, iter : ${accommodations}">
             <div class="accommodation-card" th:onclick="|window.location.href='/accommodationDetail/' + ${accommodation.id}|">
                 <div class="card-img-container">
-                    <a th:href="@{/accommodation/{id}(id=${accommodation.id})}" class="stretched-link"></a>
+                    <a th:href="@{/accommodationDetail/{id}(id=${accommodation.id})}" class="stretched-link"></a>
                     <img th:src="@{'/images/reo/reo' + (${iter.index + 1}) + '.jpg'}" alt="숙소 이미지">
                     <button class="wishlist-btn">
                         <i class="far fa-heart"></i>
