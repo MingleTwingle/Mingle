@@ -19,4 +19,8 @@ public class AccommodationRoomService {
     public List<AccommodationRoom> findByAccommodationId(Long accommodationId) {
         return accommodationRoomRepository.findByAccommodationId(accommodationId);
     }
+
+    public List<AccommodationRoom> getRoomsByAccommodationId(Long accommodationId) {
+        return accommodationRoomRepository.findByAccommodationId(accommodationId);
+    }
 }

@@ -165,11 +165,19 @@
 
     <!-- ✅ 객실 선택 및 정보 표시 -->
     <div class="room-list">
+
         <h2>객실 정보</h2>
         <div class="room-container">
-            <div th:each="room : ${rooms}" class="room-item"
+            <div th:each="room : ${roomList}" class="room-item"
                  th:data-room-id="${room.id}" th:data-room-cost="${room.cost}"
                  onclick="selectRoom(this)">
+                <div class="room-photos">
+                    <!-- ✅ 해당 객실의 사진이 있는 경우 표시 -->
+                    <img th:if="${roomPhotosMap[room.id] != null}"
+                         th:src="@{${roomPhotosMap[room.id]}}"
+                         alt="객실 사진"
+                         class="room-photo">
+                </div>
                 <div class="room-name">
                     <strong th:text="${room.name}">객실 이름</strong>
                 </div>

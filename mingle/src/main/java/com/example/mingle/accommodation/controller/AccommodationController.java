@@ -6,6 +6,7 @@ import com.example.mingle.accommodation.service.AccommodationRoomService;
 import com.example.mingle.accommodation.service.AccommodationService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,15 +14,20 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class AccommodationController {
 
     private final AccommodationService accommodationService;
     private final AccommodationRoomService accommodationRoomService;
+
+    @Value("classpath:/static/")
+    private String imageBasePath;
 
     @Autowired
     public AccommodationController(AccommodationService accommodationService, AccommodationRoomService accommodationRoomService) {
@@ -105,15 +111,24 @@ public class AccommodationController {
         session.setAttribute("accommodationId", id); // ✅ guest_id 저장
         // 숙소 정보 가져오기 (변수 선언 및 초기화)
         Accommodation accommodation = accommodationService.findById(id);
-
         if (accommodation == null) {
             throw new RuntimeException("숙소 정보를 찾을 수 없습니다. ID: " + id);
         }
-        List<AccommodationRoom> rooms = accommodationRoomService.findByAccommodationId(id);
+        List<AccommodationRoom> roomList = accommodationRoomService.getRoomsByAccommodationId(id);
+
+        String imageFolderPath = imageBasePath.replace("file:", "") + "ac";
+        File folder = new File(imageFolderPath);
+        Map<Long, String> roomPhotosMap = new HashMap<>();
+        for (AccommodationRoom room : roomList) {
+            String imagePath = "/images/ac/ac" + room.getId() + ".jpg";
+            roomPhotosMap.put(room.getId(), imagePath);
+        }
+
 
         // 모델에 숙소 정보 추가
         model.addAttribute("accommodation", accommodation);
-        model.addAttribute("rooms", rooms);
+        model.addAttribute("roomList", roomList);
+        model.addAttribute("roomPhotosMap", roomPhotosMap );
 
         return "accommodation/accommodationDetail";  // ✅ 올바른 View 반환
     }
