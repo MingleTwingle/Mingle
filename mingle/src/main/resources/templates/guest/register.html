@@ -80,7 +80,7 @@
     <h2 style="text-align: center; color: #d6336c;">회원가입</h2>
     <form action="/guests/register" method="post" th:object="${guestForm}">
       <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
-<!--      <input type="hidden" name="role" value="${param.role}"> &lt;!&ndash; role 파라미터 추가 &ndash;&gt;-->
+      <!--      <input type="hidden" name="role" value="${param.role}"> &lt;!&ndash; role 파라미터 추가 &ndash;&gt;-->
 
       <div class="form-group">
         <label for="guest_name">이름</label>

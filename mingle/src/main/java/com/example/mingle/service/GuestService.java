@@ -2,6 +2,7 @@ package com.example.mingle.service;
 
 import com.example.mingle.domain.Guest;
 import com.example.mingle.repository.GuestRepository;
+import com.example.mingle.repository.HostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,13 @@ import java.util.List;
 public class GuestService {
 
     private final GuestRepository guestRepository;
+    private final HostRepository hostRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public GuestService(GuestRepository guestRepository, PasswordEncoder passwordEncoder) {
+    public GuestService(GuestRepository guestRepository, HostRepository hostRepository, PasswordEncoder passwordEncoder) {
         this.guestRepository = guestRepository;
+        this.hostRepository = hostRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -40,6 +43,10 @@ public class GuestService {
     private void validateDuplicationMember(Guest guest, BindingResult result) {
         guestRepository.findByIdid(guest.getIdid())
                 .ifPresent(m -> {
+                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                });
+        hostRepository.findByIdid(guest.getIdid())
+                .ifPresent(h -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
     }

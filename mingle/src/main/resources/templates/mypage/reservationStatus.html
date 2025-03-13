@@ -6,6 +6,41 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/styles.css">
+
+    <!-- 추가된 JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // 취소 버튼 클릭 시 팝업 띄우기
+        function showCancelConfirmation(reservationId) {
+            // 팝업 표시
+            const confirmation = confirm("이 예약을 취소하시겠습니까?");
+            if (confirmation) {
+                // 예약 취소 요청을 서버로 보냄
+                fetch(`/reservations/delete/${reservationId}`, {
+                    method: 'GET',  // HTTP 메소드: GET
+                    headers: {
+                        'Content-Type': 'application/json'  // 요청 본문의 형식
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // 성공적인 응답을 받으면 예약 취소 메시지
+                            alert("예약이 취소되었습니다.");
+                            // 페이지 리프레시 또는 예약 목록 갱신
+                            location.reload();  // 페이지 리프레시
+                        } else {
+                            // 실패 시 메시지
+                            alert("예약 취소에 실패했습니다.");
+                        }
+                    })
+                    .catch(error => {
+                        // 네트워크 오류 처리
+                        console.error('Error:', error);
+                        alert("예약 취소 중 오류가 발생했습니다.");
+                    });
+            }
+        }
+    </script>
 </head>
 <body>
 <div th:replace="fragments/navbar :: nav"></div>
@@ -13,33 +48,42 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">예약 현황 조회</h2>
 
-
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>예약번호</th>
-            <th>레스토랑/숙소</th>
+            <th>식당/숙소구분</th>
+            <th>이름</th>
             <th>예약일</th>
             <th>인원수</th>
-            <th>취소여부</th>
-            <th>시간</th>
+            <th>예약시간</th>
+            <th>취소</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="reservation : ${reservations}">
-            <td th:text="${reservation.id}"></td>
+        <tr th:each="reservation, iterStat : ${reservations}">
+            <!-- 식당인지 숙소인지 구분-->
+            <td>
+                <span th:text="${restaurantNames[iterStat.index] != null ? '식당' : '숙소'}"></span>
+            </td>
 
-            <!-- 레스토랑과 숙소 구분 -->
-            <td th:if="${reservation.restaurantId != null}" th:text="'레스토랑 (ID: ' + ${reservation.restaurantId} + ')'"></td>
-            <td th:if="${reservation.accommodationRoomId != null}" th:text="'숙소 (ID: ' + ${reservation.accommodationRoomId} + ')'"></td>
-
-            <td th:text="${reservation.date}"></td>
+            <!-- 레스토랑/숙소 이름을 출력 -->
+            <td>
+                <span th:text="${restaurantNames[iterStat.index] != null ? restaurantNames[iterStat.index] : accommodationNames[iterStat.index]}"></span>
+            </td>
+            <td th:text="${dated[iterStat.index]}"></td>
             <td th:text="${reservation.people}"></td>
-            <td th:text="${reservation.cancel}"></td>
-            <td th:text="${reservation.newTime}"></td>
+            <td th:text="${newTime[iterStat.index]}"></td>
+
+            <!-- 취소 버튼 추가 -->
+            <td>
+                <!-- JavaScript에서 예약 ID를 직접 삽입하는 방식 -->
+                <button class="btn btn-danger" th:data-id="${reservation.id}" onclick="showCancelConfirmation(this)">취소</button>
+            </td>
         </tr>
         </tbody>
     </table>
+
 </div>
+
 </body>
 </html>

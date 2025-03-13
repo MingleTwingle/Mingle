@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Couple Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 320px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        input[type="text"], button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            display: block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Couple Registration</h2>
+
+    <!-- 성공 메시지 -->
+    <div th:if="${successMessage}" class="message success">
+        <span th:text="${successMessage}"></span>
+    </div>
+    <div th:if="${infoMessage}" class="alert alert-info">
+        <span th:text="${infoMessage}"></span>
+    </div>
+    <!-- 실패 메시지 -->
+    <div th:if="${errorMessage}" class="message error">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <!-- 커플 등록 폼 -->
+    <form action="/couple/register" method="post">
+        <input
+                type="text"
+                name="myCoupleCode"
+                id="myCoupleCode"
+                placeholder="Enter your couple code"
+                required
+        />
+        <input
+                type="text"
+                name="partnerCoupleCode"
+                id="partnerCoupleCode"
+                placeholder="Enter partner's couple code"
+                required
+        />
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+</body>
+</html>
