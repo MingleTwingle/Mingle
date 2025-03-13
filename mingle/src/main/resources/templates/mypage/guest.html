@@ -69,14 +69,18 @@
     <div class="card-body">
       <ul class="list-group">
         <li class="list-group-item">
-          <a th:href="@{/mypage/profile}" class="text-decoration-none">회원 정보</a>
+          <a th:href="@{/mypage/profile}" class="text-decoration-none d-inline-block">회원 정보</a>
         </li>
-        <form id="deleteForm" action="/mypage/delete" method="post" onsubmit="return confirmDelete();">
-          <button type="submit" class="btn btn-danger w-100">회원 탈퇴</button>
-        </form>
+        <li class="list-group-item">
+          <form id="deleteForm" action="/mypage/delete" method="post" onsubmit="return confirmDelete();">
+            <button type="submit" class="btn btn-danger d-inline-block" style="width: auto; font-size: 1rem; padding: 0.375rem 0.75rem;">회원 탈퇴</button>
+          </form>
+        </li>
       </ul>
     </div>
   </div>
+
+
 
 
   <!-- 추가 기능 -->
