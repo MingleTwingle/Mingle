@@ -95,7 +95,9 @@ public class MyPageController {
             return "redirect:/login";
         }
         String myCoupleCode = guest.getCoupleCode();
+        boolean isMatched = guest.isMatched();
         model.addAttribute("coupleCode", myCoupleCode);
+        model.addAttribute("isMatched", isMatched);
         Couple couple = coupleRepository.findByGuestId(guest.getId());
         if (couple == null) {
             return "mypage/guest";
