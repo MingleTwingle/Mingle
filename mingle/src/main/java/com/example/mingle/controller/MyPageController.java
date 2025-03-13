@@ -90,16 +90,16 @@ public class MyPageController {
         model.addAttribute("user", userDetails);
 
         // ✅ 사용자 정보에서 커플 코드 가져오기
-        Guest guest = guestRepository.findByName(username).orElse(null); //dain
+        Guest guest = guestRepository.findByName(username).orElse(null);
         if (guest == null) {
             return "redirect:/login";
         }
-        assert guest != null;
+        String myCoupleCode = guest.getCoupleCode();
+        model.addAttribute("coupleCode", myCoupleCode);
         Couple couple = coupleRepository.findByGuestId(guest.getId());
         if (couple == null) {
             return "mypage/guest";
         }
-        String myCoupleCode = guest.getCoupleCode();
         String partnerCoupleCode;
         String guest1Name;
         String guest2Name;
@@ -113,17 +113,8 @@ public class MyPageController {
             guest2Name = coupleService.getGuest1Name(partnerCoupleCode);
         }
 
-//        log.info("asdfasdf");
-//        System.out.println("myCoupleCode = " + myCoupleCode);
-//        System.out.println("partnerCoupleCode = " + partnerCoupleCode);
-//
-//
-//        System.out.println("guest1Name = " + guest1Name);
-//        System.out.println("guest2Name = " + guest2Name);
-
         model.addAttribute("guest1Name", guest1Name);
         model.addAttribute("guest2Name", guest2Name);
-        model.addAttribute("coupleCode", myCoupleCode);
 
         return "mypage/guest";
     }
