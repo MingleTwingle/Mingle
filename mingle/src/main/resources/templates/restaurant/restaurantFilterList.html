@@ -30,13 +30,13 @@
         padding: 0;
     }
 
-    /* 필터 바 위치 조정 - 그리드와 정렬 */
+/*    !* 필터 바 위치 조정 - 그리드와 정렬 *!
     .filter-container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 1.5rem;
         margin-top: 5rem;
-    }
+    }*/
 
     .filter-bar {
         display: flex;
@@ -267,8 +267,13 @@
     }
 </style>
 <body>
+<body>
 <!-- 공통 네비게이션 바 포함 -->
 <div th:replace="~{fragments/navbar :: nav}"></div>
+<br>
+<br>
+<br>
+<br>
 
 <!-- 필터 바 - 컨테이너로 감싸서 그리드와 정렬 -->
 <div class="filter-container">
@@ -298,54 +303,86 @@
 <div class="restaurant-grid">
     <div class="row">
         <!-- 레스토랑 카드 반복 -->
-        <div class="col-md-6 col-lg-4" th:each="restaurant : ${restaurants}">
+        <div class="col-md-6 col-lg-4" th:each="restaurant, iter : ${restaurants}">
             <div class="restaurant-card">
                 <div class="card-img-container">
                     <a th:href="@{/restaurants/{id}(id=${restaurant.id})}" class="stretched-link"></a>
-                    <img th:if="${!restaurant.outterPhotos.isEmpty()}" th:src="${restaurant.outterPhotos[0].image}" alt="레스토랑 이미지">
+
+                    <!-- static/images/aco/ 폴더의 기본 이미지 사용 -->
+                    <img th:src="@{'/images/aco/aco' + ${iter.index+1} + '.jpg'}" alt="레스토랑 이미지">
+
                     <button class="favorite-btn">
                         <i class="far fa-heart"></i>
                     </button>
                 </div>
                 <div class="card-body">
-                        <div class="rating">
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <span class="rating-value">4.5</span>
-                            <span class="rating-count">(123)</span>
+                    <div class="rating">
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
                         </div>
-
-                        <h5 class="restaurant-name" th:text="${restaurant.restaurantName}"></h5>
-
-                        <div class="restaurant-location">
-                            <i class="location-icon fas fa-map-marker-alt"></i>
-                            <span th:text="${restaurant.restaurantLocation}"></span>
-                        </div>
-
-                        <div class="restaurant-features">
+                        <span class="rating-value">4.5</span>
+                        <span class="rating-count">(123)</span>
+                    </div>
+                    <h5 class="restaurant-name" th:text="${restaurant.restaurantName}"></h5>
+                    <div class="restaurant-location">
+                        <i class="location-icon fas fa-map-marker-alt"></i>
+                        <span th:text="${restaurant.restaurantLocation}"></span>
+                    </div>
+                    <div class="restaurant-features">
                         <span class="feature-badge" th:if="${restaurant.restaurantParking != null and restaurant.restaurantParking}">
                             <i class="feature-icon fas fa-square-parking"></i>주차
                         </span>
-                            <span class="feature-badge">
+                        <span class="feature-badge">
                             <i class="feature-icon fas fa-wifi"></i>와이파이
                         </span>
+                    </div>
+                    <div class="restaurant-hours">
+                        <div class="hours-item">
+                            <i class="hours-icon far fa-clock"></i>
+                            <span>오픈: <span th:text="${restaurant.restaurantOpenTime}"></span></span>
                         </div>
-                        <div class="restaurant-hours">
-                            <div class="hours-item">
-                                <i class="hours-icon far fa-clock"></i>
-                                <span>오픈: <span th:text="${restaurant.restaurantOpenTime}"></span></span>
-                            </div>
-                            <div class="hours-item">
-                                <i class="hours-icon far fa-clock"></i>
-                                <span>마감: <span th:text="${restaurant.restaurantEndTime}"></span></span>
-                            </div>
+                        <div class="hours-item">
+                            <i class="hours-icon far fa-clock"></i>
+                            <span>마감: <span th:text="${restaurant.restaurantEndTime}"></span></span>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>
+
+<script>
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+
+    // 필터 아이템 클릭 이벤트
+    document.querySelectorAll('.filter-item').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.filter-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            // 여기에 필터링 로직 추가
+        });
+    });
+
+    // 즐겨찾기 버튼 클릭 이벤트
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                icon.style.color = '#4285F4';
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                icon.style.color = 'white';
+            }
+        });
+    });
+</script>
+</body>
+
 
     <script>
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"

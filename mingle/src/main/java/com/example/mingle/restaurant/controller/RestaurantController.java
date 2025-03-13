@@ -106,6 +106,7 @@ public class RestaurantController {
         model.addAttribute("restaurants", restaurants);
         return "restaurant/restaurantFilterList";
     }
+
     // 🔹 레스토랑 상세 페이지 조회
     @GetMapping("/restaurants/{id}")
     public String getRestaurantDetail(@PathVariable Long id, Model model) {
