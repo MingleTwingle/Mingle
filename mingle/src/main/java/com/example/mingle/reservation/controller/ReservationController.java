@@ -1,5 +1,6 @@
 package com.example.mingle.reservation.controller;
 
+import com.example.mingle.accommodation.domain.Accommodation;
 import com.example.mingle.accommodation.domain.AccommodationRoom;
 import com.example.mingle.accommodation.repository.AccommodationRoomRepository;
 import com.example.mingle.domain.Guest;
@@ -17,11 +18,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 
 @Controller
 public class ReservationController {
@@ -68,7 +70,6 @@ public class ReservationController {
     }
 
 
-    // 예약 현황 조회
     @GetMapping("/reservationStatus")
     public String getReservations(HttpSession session, Model model) {
         Long guestId = (Long) session.getAttribute("guestId");
@@ -79,46 +80,59 @@ public class ReservationController {
         model.addAttribute("reservations", reservations);
 
         // 각 예약에 대해 레스토랑 이름을 추출
-        // 각 예약에 대해 레스토랑/숙소 이름을 추출
         List<String> restaurantNames = new ArrayList<>();
         List<String> accommodationNames = new ArrayList<>();
         List<String> date = new ArrayList<>();
         List<String> newTime = new ArrayList<>();
-        for (Reservation reservation : reservations) {
-            // 숙소가 있을 경우 이름을 추가
-            String[] dateTimeParts = reservation.getDate().split("T"); // "T" 기준으로 분리
-            String dateTime = reservation.getDate();
-            if (dateTime.contains("T")) { // "T"가 포함된 경우
-                String timePart = dateTime.split("T")[1].split(":")[0] + ":" + dateTime.split("T")[1].split(":")[1]; // HH:mm 추출
-                newTime.add(timePart);
-            } else {
-                newTime.add("없음"); // "T"가 없는 경우 기본값 설정 (예: 00:00)
-            }
-            date.add(reservation.getDate().split("T")[0]);
 
-            if(reservation.getAccommodationRoom() != null) {
+        for (Reservation reservation : reservations) {
+            String dateTime = reservation.getDate(); // 예약 날짜 가져오기
+            String timePart = "11:00"; // 기본 시간 설정
+
+            if (reservation.getAccommodationRoom() != null) {
                 accommodationNames.add(reservation.getAccommodationRoom().getName()); // 숙소 이름 추가
                 restaurantNames.add(null); // 레스토랑 이름은 null
-            } else if(reservation.getRestaurant() != null) {
+
+                // 날짜 형식이 올바른지 확인 후 처리
+                if (dateTime != null && dateTime.contains("T")) {
+                    String[] dateTimeParts = dateTime.split("T");
+                    if (dateTimeParts.length > 1) {
+                        String[] timeParts = dateTimeParts[1].split(":");
+                        if (timeParts.length > 1) {
+                            timePart = timeParts[0] + ":" + timeParts[1]; // HH:mm 추출
+                        }
+                    }
+                }
+                newTime.add(timePart);
+                date.add(dateTime.split("T")[0]);
+
+            } else if (reservation.getRestaurant() != null) {
                 restaurantNames.add(reservation.getRestaurant().getRestaurantName()); // 레스토랑 이름 추가
                 accommodationNames.add(null); // 숙소 이름은 null
+
+                newTime.add(reservation.getNewTime());
+                date.add(dateTime.split("T")[0]);
             }
         }
+
         model.addAttribute("newTime", newTime);
         model.addAttribute("dated", date);
         model.addAttribute("restaurantNames", restaurantNames);
         model.addAttribute("accommodationNames", accommodationNames);
+
         System.out.println("===========================");
         System.out.println(restaurantNames);
         System.out.println(accommodationNames);
-
+        System.out.println(newTime);
+        System.out.println(date);
         System.out.println("===========================");
+
         return "mypage/reservationStatus";
     }
 
-    // 예약 추가 처리
-    @PostMapping("/reservation")
-    public String addReservation(HttpSession session,
+
+    @PostMapping("/reservation/accommodation")
+    public String addReservationAcc(HttpSession session,
                                  @RequestParam("roomId") Long roomId,
                                  @RequestParam("checkinDate") String checkinDate,
                                  @RequestParam("stayDays") int stayDays,
@@ -126,35 +140,152 @@ public class ReservationController {
 
         // 세션에서 로그인된 Guest 객체 가져오기
         Guest guest = getGuestFromSession(session);
+        String peopleNum = "2";
+        Long accommodationId = (Long) session.getAttribute("accommodationId");
 
         // AccommodationRoom 객체 가져오기
         AccommodationRoom accommodationRoom = accommodationRoomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 객실을 찾을 수 없습니다. ID: " + roomId));
 
-        // 해당 객실과 날짜에 예약이 이미 있는지 확인
-        List<Reservation> existingReservations = reservationRepository.findByAccommodationRoomAndDate(accommodationRoom, checkinDate);
-        if (!existingReservations.isEmpty()) {
-            // 예약이 이미 있는 경우, 오류 메시지를 전달
-            model.addAttribute("errorMessage", "해당 날짜에 이 객실은 이미 예약되었습니다.");
-            return ""; // 숙소 상세 페이지로 리다이렉트
+        // 날짜 형식을 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // checkinDate를 LocalDate로 변환
+        LocalDate startDate = LocalDate.parse(checkinDate, formatter);
+
+        // stayDays만큼 더해서 종료 날짜 계산
+        LocalDate endDate = startDate.plusDays(stayDays-1);
+
+        // 기존 예약 목록 가져오기
+        List<Reservation> existingReservations = reservationRepository.findByAccommodationRoom(accommodationRoom);
+
+        // 날짜 범위가 겹치는지 확인
+        for (Reservation existingReservation : existingReservations) {
+            String[] dateRange = existingReservation.getDate().split("~");
+
+            if (dateRange.length == 2) {
+                LocalDate existingStartDate = LocalDate.parse(dateRange[0], formatter);
+                LocalDate existingEndDate = LocalDate.parse(dateRange[1], formatter);
+
+                if (startDate.isBefore(existingEndDate) && endDate.isAfter(existingStartDate)) {
+                    model.addAttribute("errorMessage", "해당 날짜에 이 객실은 이미 예약되었습니다.");
+                    return "redirect:/accommodationDetail/" + accommodationId;  // 오류 발생 시 상세 페이지로 리다이렉트
+                }
+            } else {
+                model.addAttribute("errorMessage", "잘못된 예약 날짜 범위입니다.");
+                return "redirect:/accommodationDetail/" + accommodationId;  // 날짜 범위 오류 시 리다이렉트
+            }
         }
 
-        // 객실 이름을 가져오기
+        // 객실 이름 가져오기
         String accommodationRoomName = (accommodationRoom.getAccommodation().getName() != null) ? accommodationRoom.getAccommodation().getName() : "없음";
+
+        // 결과 날짜 범위 생성
+        String dateRange = startDate.format(formatter) + "~" + endDate.format(formatter);
 
         // Reservation 객체 생성
         Reservation reservation = new Reservation();
         reservation.setGuest(guest);
         reservation.setAccommodationRoomName(accommodationRoomName);
         reservation.setAccommodationRoom(accommodationRoom);
-        reservation.setDate(checkinDate);
-        reservation.setPeople(String.valueOf(stayDays));
+        reservation.setDate(dateRange);
+        reservation.setPeople(peopleNum);
 
         // 예약 저장
         reservationRepository.save(reservation);
 
         return "redirect:/reservationStatus"; // 예약이 정상적으로 추가되었을 때
     }
+    @PostMapping("/reservation/restaurant")
+    public String addReservationRes(HttpSession session,
+                                    @RequestParam("restaurantId") Long restId,
+                                    @RequestParam("reservationDate") String resDate,
+                                    @RequestParam("reservationTime") String reservationTime,
+                                    Model model) {
+
+        System.out.println("===============================");
+        System.out.println("Received restaurantId: " + restId);
+        System.out.println("Reservation Date: " + resDate);
+        System.out.println("Reservation Time: " + reservationTime);
+
+        // 세션에서 로그인된 Guest 객체 가져오기
+        Guest guest = getGuestFromSession(session);
+
+        // Restaurant 객체 가져오기
+        Restaurant restaurant = restaurantRepository.findById(restId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 식당을 찾을 수 없습니다. ID: " + restId));
+
+        // reservationTime의 공백을 T로 교체하여 "yyyy-MM-dd hh:mm" -> "yyyy-MM-dd'T'HH:mm" 형식으로 수정
+        String formattedReservationTime = reservationTime.replace(" ", "T");  // 공백을 T로 변경
+
+        // 예약 날짜와 시간을 결합할 때 T가 하나만 들어가도록 수정
+        String dateTimeString = resDate + "T" + formattedReservationTime;  // "yyyy-MM-dd'T'HH:mm" 형식으로 결합
+
+        System.out.println(dateTimeString);
+        System.out.println(resDate);
+        System.out.println(reservationTime);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");  // 날짜와 시간 모두 포함된 포맷
+
+        try {
+            // 예약 날짜와 시간 파싱
+            LocalDateTime reservationDateTime = LocalDateTime.parse(dateTimeString, formatter);
+
+            // 기존 예약 목록 가져오기
+            List<Reservation> existingReservations = reservationRepository.findByRestaurant(restaurant);
+
+            // 날짜와 시간 겹치는지 확인
+            for (Reservation existingReservation : existingReservations) {
+                // 기존 예약 시간도 T 포함된 형식으로 비교
+                if (existingReservation.getAccommodationRoom() == null) {
+                    String existingDateTimeString = existingReservation.getDate() + "T" + existingReservation.getNewTime();
+                    LocalDateTime existingDateTime = LocalDateTime.parse(existingDateTimeString, formatter);
+
+                    System.out.println("=============================");
+                    System.out.println(existingReservation.getDate());
+                    System.out.println(existingDateTime);
+                    System.out.println(reservationDateTime);
+                    System.out.println("=============================");
+
+                    // 예약 시간 중복 체크
+                    if (existingDateTime.equals(reservationDateTime)) {
+                        model.addAttribute("errorMessage", "해당 날짜와 시간에 이미 예약이 있습니다.");
+                        return "redirect:/restaurant/detail/" + restId;  // 오류 발생 시 상세 페이지로 리다이렉트
+                    }
+                }
+            }
+
+            // 레스토랑 이름 설정
+            String restaurantName = restaurant.getRestaurantName() != null ? restaurant.getRestaurantName() : "없음";
+            System.out.println("reservationTime: " + reservationTime);
+            System.out.println("reservationDate: " + resDate);
+
+            // Reservation 객체 생성
+            Reservation reservation = new Reservation();
+            reservation.setGuest(guest);
+            reservation.setRestaurantName(restaurantName);
+            reservation.setRestaurant(restaurant);
+
+            // newTime은 예약 시간만 (hh:mm) 저장
+            reservation.setNewTime(reservationDateTime.toLocalTime().toString());  // "hh:mm"
+
+            // date는 예약 날짜만 (yyyy-MM-dd) 저장
+            reservation.setDate(reservationDateTime.toLocalDate().toString());  // "yyyy-MM-dd"
+
+            reservation.setPeople("2");  // 기본값 설정
+
+            // 예약 저장
+            reservationRepository.save(reservation);
+
+        } catch (DateTimeParseException e) {
+            model.addAttribute("errorMessage", "잘못된 날짜와 시간 형식입니다.");
+            return "/restaurant/detail/" + restId;  // 오류 발생 시 상세 페이지로 리다이렉트
+        }
+
+        return "redirect:/reservationStatus"; // 예약이 정상적으로 추가되었을 때
+    }
+
+
 
 
 
@@ -190,7 +321,8 @@ public class ReservationController {
     @GetMapping("/reservations/delete/{id}")
     public String deleteReservation(@PathVariable Long id, HttpSession session) {
         Guest guest = getGuestFromSession(session);
-
+        System.out.println("=========================");
+        System.out.println(id);
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다."));
 

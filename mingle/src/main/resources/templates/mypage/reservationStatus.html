@@ -11,7 +11,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // 취소 버튼 클릭 시 팝업 띄우기
-        function showCancelConfirmation(reservationId) {
+        function showCancelConfirmation(button) {
+            const reservationId = button.getAttribute('data-id'); // data-id에서 예약 ID를 추출
             // 팝업 표시
             const confirmation = confirm("이 예약을 취소하시겠습니까?");
             if (confirmation) {
@@ -55,7 +56,7 @@
             <th>이름</th>
             <th>예약일</th>
             <th>인원수</th>
-            <th>예약시간</th>
+            <th>예약/체크인시간</th>
             <th>취소</th>
         </tr>
         </thead>
@@ -70,7 +71,10 @@
             <td>
                 <span th:text="${restaurantNames[iterStat.index] != null ? restaurantNames[iterStat.index] : accommodationNames[iterStat.index]}"></span>
             </td>
-            <td th:text="${dated[iterStat.index]}"></td>
+            <td th:if="${iterStat.index < dated.size()}">
+                <span th:text="${dated[iterStat.index]}"></span>
+            </td>
+
             <td th:text="${reservation.people}"></td>
             <td th:text="${newTime[iterStat.index]}"></td>
 

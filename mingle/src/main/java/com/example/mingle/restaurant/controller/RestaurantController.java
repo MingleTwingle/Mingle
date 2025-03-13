@@ -130,6 +130,7 @@ public class RestaurantController {
         }
 
         model.addAttribute("restaurant", restaurant);
+        model.addAttribute("restaurantId", id);
         model.addAttribute("menuList", menuList);  // 메뉴 데이터 추가
         model.addAttribute("menuImageMap", menuImageMap);  // 이미지 매핑 추가
 

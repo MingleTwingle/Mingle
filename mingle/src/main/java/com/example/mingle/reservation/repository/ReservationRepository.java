@@ -2,6 +2,7 @@ package com.example.mingle.reservation.repository;
 
 import com.example.mingle.accommodation.domain.AccommodationRoom;
 import com.example.mingle.reservation.domain.Reservation;
+import com.example.mingle.restaurant.domain.Restaurant;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,5 +25,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     @Query("SELECT r FROM Reservation r WHERE r.accommodationRoom = :accommodationRoom AND r.date = :date")
     List<Reservation> findByAccommodationRoomAndDate(AccommodationRoom accommodationRoom, String date);
+
+    List<Reservation> findByAccommodationRoom(AccommodationRoom accommodationRoom);
+
+    List<Reservation> findByRestaurant(Restaurant restaurant);
 
 }

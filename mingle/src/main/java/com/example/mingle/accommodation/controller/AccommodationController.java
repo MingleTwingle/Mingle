@@ -4,6 +4,7 @@ import com.example.mingle.accommodation.domain.Accommodation;
 import com.example.mingle.accommodation.domain.AccommodationRoom;
 import com.example.mingle.accommodation.service.AccommodationRoomService;
 import com.example.mingle.accommodation.service.AccommodationService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -99,9 +100,9 @@ public class AccommodationController {
     }
 
     @GetMapping("/accommodationDetail/{id}")
-    public String showAccommodationDetail(@PathVariable("id") Long id, Model model) {
+    public String showAccommodationDetail(@PathVariable("id") Long id, Model model, HttpSession session) {
         System.out.println("요청된 숙소 ID: " + id);  // ✅ 디버깅용 로그 추가
-
+        session.setAttribute("accommodationId", id); // ✅ guest_id 저장
         // 숙소 정보 가져오기 (변수 선언 및 초기화)
         Accommodation accommodation = accommodationService.findById(id);
 
