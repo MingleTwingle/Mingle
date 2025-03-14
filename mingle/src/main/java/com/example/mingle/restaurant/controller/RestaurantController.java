@@ -1,7 +1,5 @@
 package com.example.mingle.restaurant.controller;
 import jakarta.servlet.http.HttpServletRequest;
-import com.example.mingle.accommodation.controller.AccommodationFilterForm;
-import com.example.mingle.accommodation.domain.Accommodation;
 import com.example.mingle.restaurant.domain.Restaurant;
 import com.example.mingle.restaurant.domain.RestaurantMenu;
 import com.example.mingle.restaurant.service.RestaurantService;

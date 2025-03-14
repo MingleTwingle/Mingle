@@ -28,7 +28,10 @@
 
     <div class="card">
         <div class="card-body">
-            <h3 class="card-title" th:text="${review.title}"></h3>
+            <h3>
+                <a class="text-dark" style="text-decoration: none;" th:text="'[' + ${review.category} + '] ' + ${review.title}"> </a>
+            </h3>
+
             <p class="text-muted">작성자: <span th:text="${review.author}"></span></p>
             <p class="text-muted">작성일: <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
             <p class="text-muted">조회수: <span th:text="${review.viewCount}"></span></p>
