@@ -65,4 +65,5 @@ public class ReviewController {
         reviewService.deleteReview(id);
         return "redirect:/reviews"; // ✅ 삭제 후 목록으로 이동
     }
+    
 }

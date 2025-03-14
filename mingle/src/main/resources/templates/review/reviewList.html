@@ -109,7 +109,8 @@
   <a th:href="@{/reviews/new}" class="register-btn">게시글 작성하기</a>
 
   <!-- 게시글 목록 -->
-  <div class="post-container">
+  <form href="review/reviewDetail">
+  <div class="post-container" >
     <div th:each="review : ${reviews}" class="post">
       <h4 class="post-title">
         <a th:href="@{/reviews/{id}(id=${review.id})}" th:text="${review.title}"></a>
@@ -120,6 +121,7 @@
       <p class="meta">작성일: <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
     </div>
   </div>
+  </form>
 </div>
 
 </body>

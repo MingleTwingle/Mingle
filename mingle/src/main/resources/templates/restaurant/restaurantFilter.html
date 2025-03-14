@@ -107,30 +107,5 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function() {
-        // 레스토랑 카드 클릭 시 모달 열기
-        $('.restaurant-card').click(function() {
-            var restaurantId = $(this).attr('data-restaurant-id');
-
-            // 상세 정보 로드
-            $('#restaurantDetailContent').load('/restaurant/detail/' + restaurantId, function(response, status, xhr) {
-                if (status == "error") {
-                    $('#restaurantDetailContent').html("<p>레스토랑 정보를 불러오지 못했습니다.</p>");
-                }
-            });
-
-            // 모달 표시
-            $('#restaurantModal').modal('show');
-        });
-
-        // 예약 버튼 클릭 시 예약 페이지로 이동
-        $('#reserveButton').click(function() {
-            alert('예약 페이지로 이동합니다.');
-            window.location.href = '/reservation/form';
-        });
-    });
-</script>
-
 </body>
 </html>
