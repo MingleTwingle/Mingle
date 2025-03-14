@@ -156,6 +156,9 @@
 <br>
 <br>
 <br>
+<div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
+  <span th:text="${errorMessage}"></span>
+</div>
 <!-- 숙소 상세 컨테이너 -->
 <div class="container">
 
