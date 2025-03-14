@@ -122,6 +122,9 @@
 <br>
 <br>
 <br>
+<div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
+    <span th:text="${errorMessage}"></span>
+</div>
 
 
 <!-- 숙소 상세 컨테이너 -->
@@ -159,7 +162,7 @@
 
     <!-- 체크인/체크아웃 시간 -->
     <div class="accommodation-times">
-        <p>체크인: <span th:text="${accommodation.checkInTime != null ? accommodation.checkInTime.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm')) : '15:00'}">15:00</span></p>
+        <p>체크인: <span th:text="${accommodation.checkInTime != null ? accommodation.checkInTime.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm')) : '15:00'}"></span></p>
         <p>체크아웃: <span th:text="${accommodation.checkOutTime != null ? accommodation.checkOutTime.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm')) : '11:00'}">11:00</span></p>
     </div>
 
@@ -192,6 +195,7 @@
     <form action="/reservation/accommodation" method="post">
         <input type="hidden" id="selectedRoomId" name="roomId">
         <input type="hidden" id="selectedRoomCost" name="roomCost">
+        <input type="hidden" th:value="${accommodation.checkInTime}" id="checkinTime" name="checkinTime">
 
         <div class="reservation-info">
             <label for="checkin-date">체크인 날짜:</label>
@@ -219,9 +223,6 @@
     <!--    &lt;!&ndash; 예약 버튼 &ndash;&gt;-->
     <!--    <a href="#" class="reserve-btn">예약하기</a>-->
     <!-- 오류 메시지를 출력할 위치 -->
-    <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
-        <span th:text="${errorMessage}"></span>
-    </div>
 
 </div>
 

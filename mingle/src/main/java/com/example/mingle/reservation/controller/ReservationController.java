@@ -87,33 +87,20 @@ public class ReservationController {
 
         for (Reservation reservation : reservations) {
             String dateTime = reservation.getDate(); // 예약 날짜 가져오기
-            String timePart = "11:00"; // 기본 시간 설정
+            newTime.add(reservation.getNewTime());
 
             if (reservation.getAccommodationRoom() != null) {
                 accommodationNames.add(reservation.getAccommodationRoom().getName()); // 숙소 이름 추가
                 restaurantNames.add(null); // 레스토랑 이름은 null
-
-                // 날짜 형식이 올바른지 확인 후 처리
-                if (dateTime != null && dateTime.contains("T")) {
-                    String[] dateTimeParts = dateTime.split("T");
-                    if (dateTimeParts.length > 1) {
-                        String[] timeParts = dateTimeParts[1].split(":");
-                        if (timeParts.length > 1) {
-                            timePart = timeParts[0] + ":" + timeParts[1]; // HH:mm 추출
-                        }
-                    }
-                }
-                newTime.add(timePart);
                 date.add(dateTime.split("T")[0]);
 
             } else if (reservation.getRestaurant() != null) {
                 restaurantNames.add(reservation.getRestaurant().getRestaurantName()); // 레스토랑 이름 추가
                 accommodationNames.add(null); // 숙소 이름은 null
-
-                newTime.add(reservation.getNewTime());
                 date.add(dateTime.split("T")[0]);
             }
         }
+
 
         model.addAttribute("newTime", newTime);
         model.addAttribute("dated", date);
@@ -133,10 +120,11 @@ public class ReservationController {
 
     @PostMapping("/reservation/accommodation")
     public String addReservationAcc(HttpSession session,
-                                 @RequestParam("roomId") Long roomId,
-                                 @RequestParam("checkinDate") String checkinDate,
-                                 @RequestParam("stayDays") int stayDays,
-                                 Model model) {
+                                    @RequestParam("roomId") Long roomId,
+                                    @RequestParam("checkinDate") String checkinDate,
+                                    @RequestParam("stayDays") int stayDays,
+                                    @RequestParam("checkinTime") String checkinTime,
+                                    Model model) {
 
         // 세션에서 로그인된 Guest 객체 가져오기
         Guest guest = getGuestFromSession(session);
@@ -147,14 +135,14 @@ public class ReservationController {
         AccommodationRoom accommodationRoom = accommodationRoomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 객실을 찾을 수 없습니다. ID: " + roomId));
 
-        // 날짜 형식을 정의
+        // 날짜 형식을 "yyyy-MM-dd"로 정의
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // checkinDate를 LocalDate로 변환
         LocalDate startDate = LocalDate.parse(checkinDate, formatter);
 
         // stayDays만큼 더해서 종료 날짜 계산
-        LocalDate endDate = startDate.plusDays(stayDays-1);
+        LocalDate endDate = startDate.plusDays(stayDays - 1);
 
         // 기존 예약 목록 가져오기
         List<Reservation> existingReservations = reservationRepository.findByAccommodationRoom(accommodationRoom);
@@ -167,13 +155,15 @@ public class ReservationController {
                 LocalDate existingStartDate = LocalDate.parse(dateRange[0], formatter);
                 LocalDate existingEndDate = LocalDate.parse(dateRange[1], formatter);
 
-                if (startDate.isBefore(existingEndDate) && endDate.isAfter(existingStartDate)) {
+                // 날짜 범위가 겹치는지 확인
+                if ((startDate.isBefore(existingEndDate) || startDate.isEqual(existingEndDate)) &&
+                        (endDate.isAfter(existingStartDate) || endDate.isEqual(existingStartDate))) {
                     model.addAttribute("errorMessage", "해당 날짜에 이 객실은 이미 예약되었습니다.");
-                    return "redirect:/accommodationDetail/" + accommodationId;  // 오류 발생 시 상세 페이지로 리다이렉트
+                    return "forward:/accommodationDetail/" + accommodationId;  // 오류 발생 시 상세 페이지로 리다이렉트
                 }
             } else {
                 model.addAttribute("errorMessage", "잘못된 예약 날짜 범위입니다.");
-                return "redirect:/accommodationDetail/" + accommodationId;  // 날짜 범위 오류 시 리다이렉트
+                return "forward:/accommodationDetail/" + accommodationId;  // 날짜 범위 오류 시 리다이렉트
             }
         }
 
@@ -183,6 +173,10 @@ public class ReservationController {
         // 결과 날짜 범위 생성
         String dateRange = startDate.format(formatter) + "~" + endDate.format(formatter);
 
+
+        System.out.println("***********************");
+        System.out.println(checkinTime);
+        System.out.println("***********************");
         // Reservation 객체 생성
         Reservation reservation = new Reservation();
         reservation.setGuest(guest);
@@ -190,12 +184,15 @@ public class ReservationController {
         reservation.setAccommodationRoom(accommodationRoom);
         reservation.setDate(dateRange);
         reservation.setPeople(peopleNum);
+        reservation.setNewTime(String.valueOf(checkinTime));
 
         // 예약 저장
         reservationRepository.save(reservation);
 
         return "redirect:/reservationStatus"; // 예약이 정상적으로 추가되었을 때
     }
+
+
     @PostMapping("/reservation/restaurant")
     public String addReservationRes(HttpSession session,
                                     @RequestParam("restaurantId") Long restId,
@@ -250,7 +247,10 @@ public class ReservationController {
                     // 예약 시간 중복 체크
                     if (existingDateTime.equals(reservationDateTime)) {
                         model.addAttribute("errorMessage", "해당 날짜와 시간에 이미 예약이 있습니다.");
-                        return "redirect:/restaurant/detail/" + restId;  // 오류 발생 시 상세 페이지로 리다이렉트
+                        System.out.println("==============================");
+                        System.out.println(restId);
+                        System.out.println("==============================");
+                        return "forward:/restaurants/" + restId;// 오류 발생 시 상세 페이지로 리다이렉트
                     }
                 }
             }
@@ -279,7 +279,7 @@ public class ReservationController {
 
         } catch (DateTimeParseException e) {
             model.addAttribute("errorMessage", "잘못된 날짜와 시간 형식입니다.");
-            return "/restaurant/detail/" + restId;  // 오류 발생 시 상세 페이지로 리다이렉트
+            return "/restaurants/" + restId;  // 오류 발생 시 상세 페이지로 리다이렉트
         }
 
         return "redirect:/reservationStatus"; // 예약이 정상적으로 추가되었을 때

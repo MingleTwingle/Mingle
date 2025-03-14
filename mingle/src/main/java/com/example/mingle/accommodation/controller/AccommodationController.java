@@ -136,4 +136,37 @@ public class AccommodationController {
         return "accommodation/accommodationDetail";  // ✅ 올바른 View 반환
     }
 
+    @PostMapping("/accommodationDetail/{id}")
+    public String showAccommodationDetail1(@PathVariable("id") Long id, Model model, HttpSession session) {
+        System.out.println("요청된 숙소 ID: " + id);  // ✅ 디버깅용 로그 추가
+        if (session != null) {
+            session.setAttribute("accommodationId", id);  // ✅ 세션이 있을 경우에만 저장
+        }
+
+        // 숙소 정보 가져오기 (변수 선언 및 초기화)
+        Accommodation accommodation = accommodationService.findById(id);
+        if (accommodation == null) {
+            throw new RuntimeException("숙소 정보를 찾을 수 없습니다. ID: " + id);
+        }
+        List<AccommodationRoom> roomList = accommodationRoomService.getRoomsByAccommodationId(id);
+
+        String imageFolderPath = imageBasePath.replace("file:", "") + "ac";
+        File folder = new File(imageFolderPath);
+        Map<Long, String> roomPhotosMap = new HashMap<>();
+        for (AccommodationRoom room : roomList) {
+            String imagePath = "/images/ac/ac" + room.getId() + ".jpg";
+            roomPhotosMap.put(room.getId(), imagePath);
+        }
+
+
+        // 모델에 숙소 정보 추가
+        model.addAttribute("accommodation", accommodation);
+        model.addAttribute("roomList", roomList);
+        model.addAttribute("roomPhotosMap", roomPhotosMap );
+
+        return "accommodation/accommodationDetail";  // ✅ 올바른 View 반환
+    }
+
+
+
 }

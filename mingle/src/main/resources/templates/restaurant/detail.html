@@ -156,6 +156,9 @@
 <br>
 <br>
 <br>
+<div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
+  <span th:text="${errorMessage}"></span>
+</div>
 <!-- 숙소 상세 컨테이너 -->
 <div class="container">
 
@@ -210,6 +213,7 @@
   <form action="/reservation/restaurant" method="post">
     <!-- restaurantId 값 추가 -->
     <input type="hidden" name="restaurantId" th:value="${restaurant.id}">
+    <input type="hidden" name="checkinTime" th:value="${restaurant.restaurantOpenTime}">
 
     <div class="reservation-info">
       <label for="reservation-date">예약 날짜:</label>
@@ -224,6 +228,8 @@
   </form>
 
 </div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
