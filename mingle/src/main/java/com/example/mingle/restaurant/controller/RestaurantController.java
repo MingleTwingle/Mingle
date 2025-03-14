@@ -1,5 +1,5 @@
 package com.example.mingle.restaurant.controller;
-
+import jakarta.servlet.http.HttpServletRequest;
 import com.example.mingle.accommodation.controller.AccommodationFilterForm;
 import com.example.mingle.accommodation.domain.Accommodation;
 import com.example.mingle.restaurant.domain.Restaurant;
@@ -75,7 +75,7 @@ public class RestaurantController {
         return "restaurant/restaurantFilter";
     }
 
-    @PostMapping("/restaurants/filter")
+    @PostMapping("/restaurants/filterList")
     public String customFilter(@Validated RestaurantFilterForm form, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "restaurant/restaurantFilter";
@@ -107,13 +107,14 @@ public class RestaurantController {
         return "restaurant/restaurantFilterList";
     }
 
+
     // 🔹 레스토랑 상세 페이지 조회
     @GetMapping("/restaurants/{id}")
-    public String getRestaurantDetail(@PathVariable Long id, Model model) {
+    public String getRestaurantDetail(@PathVariable Long id, Model model, HttpServletRequest request) {  // ✅ request 추가
         Restaurant restaurant = restaurantService.findById(id);
 
         if (restaurant == null) {
-            return "error/404";  // 데이터가 없을 경우 404 페이지
+            return "redirect:/restaurants/filterList";
         }
 
         // 🔹 해당 식당의 메뉴 리스트 가져오기
@@ -122,6 +123,7 @@ public class RestaurantController {
         // 🔹 `image/ac/` 폴더의 모든 이미지 가져오기
         String imageFolderPath = imageBasePath.replace("file:", "") + "ac";
         File folder = new File(imageFolderPath);
+
         // 🔹 메뉴 ID에 맞는 이미지 경로 매핑
         Map<Long, String> menuImageMap = new HashMap<>();
         for (RestaurantMenu menu : menuList) {
@@ -150,6 +152,7 @@ public class RestaurantController {
         // 🔹 `image/ac/` 폴더의 모든 이미지 가져오기
         String imageFolderPath = imageBasePath.replace("file:", "") + "ac";
         File folder = new File(imageFolderPath);
+
         // 🔹 메뉴 ID에 맞는 이미지 경로 매핑
         Map<Long, String> menuImageMap = new HashMap<>();
         for (RestaurantMenu menu : menuList) {
@@ -164,4 +167,5 @@ public class RestaurantController {
 
         return "restaurant/detail";  // 상세 페이지 템플릿
     }
+
 }
