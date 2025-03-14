@@ -113,12 +113,11 @@
   <div class="post-container" >
     <div th:each="review : ${reviews}" class="post">
       <h4 class="post-title">
-        <a th:href="@{/reviews/{id}(id=${review.id})}" th:text="${review.title}"></a>
+        <a th:text="'[' + ${review.category} + ']'">  </a> <a th:href="@{/reviews/{id}(id=${review.id})}" th:text="${review.title}"></a>
       </h4>
-      <p class="meta">카테고리: <span th:text="${review.category}"></span></p>
-      <p class="meta">내용: <span th:text="${review.content}"></span></p>
       <p class="meta">작성자: <span th:text="${review.author}"></span></p>
-      <p class="meta">작성일: <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
+ <!--     <p class="meta">작성일: <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>-->
+
     </div>
   </div>
   </form>
