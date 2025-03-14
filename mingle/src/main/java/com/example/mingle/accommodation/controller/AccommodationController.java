@@ -108,7 +108,10 @@ public class AccommodationController {
     @GetMapping("/accommodationDetail/{id}")
     public String showAccommodationDetail(@PathVariable("id") Long id, Model model, HttpSession session) {
         System.out.println("요청된 숙소 ID: " + id);  // ✅ 디버깅용 로그 추가
-        session.setAttribute("accommodationId", id); // ✅ guest_id 저장
+        if (session != null) {
+            session.setAttribute("accommodationId", id);  // ✅ 세션이 있을 경우에만 저장
+        }
+
         // 숙소 정보 가져오기 (변수 선언 및 초기화)
         Accommodation accommodation = accommodationService.findById(id);
         if (accommodation == null) {

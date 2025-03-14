@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // ✅ CSRF 보호 비활성화
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login","/bottom/**",
-                                "/guestOrHost","/host/register","/guests/register","/about","/restaurants/**","/accommodation/**",
+                                "/guestOrHost","/host/register","/guests/register","/about","/restaurants/**","/accommodation/**","/accommodationDetail/**",
                                 "/contact", "/css/**", "/js/**", "/images/**"
                                 ,"/reviews/**","/review/**").permitAll()
                         .requestMatchers("/mypage/**").authenticated()  // mypage에 로그인해야지만 접근
