@@ -138,6 +138,7 @@ public class AccommodationController {
         model.addAttribute("accommodation", accommodation);
         model.addAttribute("roomList", roomList);
         model.addAttribute("roomPhotosMap", roomPhotosMap );
+        session.setAttribute("accommodationId", id); // ✅ guest_id 저장
 
         return "accommodation/accommodationDetail";  // ✅ 올바른 View 반환
     }

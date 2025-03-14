@@ -76,11 +76,15 @@ public class MyPageController {
     public String guestMyPage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         // ✅ 현재 로그인된 사용자 가져오기
         String username = getCurrentUsername();
+        System.out.println(username);
+        System.out.println(userDetails.getUsername());
         if (username == null) {
+            System.out.println("1");
             return "redirect:/login"; // 로그인되지 않은 경우 로그인 페이지로 이동
         }
 
         if (userDetails == null) {
+            System.out.println("2");
             return "redirect:/login"; // 로그인 안 했으면 로그인 페이지로
         }
 
@@ -92,6 +96,7 @@ public class MyPageController {
         // ✅ 사용자 정보에서 커플 코드 가져오기
         Guest guest = guestRepository.findByName(username).orElse(null);
         if (guest == null) {
+            System.out.println("3");
             return "redirect:/login";
         }
         String myCoupleCode = guest.getCoupleCode();

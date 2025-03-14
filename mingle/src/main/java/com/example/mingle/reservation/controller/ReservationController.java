@@ -120,12 +120,11 @@ public class ReservationController {
 
     @PostMapping("/reservation/accommodation")
     public String addReservationAcc(HttpSession session,
-                                    @RequestParam("roomId") Long roomId,
+                                    @RequestParam("roomId" ) Long roomId,
                                     @RequestParam("checkinDate") String checkinDate,
                                     @RequestParam("stayDays") int stayDays,
                                     @RequestParam("checkinTime") String checkinTime,
                                     Model model) {
-
         // 세션에서 로그인된 Guest 객체 가져오기
         Guest guest = getGuestFromSession(session);
         String peopleNum = "2";
@@ -137,7 +136,7 @@ public class ReservationController {
 
         // 날짜 형식을 "yyyy-MM-dd"로 정의
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
+        System.out.println(accommodationRoom);
         // checkinDate를 LocalDate로 변환
         LocalDate startDate = LocalDate.parse(checkinDate, formatter);
 
@@ -154,29 +153,32 @@ public class ReservationController {
             if (dateRange.length == 2) {
                 LocalDate existingStartDate = LocalDate.parse(dateRange[0], formatter);
                 LocalDate existingEndDate = LocalDate.parse(dateRange[1], formatter);
-
+                System.out.println(existingStartDate);
+                System.out.println(existingEndDate);
+                System.out.println(existingStartDate.isBefore(existingEndDate));
+                System.out.println(existingStartDate.isAfter(existingEndDate));
                 // 날짜 범위가 겹치는지 확인
                 if ((startDate.isBefore(existingEndDate) || startDate.isEqual(existingEndDate)) &&
                         (endDate.isAfter(existingStartDate) || endDate.isEqual(existingStartDate))) {
                     model.addAttribute("errorMessage", "해당 날짜에 이 객실은 이미 예약되었습니다.");
                     return "forward:/accommodationDetail/" + accommodationId;  // 오류 발생 시 상세 페이지로 리다이렉트
                 }
+
             } else {
                 model.addAttribute("errorMessage", "잘못된 예약 날짜 범위입니다.");
                 return "forward:/accommodationDetail/" + accommodationId;  // 날짜 범위 오류 시 리다이렉트
             }
+
         }
 
         // 객실 이름 가져오기
+        System.out.println(accommodationRoom.getAccommodation().getName());
+
         String accommodationRoomName = (accommodationRoom.getAccommodation().getName() != null) ? accommodationRoom.getAccommodation().getName() : "없음";
 
         // 결과 날짜 범위 생성
         String dateRange = startDate.format(formatter) + "~" + endDate.format(formatter);
 
-
-        System.out.println("***********************");
-        System.out.println(checkinTime);
-        System.out.println("***********************");
         // Reservation 객체 생성
         Reservation reservation = new Reservation();
         reservation.setGuest(guest);
