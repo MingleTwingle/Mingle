@@ -1,17 +1,18 @@
 package com.example.mingle.accommodation.service;
 
-import com.example.mingle.accommodation.domain.Accommodation;
-import com.example.mingle.accommodation.repository.AccommodationRepository;
-import org.springframework.cglib.core.Local;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
+import com.example.mingle.accommodation.domain.Accommodation;
+import com.example.mingle.accommodation.repository.AccommodationRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class AccommodationService {
     private final AccommodationRepository accommodationRepository;
 
@@ -25,7 +26,7 @@ public class AccommodationService {
             accommodationRepository.save(accommodation);
             return accommodation.getId();
         } catch (Exception e) {
-            System.out.println("Error saving accommodation: " + e.getMessage());
+            log.info("Error saving accommodation: " + e.getMessage());
             throw e;
         }
 
@@ -50,7 +51,7 @@ public class AccommodationService {
         filteredAccommodations.forEach(accommodation -> {
             // 숙소와 관련된 외부 사진 출력
             accommodation.getOutterPhotos().forEach(photo -> {
-                System.out.println("사진 URL: " + photo.getImage());
+                log.info("사진 URL: " + photo.getImage());
             });
         });
 

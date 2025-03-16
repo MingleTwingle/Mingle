@@ -1,11 +1,9 @@
 package com.example.mingle.accommodation.controller;
 
+import java.time.LocalTime;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @Setter

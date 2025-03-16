@@ -1,31 +1,26 @@
 package com.example.mingle.service;
 
-import com.example.mingle.domain.Guest;
-import com.example.mingle.repository.GuestRepository;
-import com.example.mingle.repository.HostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
-import java.util.UUID;
+import com.example.mingle.domain.Guest;
+import com.example.mingle.repository.GuestRepository;
+import com.example.mingle.repository.HostRepository;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class GuestService {
 
     private final GuestRepository guestRepository;
     private final HostRepository hostRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public GuestService(GuestRepository guestRepository, HostRepository hostRepository, PasswordEncoder passwordEncoder) {
-        this.guestRepository = guestRepository;
-        this.hostRepository = hostRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public Long join(Guest guest, BindingResult result) {
         validateDuplicationMember(guest, result);

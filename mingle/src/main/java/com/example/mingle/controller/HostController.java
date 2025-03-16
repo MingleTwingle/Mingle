@@ -1,9 +1,6 @@
 package com.example.mingle.controller;
 
 
-import com.example.mingle.domain.Host;
-import com.example.mingle.service.HostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -15,16 +12,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.mingle.domain.Host;
+import com.example.mingle.service.HostService;
+
+import lombok.RequiredArgsConstructor;
+
 
 @Controller
+@RequiredArgsConstructor
 public class HostController {
 
     private final HostService hostService;
 
-    @Autowired
-    public HostController(HostService hostService) {
-        this.hostService = hostService;
-    }
 
     // 호스트 등록 페이지
     @GetMapping("/host/register")

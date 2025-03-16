@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class BottomController {
 
     @GetMapping("/bottom/careers/careers")
@@ -27,7 +30,7 @@ public class BottomController {
                                     @RequestParam("cover_letter") String coverLetter,
                                     @RequestParam("resume") MultipartFile resume) {
         // 여기서 지원서 저장 로직 구현
-        System.out.println("지원 완료: " + name + " - " + email);
+        log.info("지원 완료: " + name + " - " + email);
         return "redirect:/";
     }
 

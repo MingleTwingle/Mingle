@@ -1,13 +1,14 @@
 package com.example.mingle.security;
 
-import com.example.mingle.domain.Guest;
-import com.example.mingle.domain.Host;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
+import com.example.mingle.domain.Guest;
+import com.example.mingle.domain.Host;
 
 public class CustomUserDetails implements UserDetails {
     private String username;

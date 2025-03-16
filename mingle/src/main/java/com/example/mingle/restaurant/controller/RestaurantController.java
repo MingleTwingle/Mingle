@@ -1,14 +1,10 @@
 package com.example.mingle.restaurant.controller;
-import jakarta.servlet.http.HttpServletRequest;
-import com.example.mingle.restaurant.domain.Restaurant;
-import com.example.mingle.restaurant.domain.RestaurantMenu;
-import com.example.mingle.restaurant.service.RestaurantService;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,23 +13,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.example.mingle.restaurant.domain.Restaurant;
+import com.example.mingle.restaurant.domain.RestaurantMenu;
+import com.example.mingle.restaurant.service.RestaurantService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @Value("${spring.web.resources.static-locations}")
     private String imageBasePath;
-
-    @Autowired
-    public RestaurantController(RestaurantService restaurantService) {
-        this.restaurantService = restaurantService;
-    }
 
     @GetMapping("/restaurants/new")
     public String createForm() {
@@ -82,10 +77,10 @@ public class RestaurantController {
         List<Restaurant> filteredRestaurants;
         if (isFilterEmpty(form)) {
             filteredRestaurants = restaurantService.findRestaurant(); // 모든 숙소 반환
-            System.out.println("입력값 없음 -> 전체 식당 반환: " + filteredRestaurants.size());
+            log.info("입력값 없음 -> 전체 식당 반환: " + filteredRestaurants.size());
         } else {
             filteredRestaurants = restaurantService.searchRestaurant(form.getRestaurantLocation(), form.getRestaurantOpenTime(), form.getRestaurantEndTime());
-            System.out.println("필터링된 식당 개수: " + filteredRestaurants.size());
+            log.info("필터링된 식당 개수: " + filteredRestaurants.size());
         }
 
         model.addAttribute("restaurants", filteredRestaurants);
