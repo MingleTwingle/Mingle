@@ -43,7 +43,7 @@ public class RestaurantController {
     @PostMapping("/restaurants/new")
     public String create(@Validated RestaurantForm form, BindingResult result) {
         if (result.hasErrors()) {
-            return "restaurant/register";
+            return "redirect:/restaurant/register";
         }
         Restaurant restaurant = new Restaurant();
         restaurant.setRestaurantName(form.getName());
@@ -73,10 +73,10 @@ public class RestaurantController {
         return "restaurant/restaurantFilter";
     }
 
-    @PostMapping("/restaurants/filterList")
+    @GetMapping("/restaurants/filterList")
     public String customFilter(@Validated RestaurantFilterForm form, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "restaurant/restaurantFilter";
+            return "redirect:/restaurant/restaurantFilter";
         }
 
         List<Restaurant> filteredRestaurants;
@@ -97,13 +97,13 @@ public class RestaurantController {
                 (form.getRestaurantOpenTime() == null) &&
                 (form.getRestaurantEndTime() == null);
     }
-
-    @GetMapping("/restaurants/filterList")
-    public String showFilterList(Model model) {
-        List<Restaurant> restaurants = restaurantService.findRestaurant();
-        model.addAttribute("restaurants", restaurants);
-        return "restaurant/restaurantFilterList";
-    }
+//    중복 getmapping
+//    @GetMapping("/restaurants/filterList")
+//    public String showFilterList(Model model) {
+//        List<Restaurant> restaurants = restaurantService.findRestaurant();
+//        model.addAttribute("restaurants", restaurants);
+//        return "restaurant/restaurantFilterList";
+//    }
 
 
     // 🔹 레스토랑 상세 페이지 조회
@@ -163,7 +163,7 @@ public class RestaurantController {
         model.addAttribute("menuList", menuList);  // 메뉴 데이터 추가
         model.addAttribute("menuImageMap", menuImageMap);  // 이미지 매핑 추가
 
-        return "restaurant/detail";  // 상세 페이지 템플릿
+        return "redirect:/restaurant/detail";  // 상세 페이지 템플릿
     }
 
 }
