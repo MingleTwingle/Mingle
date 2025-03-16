@@ -67,29 +67,34 @@ public class MyPageController {
             return "redirect:/login"; // 로그인되지 않은 경우 로그인 페이지로 이동
         }
 
-        log.info(" 로그인된 사용자: {}",  userDetails.getUsername());
+        log.info(" 로그인된 사용자: {}", userDetails.getUsername());
         log.info(" 사용자 역할: {}", userDetails.getRole());
 
         model.addAttribute("user", userDetails);
 
-        // ✅ 사용자 정보에서 커플 코드 가져오기
-        Guest guest = guestRepository.findByName(username).orElse(null);
-        if (guest == null) {
-            log.info("3");
+        Optional<Guest> guest = guestRepository.findByIdid(username);
+
+        if (!guest.isPresent()) {
+            log.debug("User is not exists. Rediret to Login page");
             return "redirect:/login";
         }
-        String myCoupleCode = guest.getCoupleCode();
-        boolean isMatched = guest.isMatched();
+
+        log.info("{}", guest.get().toString());
+
+        String myCoupleCode = guest.get().getCoupleCode();
+        boolean isMatched = guest.get().isMatched();
         model.addAttribute("coupleCode", myCoupleCode);
         model.addAttribute("isMatched", isMatched);
-        Couple couple = coupleRepository.findByGuestId(guest.getId());
+
+        Couple couple = coupleRepository.findByGuestId(guest.get().getId());
         if (couple == null) {
             return "mypage/guest";
         }
         String partnerCoupleCode;
         String guest1Name;
         String guest2Name;
-        if (couple.getGuest1().getId().equals(guest.getId())) {
+
+        if (couple.getGuest1().getId().equals(guest.get().getId())) {
             partnerCoupleCode = couple.getGuest2().getCoupleCode();
             guest1Name = coupleService.getGuest1Name(myCoupleCode);
             guest2Name = coupleService.getGuest2Name(partnerCoupleCode);

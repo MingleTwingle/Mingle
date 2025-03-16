@@ -166,7 +166,7 @@ public class GuestController {
         }
 
         // ✅ 사용자 정보에서 커플 코드 가져오기
-        Guest guest = guestRepository.findByName(username).orElse(null);
+        Guest guest = guestRepository.findByName(username).get(0);
         Couple couple = coupleRepository.findByGuest1Id(Long.valueOf(guest.getIdid()));
         if (guest == null) {
             return "redirect:/login";

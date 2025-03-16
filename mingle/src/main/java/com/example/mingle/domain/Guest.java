@@ -24,7 +24,7 @@ public class Guest {
     private Long id;
     @Column(name = "guest_name")
     private String name;
-    @Column(name = "guest_idid")
+    @Column(name = "guest_idid", unique = true)
     private String idid;
     @Column(name = "guest_nickname")
     private String nickname;
