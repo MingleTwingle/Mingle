@@ -79,18 +79,13 @@ public class MyPageController {
         String username = getCurrentUsername();
         log.info(username);
         log.info(userDetails.getUsername());
-        if (username == null) {
+        if (username == null || userDetails == null) {
             log.info("1");
             return "redirect:/login"; // 로그인되지 않은 경우 로그인 페이지로 이동
         }
 
-        if (userDetails == null) {
-            log.info("2");
-            return "redirect:/login"; // 로그인 안 했으면 로그인 페이지로
-        }
-
-        log.info(" 로그인된 사용자: " + userDetails.getUsername());
-        log.info(" 사용자 역할: " + userDetails.getRole());
+        log.info(" 로그인된 사용자: {}",  userDetails.getUsername());
+        log.info(" 사용자 역할: {}", userDetails.getRole());
 
         model.addAttribute("user", userDetails);
 
