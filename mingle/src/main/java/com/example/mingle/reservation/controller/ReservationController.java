@@ -9,6 +9,8 @@ import com.example.mingle.reservation.repository.ReservationRepository;
 import com.example.mingle.restaurant.domain.Restaurant;
 import com.example.mingle.restaurant.repository.RestaurantRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,18 @@ public class ReservationController {
         this.guestRepository = guestRepository;
         this.accommodationRoomRepository = accommodationRoomRepository;
         this.restaurantRepository = restaurantRepository;
+    }
+    //delete 메서드
+    @DeleteMapping("/reservations/delete/{id}")
+    public ResponseEntity<String> deleteReservation(@PathVariable Long id) {
+        Optional<Reservation> reservationOptional = reservationRepository.findById(id);
+
+        if (reservationOptional.isPresent()) {
+            reservationRepository.deleteById(id);
+            return ResponseEntity.ok("삭제 완료");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("예약을 찾을 수 없습니다.");
+        }
     }
 
     //  공통적으로 사용되는 guestId를 가져오는 메서드 (호스트 예약 불가능)

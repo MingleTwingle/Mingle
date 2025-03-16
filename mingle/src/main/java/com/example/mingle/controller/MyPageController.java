@@ -94,7 +94,7 @@ public class MyPageController {
         model.addAttribute("user", userDetails);
 
         // ✅ 사용자 정보에서 커플 코드 가져오기
-        Guest guest = guestRepository.findByName(username).orElse(null);
+        Guest guest = guestRepository.findByIdid(username).orElse(null);
         if (guest == null) {
             System.out.println("3");
             return "redirect:/login";

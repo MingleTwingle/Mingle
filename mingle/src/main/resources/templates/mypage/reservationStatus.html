@@ -18,7 +18,7 @@
             if (confirmation) {
                 // 예약 취소 요청을 서버로 보냄
                 fetch(`/reservations/delete/${reservationId}`, {
-                    method: 'GET',  // HTTP 메소드: GET
+                    method: 'DELETE',  // HTTP 메소드: GET
                     headers: {
                         'Content-Type': 'application/json'  // 요청 본문의 형식
                     }
@@ -44,7 +44,8 @@
     </script>
 </head>
 <body>
-<div th:replace="fragments/navbar :: nav"></div>
+<div th:replace="~{fragments/navbar :: nav}"></div>
+
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">예약 현황 조회</h2>
