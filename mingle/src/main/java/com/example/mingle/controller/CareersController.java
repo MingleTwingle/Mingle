@@ -42,7 +42,7 @@ public class CareersController {
                                     @RequestParam("phone") String phone,
                                     @RequestParam("cover_letter") String coverLetter,
                                     @RequestParam("resume") MultipartFile resume) {
-        System.out.println("지원 완료: " + name + " - " + email + " - 직무 ID: " + jobId);
+        log.info("지원 완료: " + name + " - " + email + " - 직무 ID: " + jobId);
         return "redirect:/bottom/careers"; // 지원 후 공고 페이지로 이동
     }
 }

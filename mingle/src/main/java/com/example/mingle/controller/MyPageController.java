@@ -1,16 +1,5 @@
 package com.example.mingle.controller;
 
-import com.example.mingle.domain.Couple;
-import com.example.mingle.domain.Guest;
-import com.example.mingle.domain.Host;
-import com.example.mingle.repository.CoupleRepository;
-import com.example.mingle.repository.GuestRepository;
-import com.example.mingle.review.service.ReviewService;
-import com.example.mingle.security.CustomUserDetails;
-import com.example.mingle.service.CoupleService;
-import com.example.mingle.service.GuestService;
-import com.example.mingle.service.HostService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,8 +8,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import com.example.mingle.domain.Couple;
+import com.example.mingle.domain.Guest;
+import com.example.mingle.domain.Host;
+import com.example.mingle.repository.CoupleRepository;
+import com.example.mingle.repository.GuestRepository;
+import com.example.mingle.security.CustomUserDetails;
+import com.example.mingle.service.CoupleService;
+import com.example.mingle.service.GuestService;
+import com.example.mingle.service.HostService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -58,16 +59,16 @@ public class MyPageController {
             return "redirect:/login"; // 로그인 안 했으면 로그인 페이지로
         }
 
-        System.out.println(" 로그인된 사용자: " + userDetails.getUsername());
-        System.out.println(" 사용자 역할: " + userDetails.getRole());
+        log.info(" 로그인된 사용자: " + userDetails.getUsername());
+        log.info(" 사용자 역할: " + userDetails.getRole());
 
         model.addAttribute("user", userDetails);
 
         if ("ROLE_HOST".equals(userDetails.getRole())) {
-            System.out.println("🔵 호스트 마이페이지로 이동");
+            log.info("🔵 호스트 마이페이지로 이동");
             return "/mypage/host"; // /mypage/host로 리다이렉트
         } else {
-            System.out.println("🟢 게스트 마이페이지로 이동");
+            log.info("🟢 게스트 마이페이지로 이동");
             return "redirect:/mypage/guest"; // /mypage/guest로 리다이렉트
         }
     }
@@ -76,27 +77,27 @@ public class MyPageController {
     public String guestMyPage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         // ✅ 현재 로그인된 사용자 가져오기
         String username = getCurrentUsername();
-        System.out.println(username);
-        System.out.println(userDetails.getUsername());
+        log.info(username);
+        log.info(userDetails.getUsername());
         if (username == null) {
-            System.out.println("1");
+            log.info("1");
             return "redirect:/login"; // 로그인되지 않은 경우 로그인 페이지로 이동
         }
 
         if (userDetails == null) {
-            System.out.println("2");
+            log.info("2");
             return "redirect:/login"; // 로그인 안 했으면 로그인 페이지로
         }
 
-        System.out.println(" 로그인된 사용자: " + userDetails.getUsername());
-        System.out.println(" 사용자 역할: " + userDetails.getRole());
+        log.info(" 로그인된 사용자: " + userDetails.getUsername());
+        log.info(" 사용자 역할: " + userDetails.getRole());
 
         model.addAttribute("user", userDetails);
 
         // ✅ 사용자 정보에서 커플 코드 가져오기
         Guest guest = guestRepository.findByName(username).orElse(null);
         if (guest == null) {
-            System.out.println("3");
+            log.info("3");
             return "redirect:/login";
         }
         String myCoupleCode = guest.getCoupleCode();
@@ -145,8 +146,8 @@ public class MyPageController {
 //            model.addAttribute("coupleCode", guest.getCoupleCode()); // 커플 코드 추가
 //        }
 //
-//        System.out.println(" 로그인된 사용자: " + userDetails.getUsername());
-//        System.out.println(" 사용자 역할: " + userDetails.getRole());
+//        log.info(" 로그인된 사용자: " + userDetails.getUsername());
+//        log.info(" 사용자 역할: " + userDetails.getRole());
 //
 //        model.addAttribute("user", userDetails);    // html guest 정보를 활용할 수 있게 model에 저장
 //        return "mypage/guest"; //  guest.html로 연결

@@ -1,21 +1,19 @@
 package com.example.mingle.restaurant.repository;
 
-import com.example.mingle.restaurant.domain.Restaurant;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
+import com.example.mingle.restaurant.domain.Restaurant;
 
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
-    Restaurant save(Restaurant restaurant);
-    Optional<Restaurant> findById(Long restaurantId);
     Optional<Restaurant> findByRestaurantName(String restaurantName);
-    List<Restaurant> findAll();
 
     @Query("SELECT r FROM Restaurant r " +
             "WHERE (:restaurantName IS NULL OR r.restaurantName LIKE %:restaurantName%) " +

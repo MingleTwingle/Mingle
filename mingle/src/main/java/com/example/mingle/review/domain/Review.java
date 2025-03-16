@@ -1,9 +1,20 @@
 package com.example.mingle.review.domain;
 
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tbl_review")
@@ -25,14 +36,17 @@ public class Review {
     private String content;  // 내용
 
     @Column(nullable = false)
+    @Builder.Default
     private String author = "익명";  // 작성자 (기본값: 익명)
 
     @Column(nullable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();  // 작성일시
 
     private LocalDateTime updatedAt;  // 수정일시
 
     @Column(nullable = false)
+    @Builder.Default
     private int viewCount = 0;  // 조회수 (기본값 0)
 
     @Enumerated(EnumType.STRING)

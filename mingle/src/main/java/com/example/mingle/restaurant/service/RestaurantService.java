@@ -1,15 +1,20 @@
 package com.example.mingle.restaurant.service;
 
+import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.example.mingle.restaurant.domain.Restaurant;
 import com.example.mingle.restaurant.domain.RestaurantMenu;
 import com.example.mingle.restaurant.repository.RestaurantMenuRepository;
 import com.example.mingle.restaurant.repository.RestaurantRepository;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@Service
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final RestaurantMenuRepository restaurantMenuRepository;
@@ -25,7 +30,7 @@ public class RestaurantService {
             restaurantRepository.save(restaurant);
             return restaurant.getId();
         } catch (Exception e) {
-            System.out.println("Error saving restaurant: " + e.getMessage());
+            log.info("Error saving restaurant: " + e.getMessage());
             throw e;
         }
 

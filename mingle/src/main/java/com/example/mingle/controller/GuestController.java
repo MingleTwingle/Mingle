@@ -1,17 +1,8 @@
 package com.example.mingle.controller;
 
-import com.example.mingle.domain.Couple;
-import com.example.mingle.domain.Guest;
-import com.example.mingle.domain.Host;
-import com.example.mingle.repository.CoupleRepository;
-import com.example.mingle.repository.GuestRepository;
-import com.example.mingle.service.CoupleService;
-import com.example.mingle.service.GuestService;
-import com.example.mingle.service.HostService;
-import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,11 +17,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.mingle.domain.Couple;
+import com.example.mingle.domain.Guest;
+import com.example.mingle.domain.Host;
+import com.example.mingle.repository.CoupleRepository;
+import com.example.mingle.repository.GuestRepository;
+import com.example.mingle.service.CoupleService;
+import com.example.mingle.service.GuestService;
+import com.example.mingle.service.HostService;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class GuestController {
     private final GuestService guestService;
     private final HostService hostService;
@@ -39,16 +42,6 @@ public class GuestController {
     private final CoupleRepository coupleRepository;
     private final PasswordEncoder passwordEncoder;
 
-
-    @Autowired
-    public GuestController(GuestService guestService, HostService hostService, CoupleService coupleService, GuestRepository guestRepository, CoupleRepository coupleRepository, PasswordEncoder passwordEncoder) {
-        this.guestService = guestService;
-        this.hostService = hostService;
-        this.coupleService = coupleService;
-        this.guestRepository = guestRepository;
-        this.coupleRepository = coupleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     // 로그인 페이지
     @GetMapping("/login")
@@ -73,18 +66,18 @@ public class GuestController {
         String username = authentication.getName(); // 로그인한 사용자 이름 (이메일)
 
 
-        System.out.println("로그인된 사용자 이메일: " + username);
+        log.info("로그인된 사용자 이메일: " + username);
         Guest loggedInUser = guestService.findByIdid(username); // ✅ idid로 검색
         Host host = hostService.findByIdid(username);
 
         if (loggedInUser != null) {
             session.setAttribute("guestId", loggedInUser.getId()); // ✅ guest_id 저장
-            System.out.println("로그인된 사용자 아이디: " + loggedInUser.getId());
+            log.info("로그인된 사용자 아이디: " + loggedInUser.getId());
         } else if (host != null) {
             session.setAttribute("hostId", host.getId()); // ✅ guest_id 저장
-            System.out.println("로그인된 사용자 아이디: " + host.getId());
+            log.info("로그인된 사용자 아이디: " + host.getId());
         }
-        System.out.println("세션 사용자 아이디: " + (Long) session.getAttribute("guestId"));
+        log.info("세션 사용자 아이디: " + (Long) session.getAttribute("guestId"));
         return "redirect:/";
     }
 
@@ -187,14 +180,14 @@ public class GuestController {
 //        String partnerCoupleCode = guest.getPendingCoupleCode(); // 상대방 커플 코드
         String partnerCoupleCode = couple.getGuest2().getCoupleCode();
         log.info("asdfasdf");
-        System.out.println("myCoupleCode = " + myCoupleCode);
-        System.out.println("partnerCoupleCode = " + partnerCoupleCode);
+        log.info("myCoupleCode = " + myCoupleCode);
+        log.info("partnerCoupleCode = " + partnerCoupleCode);
 
         String guest1Name = coupleService.getGuest1Name(myCoupleCode);
         String guest2Name = coupleService.getGuest2Name(partnerCoupleCode);
 
-        System.out.println("guest1Name = " + guest1Name);
-        System.out.println("guest2Name = " + guest2Name);
+        log.info("guest1Name = " + guest1Name);
+        log.info("guest2Name = " + guest2Name);
 //        if (coupleService.getGuest1Name(myCoupleCode) != null)
 //            guest1Name = coupleService.getGuest1Name(myCoupleCode);
 //        if (coupleService.getGuest2Name(partnerCoupleCode) != null)

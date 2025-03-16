@@ -1,13 +1,10 @@
 package com.example.mingle.accommodation.controller;
 
-import com.example.mingle.accommodation.domain.Accommodation;
-import com.example.mingle.accommodation.domain.AccommodationRoom;
-import com.example.mingle.accommodation.service.AccommodationRoomService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import com.example.mingle.accommodation.service.AccommodationService;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +14,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.example.mingle.accommodation.domain.Accommodation;
+import com.example.mingle.accommodation.domain.AccommodationRoom;
+import com.example.mingle.accommodation.service.AccommodationRoomService;
+import com.example.mingle.accommodation.service.AccommodationService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class AccommodationController {
 
@@ -31,7 +33,6 @@ public class AccommodationController {
     @Value("classpath:/static/")
     private String imageBasePath;
 
-    @Autowired
     public AccommodationController(AccommodationService accommodationService, AccommodationRoomService accommodationRoomService) {
         this.accommodationService = accommodationService;
         this.accommodationRoomService = accommodationRoomService;
@@ -84,10 +85,10 @@ public class AccommodationController {
 
         if (isFilterEmpty(form)) {
             filteredAccommodations = accommodationService.findAccommodation(); // 모든 숙소 반환
-            System.out.println("입력값 없음 -> 전체 숙소 반환: " + filteredAccommodations.size());
+            log.info("입력값 없음 -> 전체 숙소 반환: " + filteredAccommodations.size());
         } else {
             filteredAccommodations = accommodationService.searchAccommodation(form.getLocation(), form.getCheckInTime(), form.getCheckOutTime());
-            System.out.println("필터링된 숙소 개수: " + filteredAccommodations.size());
+            log.info("필터링된 숙소 개수: " + filteredAccommodations.size());
         }
 
         model.addAttribute("accommodations", filteredAccommodations);
@@ -110,7 +111,7 @@ public class AccommodationController {
     // 🔹 숙소 상세 페이지 조회 (이전 페이지 기억 추가)
     @GetMapping("/accommodationDetail/{id}")
     public String showAccommodationDetail(@PathVariable("id") Long id, Model model, HttpServletRequest request, HttpSession session) {
-        System.out.println("요청된 숙소 ID: " + id);  // ✅ 디버깅용 로그 추가
+        log.info("요청된 숙소 ID: " + id);  // ✅ 디버깅용 로그 추가
 
         // 🔹 이전 페이지 URL을 세션에 저장 (현재 페이지가 이전 페이지가 아닐 경우만 저장)
         String referer = request.getHeader("Referer");
@@ -145,7 +146,7 @@ public class AccommodationController {
 
     @PostMapping("/accommodationDetail/{id}")
     public String showAccommodationDetail1(@PathVariable("id") Long id, Model model, HttpSession session) {
-        System.out.println("요청된 숙소 ID: " + id);  // ✅ 디버깅용 로그 추가
+        log.info("요청된 숙소 ID: " + id);  // ✅ 디버깅용 로그 추가
         if (session != null) {
             session.setAttribute("accommodationId", id);  // ✅ 세션이 있을 경우에만 저장
         }
