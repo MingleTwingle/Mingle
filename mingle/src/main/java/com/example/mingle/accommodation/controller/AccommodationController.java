@@ -110,7 +110,7 @@ public class AccommodationController {
 
     // 🔹 숙소 상세 페이지 조회 (이전 페이지 기억 추가)
     @GetMapping("/accommodationDetail/{id}")
-    public String showAccommodationDetail(@PathVariable("id") Long id, Model model, HttpServletRequest request, HttpSession session) {
+    public String showAccommodationDetail(@PathVariable(name="id") Long id, Model model, HttpServletRequest request, HttpSession session) {
         log.info("요청된 숙소 ID: " + id);  // ✅ 디버깅용 로그 추가
 
         // 🔹 이전 페이지 URL을 세션에 저장 (현재 페이지가 이전 페이지가 아닐 경우만 저장)

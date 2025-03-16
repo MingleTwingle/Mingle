@@ -1,13 +1,11 @@
 package com.example.mingle.repository;
 
-import com.example.mingle.domain.Guest;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
 
-public interface SpringDataJpaGuestRepository extends JpaRepository<Guest, Long>, GuestRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    //JPQL select m from Member m where m.name = ?
-    @Override
+import com.example.mingle.domain.Guest;
+
+public interface SpringDataJpaGuestRepository extends JpaRepository<Guest, Long> {
     Optional<Guest> findByName(String name);
 }

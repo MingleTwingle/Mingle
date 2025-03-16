@@ -42,7 +42,6 @@ public class GuestController {
     private final CoupleRepository coupleRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     // 로그인 페이지
     @GetMapping("/login")
     public String showLoginForm() {
@@ -65,7 +64,6 @@ public class GuestController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName(); // 로그인한 사용자 이름 (이메일)
 
-
         log.info("로그인된 사용자 이메일: " + username);
         Guest loggedInUser = guestService.findByIdid(username); // ✅ idid로 검색
         Host host = hostService.findByIdid(username);
@@ -80,7 +78,6 @@ public class GuestController {
         log.info("세션 사용자 아이디: " + (Long) session.getAttribute("guestId"));
         return "redirect:/";
     }
-
 
     // 로그인된 사용자 확인 (테스트용)
     @GetMapping("/user")
@@ -102,12 +99,11 @@ public class GuestController {
         return "contact";
     }
 
-
     // 호스트 등록 페이지
-//    @GetMapping("/host/register")
-//    public String showHostRegisterForm() {
-//        return "host/register";
-//    }
+    // @GetMapping("/host/register")
+    // public String showHostRegisterForm() {
+    // return "host/register";
+    // }
 
     // 게스트 or 호스트 선택 페이지
     @GetMapping("/guestOrHost")
@@ -124,7 +120,8 @@ public class GuestController {
 
     // 게스트 회원가입 처리
     @PostMapping("/guests/register")
-    public String create(@Validated @ModelAttribute("guestForm") GuestForm form, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String create(@Validated @ModelAttribute("guestForm") GuestForm form, BindingResult result,
+            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "guest/register";
         }
@@ -149,7 +146,6 @@ public class GuestController {
             result.rejectValue("guest_idid", "error.guest", e.getMessage());
             return "guest/register";
         }
-
 
     }
 
@@ -177,7 +173,7 @@ public class GuestController {
         }
 
         String myCoupleCode = guest.getCoupleCode(); // 현재 로그인된 사용자의 커플 코드
-//        String partnerCoupleCode = guest.getPendingCoupleCode(); // 상대방 커플 코드
+        // String partnerCoupleCode = guest.getPendingCoupleCode(); // 상대방 커플 코드
         String partnerCoupleCode = couple.getGuest2().getCoupleCode();
         log.info("asdfasdf");
         log.info("myCoupleCode = " + myCoupleCode);
@@ -188,10 +184,10 @@ public class GuestController {
 
         log.info("guest1Name = " + guest1Name);
         log.info("guest2Name = " + guest2Name);
-//        if (coupleService.getGuest1Name(myCoupleCode) != null)
-//            guest1Name = coupleService.getGuest1Name(myCoupleCode);
-//        if (coupleService.getGuest2Name(partnerCoupleCode) != null)
-//            guest2Name = coupleService.getGuest2Name(partnerCoupleCode);
+        // if (coupleService.getGuest1Name(myCoupleCode) != null)
+        // guest1Name = coupleService.getGuest1Name(myCoupleCode);
+        // if (coupleService.getGuest2Name(partnerCoupleCode) != null)
+        // guest2Name = coupleService.getGuest2Name(partnerCoupleCode);
 
         model.addAttribute("guest1Name", guest1Name);
         model.addAttribute("guest2Name", guest2Name);
@@ -206,9 +202,8 @@ public class GuestController {
             return ((UserDetails) principal).getUsername();
         }
         return null;
-//        return SecurityContextHolder.getContext().getAuthentication().getName();
+        // return SecurityContextHolder.getContext().getAuthentication().getName();
     }
-
 
     @GetMapping("/mypage/reservationStatus")
     public String reservationStatus(Model model) {
@@ -225,7 +220,7 @@ public class GuestController {
         return "mypage/reservationCancel";
     }
 
-    //email 변경
+    // email 변경
     @Transactional
     @PostMapping("/mypage/guest/email")
     public String updateEmail(@RequestParam("guestId") Long guestId,
@@ -244,7 +239,7 @@ public class GuestController {
         return "redirect:/mypage/profile";
     }
 
-    //전화번호 변경
+    // 전화번호 변경
     @Transactional
     @PostMapping("/mypage/guest/updatePhone")
     public String updatePhone(@RequestParam("guestId") Long guestId,
@@ -265,7 +260,7 @@ public class GuestController {
         return "redirect:/mypage/profile";
     }
 
-    //비밀번호 변경
+    // 비밀번호 변경
     @PostMapping("/mypage/guest/updatePassword")
     public String updatePassword(@RequestParam("guestId") Long guestId,
                                  @RequestParam("currentPassword") String currentPassword,
@@ -294,4 +289,3 @@ public class GuestController {
         return "redirect:/mypage/profile";
     }
 }
-

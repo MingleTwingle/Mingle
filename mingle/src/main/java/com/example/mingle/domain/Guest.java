@@ -1,16 +1,22 @@
 package com.example.mingle.domain;
 
-import jakarta.persistence.*;
+import java.util.UUID;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @Setter
 @Getter
 @Entity
-@Table(name = "tbl_guest" , uniqueConstraints = {@UniqueConstraint(columnNames = {"guest_idid"})
-})
+@Table(name = "tbl_guest", uniqueConstraints = { @UniqueConstraint(columnNames = { "guest_idid" }) })
 public class Guest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
