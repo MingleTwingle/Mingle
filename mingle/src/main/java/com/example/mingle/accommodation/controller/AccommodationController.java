@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -76,7 +77,7 @@ public class AccommodationController {
     }
 
     @PostMapping("/accommodation/filter")
-    public String customFilter(@Validated AccommodationFilterForm form, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String customFilter(@Validated AccommodationFilterForm form, BindingResult result, RedirectAttributes redirectAttributes,Model model) {
         if (result.hasErrors()) {
             return "redirect:/accommodation/filter";  // 🔹 에러 발생 시 필터 페이지로 리다이렉트
         }
@@ -90,8 +91,8 @@ public class AccommodationController {
                     form.getLocation(), form.getCheckInTime(), form.getCheckOutTime()
             );
         }
-
         redirectAttributes.addFlashAttribute("accommodations", filteredAccommodations); // 🔹 Flash Attribute 사용
+        model.addAttribute("accommodations", filteredAccommodations);
         return "redirect:/accommodation/filterList";  // 🔹 GET 요청으로 필터 리스트 페이지 이동
     }
 
@@ -103,11 +104,11 @@ public class AccommodationController {
     }
 
     @GetMapping("/accommodation/filterList")
-    public String showFilterList(Model model) {
-        List<Accommodation> accommodations = accommodationService.findAccommodation();
-        model.addAttribute("accommodations", accommodations);
+    public String showFilteredAccommodations(@ModelAttribute("accommodations") List<Accommodation> accommodations, Model model) {
+        model.addAttribute("accommodations", accommodations);  // 다시 넣어줘야 화면에서 사용 가능
         return "accommodation/accommodationFilterList";
     }
+
 
     @GetMapping("/accommodationDetail/{id}")
     public String showAccommodationDetail(@PathVariable("id") Long id, Model model, HttpServletRequest request, HttpSession session) {
